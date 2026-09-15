@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "机器学习/第一次作业/第一次作业.md",
+                "file": "机器学习/第二次作业/第二次作业答案.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "第一次作业"
+              "title": "第二次作业答案"
             }
           }
         ]
@@ -83,7 +83,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "3fb428e0adb3bc5b",
@@ -190,6 +191,9 @@
   },
   "active": "d3df12aca8c3635a",
   "lastOpenFiles": [
+    "机器学习/第一次作业/第一次作业.md",
+    "机器学习/第二次作业/第二次作业答案.md",
+    "机器学习/第一次作业/202622080929-徐诗霖-第一次作业.pdf",
     "第一次作业.pdf"
   ]
 }
