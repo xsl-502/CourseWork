@@ -1,0 +1,198 @@
+%! Mode:: "TeX:UTF-8"
+%! TEX program = xelatex
+\PassOptionsToPackage{quiet}{xeCJK}
+\documentclass[twoside,withoutpreface,bwprint]{cumcmthesis}
+\usepackage{etoolbox}
+\BeforeBeginEnvironment{tabular}{\zihao{-5}}
+\usepackage[numbers,sort&compress]{natbib}  % 文献管理宏包
+\usepackage[framemethod=TikZ]{mdframed}  % 框架宏包
+\usepackage{url}  % 网页链接宏包
+\usepackage{subcaption}  % 子图宏包
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+\newcolumntype{R}{>{\raggedleft\arraybackslash}X}
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+
+\usepackage{listings} %导入代码宏包
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    stringstyle=\color{green},
+    commentstyle=\color{gray},
+    morecomment=[l][\color{magenta}]{\#},
+    tabsize=4,
+    breaklines=true,
+    showstringspaces=false
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 报告信息（修改此处即可，页眉与标题会同步更新）
+\newcommand{\reporttitle}{实验报告标题}
+\newcommand{\coursename}{课程名称}
+\newcommand{\studentname}{徐诗霖}
+\newcommand{\studentid}{学号}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 排版格式
+\makeatletter
+% 正文：宋体小四（12bp），1.5 倍行距（与 Word 的 1.5 倍行距一致）
+\renewcommand\normalsize{%
+    \@setfontsize\normalsize{12bp}{15.6bp}%
+    \abovedisplayskip 12\p@ \@plus3\p@ \@minus7\p@
+    \abovedisplayshortskip \z@ \@plus3\p@
+    \belowdisplayshortskip 6.5\p@ \@plus3.5\p@ \@minus3\p@}
+\normalsize
+\linespread{1.5}
+\setlength{\parindent}{2em}  % 首行缩进 2 字符
+
+% 一级标题：黑体四号；二级标题：黑体小四；三级标题：黑体小四
+\renewcommand\section{\@startsection{section}{1}{\z@}%
+    {-3.5ex \@plus -1ex \@minus -.2ex}%
+    {2.3ex \@plus.2ex}%
+    {\centering\normalfont\heiti\zihao{4}}}
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+    {-3.25ex\@plus -1ex \@minus -.2ex}%
+    {1.5ex \@plus .2ex}%
+    {\normalfont\heiti\zihao{-4}}}
+\renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
+    {-3.25ex\@plus -1ex \@minus -.2ex}%
+    {1.5ex \@plus .2ex}%
+    {\normalfont\heiti\zihao{-4}}}
+
+% 标题区：标题黑体三号居中，课程名称、姓名学号宋体小四居中
+\renewcommand{\maketitle}{%
+    \setcounter{page}{1}%
+    \begin{center}
+        {\heiti\zihao{3}\reporttitle\par}
+        \vspace{0.5em}
+        {\songti\zihao{-4}课程名称：\coursename\par}
+        {\songti\zihao{-4}姓名：\studentname\hspace{2em}学号：\studentid\par}
+    \end{center}
+    \vspace{1ex}}
+
+% 参考文献：宋体五号（标题仍为一级标题格式）
+\patchcmd{\thebibliography}{\sloppy}{\sloppy\songti\zihao{5}}{}{}
+\makeatother
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 页眉设置（修改下方中文占位内容即可）
+\pagestyle{fancy}
+\setlength{\headheight}{19pt} % 消除 fancyhdr 的 headheight 过小警告
+\fancyhf{} % 清除默认页眉页脚
+
+% 单页（奇数页）页眉
+\fancyhead[RO]{\thepage} % 页码右对齐
+\fancyhead[CO]{\coursename 实验报告} % 中间为标题
+\fancyhead[LO]{2026.09} % 日期左对齐
+
+% 双页（偶数页）页眉
+\fancyhead[LE]{\thepage} % 页码左对齐
+\fancyhead[CE]{专业：计算机科学与技术 \hspace{1cm} 姓名：\studentname} % 中间为专业与姓名
+\fancyhead[RE]{2026.09} % 日期右对齐
+
+% 页脚留空
+\fancyfoot{}
+
+% 自定义页眉下划线样式为两条加粗平行线
+\renewcommand{\headrule}{%
+    \hrule height 1.0pt % 第一条线
+    \vspace{1pt}        % 线间距
+    \hrule height 0.5pt % 第二条线
+    \vspace{2pt}        % 线与正文之间的距离
+}
+
+\renewcommand{\headrulewidth}{0pt} % 禁用默认的线条
+\renewcommand{\footrulewidth}{0pt} % 禁用页脚线条
+
+\begin{document}
+
+\thispagestyle{empty} % 去掉目录页的页眉
+\tableofcontents  %生成目录
+\newpage
+
+\maketitle
+
+
+\section{实验目的}
+
+在此撰写正文。
+
+
+\section{实验原理}
+
+\subsection{小节标题}
+
+在此撰写正文。
+
+% ---------------- 常用写法示例（按需取消注释） ----------------
+%
+% 行内公式：\(y = wx + b\)
+% 行间公式：
+% \[
+% P(y = 1 | x; \theta) = \frac{1}{1 + e^{-\theta^T x}}
+% \]
+% 注意：公式中的汉字要写在 \text{} 里，否则会缺字
+%
+% 插图（图片放在 figures/ 目录下）：
+% \begin{figure}[htbp]
+%     \centering
+%     \includegraphics[width=0.6\linewidth]{figures/example.png}
+%     \caption{图片标题}
+%     \label{fig:example}
+% \end{figure}
+%
+% 表格：
+% \begin{table}[htbp]
+%     \centering
+%     \begin{tabular}{|c|c|c|}
+%         \hline
+%         \textbf{列1} & \textbf{列2} & \textbf{列3} \\ \hline
+%         内容 & 内容 & 内容 \\ \hline
+%     \end{tabular}
+%     \caption{表格标题}
+%     \label{tab:example}
+% \end{table}
+%
+% 代码（直接写在文中，或从 code/ 目录导入）：
+% \begin{lstlisting}[language=Python]
+% print("Hello, World!")
+% \end{lstlisting}
+% \lstinputlisting[language=Python]{code/example.py}
+%
+% 交叉引用：如图\ref{fig:example}所示，或用 \cref{fig:example}
+% ------------------------------------------------------------
+
+
+\section{实验内容与步骤}
+
+在此撰写正文。
+
+
+\section{实验结果与分析}
+
+在此撰写正文。
+
+
+\section{总结}
+
+在此撰写正文。
+
+
+% 参考文献（GB/T 7714—2015 顺序编码制；在 ref.bib 中添加条目并在正文 \cite{} 后取消注释，
+% 编译顺序：xelatex → bibtex → xelatex → xelatex）
+% \bibliographystyle{gbt7714-numerical}
+% \bibliography{ref}
+
+\end{document}
