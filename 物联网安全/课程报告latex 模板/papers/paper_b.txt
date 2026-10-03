@@ -1,0 +1,1360 @@
+Decentralized dynamic task allocation for UA Vs with
+limited communication range
+Marc Pujol-Gonzaleza, Jesus Cerquides a, Pedro Meseguer a,
+Juan A. Rodriguez-Aguilar a,∗, Milind Tambeb
+aArtiﬁcial Intelligence Research Institute of the Spanish National Research Council
+(IIIA-CSIC), Campus de la UAB, 08193 Bellaterra, Spain
+bUniversity of Southern California, Los Angeles, CA 90089
+Abstract
+We present the Limited-range Online Routing Problem (LORP), which involves
+a team of Unmanned Aerial Vehicles (UAVs) with limited communication range
+that must autonomously coordinate to service task requests. We ﬁrst show a
+general approach to cast this dynamic problem as a sequence of decentralized
+task allocation problems. Then we present two solutions both based on modeling
+the allocation task as a Markov Random Field to subsequently assess decisions
+by means of the decentralized Max-Sum algorithm. Our ﬁrst solution assumes
+independence between requests, whereas our second solution also considers the
+UAVs’ workloads. A thorough empirical evaluation shows that our workload-
+based solution consistently outperforms current state-of-the-art methods in a
+wide range of scenarios, lowering the average service time up to 16%. In the best-
+case scenario there is no gap between our decentralized solution and centralized
+techniques. In the worst-case scenario we manage to reduce by 25% the gap
+between current decentralized and centralized techniques. Thus, our solution
+becomes the method of choice for our problem.
+Keywords: task allocation, unmanned aerial vehicles, max-sum, decentralized
+1. Introduction
+Unmanned Aerial Vehicles (UAVs) are an attractive technology for large-
+area surveillance [1]. Today, there are readily available UAVs that are rea-
+sonably cheap, have many sensing abilities, exhibit a long endurance and can
+communicate using radios. Several applications can be eﬃciently tackled with a
+∗Corresponding author
+Email addresses: mpujol@iiia.csic.es (Marc Pujol-Gonzalez), cerquide@iiia.csic.es
+(Jesus Cerquides), pedro@iiia.csic.es (Pedro Meseguer), jar@iiia.csic.es
+(Juan A. Rodriguez-Aguilar), tambe@usc.edu (Milind Tambe)
+July 1, 2021
+arXiv:1809.07863v1  [cs.NI]  31 Aug 2018
+team of such UAVs: power line monitoring, ﬁre detection, and disaster response
+among others [2].
+UAVs have traditionally been controlled either remotely or by following
+externally-designed ﬂight plans. Requiring human operators for each UAV im-
+plies a large, specialized and expensive human workforce. Likewise, letting
+UAVs follow externally prepared plans introduces a single point of failure (the
+planner) and requires UAVs with expensive (satellite) radios to maintain contin-
+uous communication with a central station. These constraints are acceptable in
+some application domains, other applications require more ﬂexible techniques.
+For instance, consider a force of park rangers tasked with the surveillance of
+a large natural park. Upon reception of an emergency notiﬁcation, the rangers
+must assess the situation as quickly as possible. With this aim, they could de-
+ploy a team of UAVs continuously ﬂy throughout the park. Thereafter, they
+could issue requests for their UAVs to check certain locations. To maintain the
+cost-eﬀectiveness of the approach, such UAVs cannot employ expensive commu-
+nication devices. Thus, the UAVs would have limited communication ranges,
+oftentimes signiﬁcantly smaller than the park’s extension. Notice that, in this
+setting, neither human remote control nor centralized planning is feasible due
+to such communication constraints.
+In this scenario, a possibility would be to deploy the planes with a ﬁxed
+mission, so that they just go to the desired location(s), perform any required
+checks and ﬂy back to some base. However, this approach is grossly unequipped
+to handle the dynamism of the problem. That is, during a critical situation (e.g.,
+when there is an actual ﬁre in the park), the rangers will receive many reports,
+and will quickly run out of UAVs to handle them. A possibly better approach
+involves UAVs that can act autonomously and can coordinate between them.
+Such UAVs keep ﬂying around the park and coordinate to attend requests as
+they are introduced into the system by rangers, thus hopefully improving their
+eﬀectiveness.
+Nevertheless, the autonomous operation and coordination of UAVs is an
+open research question receiving increasing attention. It involves challenges
+ranging from low-level operational details of ﬂight control to high level coordi-
+nation between UAVs [3]. In this paper we assume that low level control can
+be handled entirely by the UAVs’ auto-pilot systems, and focus on high-level
+coordination challenges instead.
+There are two main approaches to enable such coordination in the literature,
+each best suited for a diﬀerent kind of UAV missions. On the one hand, the
+objective in exploratory missions is to collect accurate information and keep it
+updated. Hence, the ﬁrst approach focuses on shared information collection,
+fusion and maintenance techniques to fulﬁll these missions [4]. On the other
+hand, some applications involve speciﬁc tasks that the UAVs should carry. For
+instance, check requests introduced by the rangers can be considered as tasks to
+be performed by the UAVs. Hence, coordination between UAVs in this context
+implies making decisions about which UAV should conduct each task.
+Unfortunately, most state-of-the-art multi-agent allocation mechanisms can-
+not be employed in our settings, particularly due to the communication range
+2
+limitation. Hence, we ﬁrst identify the characteristics and particular challenges
+of such applications and deﬁne the Limited-range Online Routing Problem
+(LORP) to capture them. After studying these characteristics, we advocate
+for a solution approach where UAVs make quick decisions based solely on local
+information, where the neighbors of a UAV are those UAVs with which it can
+directly communicate at a given point in time.
+Next, we introduce a solution approach based on representing the problem
+as a factorized utility function (actually a Markov Random Field) and optimiz-
+ing it using the Max-Sum distributed algorithm. This technique provides two
+signiﬁcant advantages: (i) the problem is represented as a single global utility
+function. Hence, the collective behavior of the UAVs is easier to predict and
+reason about than when it emerges from the deﬁnition of individual behaviors;
+and (ii) we can draw results from the extensive Max-Sum literature, including
+its theoretical properties (e.g.: convergence and quality guarantees [5, 6]) and
+encouraging experimental results [7].
+We present an initial development of this solution in Section 4, assuming
+that the cost of servicing each request is independent of other requests assigned
+to the UAV. Thereafter, we introduce a second solution where UAVs adjust
+their estimations of the cost of servicing a task depending on their workload,
+with a slight increment in complexity. As a result, UAVs using this solution are
+better equipped to dynamically capture and exploit the distribution of incoming
+requests.
+The contributions of this paper are the following:
+• We introduce the LORP and identify its need for quick loops of assessment,
+decision and action in highly dynamic, communication constrained UAV
+applications.
+• We propose to cast the LORP as an optimization problem and distribut-
+edly solve it using Max-Sum, thus providing great ﬂexibility to introduce
+new heuristics without modifying the solving algorithm.
+• We capitalize on this advantage by introducing the workload heuristic,
+which exploits the dynamic characteristics of the problem to make better
+decisions.
+• We empirically evaluate the proposed algorithms, showing that: (i) the
+proposed approach allows for eﬀective request allocation in a highly dy-
+namic, communication constrained domain; and (ii) our workload-based
+solution achieves between 6% and 16% lower service times than current
+state-of-the-art methods, and its actual performance comes very close to
+that of centralized solutions.
+The contributions above build upon and extend the preliminary work pre-
+sented in [8]. However, notice that here we improve that work by: (i) relating
+it to current state-of-the-art literature, (ii) presenting the LORP as a general
+problem and showing how to cast it as a distributed task allocation problem, (iii)
+providing proofs of the results that allow us to improve Max-Sum’s eﬃciency,
+3
+and (iv) performing a thorough empirical comparison between the proposed
+algorithms and the related methods.
+The rest of the paper is organized as follows. First, Section 2 reviews current
+coordination approaches. Next, Section 3 describes our problem in detail, along
+with an example scenario. Thereafter we present a ﬁrst MRF-based solution
+in Section 4, explaining how the LORP can be encoded and eﬃciently solved
+using Max-Sum. Then, Section 5 shows how to improve this representation to
+better spread the workload between planes. Finally, Sections 7 and 8 empirically
+evaluate our approach, and Section 9 presents some conclusions and further lines
+of work.
+2. Related Work
+There exists a large body of research related to multi-agent (and/or multi-
+robot) task allocation.
+Our problem is actually a variant of the Single-Task, Single-Robot (ST-
+SR) dynamic Multiple Travelling Salesman Problem (MTSP) as described in
+Gerkey’s taxonomy of multi-robot task allocation systems [9]. In the MTSP,
+a number of robots (or agents) have to visit a number of waypoints in the
+minimum possible time, while new waypoints may be introduced at any time.
+In fact, our variant is even harder than the MTSP because of the communication
+range limitation, and hence it is also strongly NP-Hard.
+Most works on the MSTP focus on market-based allocation mechanisms [10,
+11, 12, 13], where tasks are allocated to agents using auctions. The pre-cursor
+in this area is the auction algorithm [14], an iterative distributed algorithm to
+optimally solve the classic assignment problem [15]. The assignment problem
+is a static task allocation problem where several tasks can be allocated to a
+number of agents. Each agent has a diﬀerent cost for performing each task,
+and can only be assigned to a single task. Then, the objective is to ﬁnd the
+allocation that minimizes the total cost incurred after assigning all tasks.
+Nonetheless, on most actual-world applications there may be more tasks than
+agents. If the cost for a robot to perform two tasks is simply the addition of the
+costs of performing each task separately, then the above algorithm still yields an
+optimal allocation. However, in routing problems the cost of visiting multiple
+waypoints depends on the relative positions between those waypoints. Hence,
+the auction algorithm is not optimal in this case, and can lead to arbitrarily
+bad solutions [9].
+A ﬁrst step to mitigate this problem is introduced in [11]. Instead of per-
+forming an iterative auction, the idea here is to perform a parallel single-item
+auction for each task. These auctions can be resolved in a single round. Af-
+terwards, tasks are continuously re-auctioned, but with agents’ bids updated to
+account for the new state of the world. This approach, described as the Par-
+allel Single-Item (PSI) auctions mechanism in [16], improves the robustness of
+the system and equips it to handle changing conditions and/or the introduction
+of new tasks. Although PSI auctions capture some of those dependencies by
+4
+reallocating tasks when conditions change, another possibility is to explicitly
+consider them. In the Sequential Single-Item auctions [17] method, agents per-
+form an iterative auction where a single task is assigned at each iteration. After
+each round, agents update their bids according to the tasks they already got
+in previous iterations, hence taking into account the synergies between tasks.
+This approach even has quality guarantees in static domains [18], but is not
+well-suited for dynamic domains because it requires both an arbitrary number
+of communication cycles and global communication.
+An entirely diﬀerent approach to task allocation is to employ consensus algo-
+rithms [19, 20] to let agents maintain consistent information about the system’s
+state. After reaching consensus, each agent can independently compute its plan
+using a deterministic algorithm, and the resulting plans are guaranteed to be
+consistent with each other. The main advantage of these algorithms is that they
+have been shown to converge even on time-varying network topologies. However,
+the time required to reach such convergence is unbounded and they cannot con-
+verge during network partitions. Hence, consensus-based works typically strive
+to either guarantee network connectedness [21] or minimize the impact of such
+a potentially large decision making time. For instance, [22] presents a UAV
+coordination model for ﬁre perimeter tracking, where UAVs reach a consensus
+on which section of the perimeter is to be monitored by each UAV. When the
+conditions change, the UAVs keep monitoring their section until a new consen-
+sus is eventually reached. Because the ﬁre perimeter is unlikely to evolve very
+rapidly, the previous assignment works relatively well even if takes a long time
+to reach a new consensus.
+Finally, some researchers tried to combine the advantages of market-based
+mechanisms (quick decisions) with those of the consensus-based ones (eventual
+consistency) [23]. Along these lines, Choi et. al. [24] introduced the Consensus
+Based Bundle Algorithm (CBBA), that directly reaches a consensus on (an
+auction-based) solution. Nonetheless, this approach still suﬀers from the low
+resiliency to network disconnections.
+As detailed in the next section, LORP scenarios are highly dynamic and
+involve very rapid changes in the communication network topology, including
+frequent disconnections. Hence, consensus-based approaches do not seem par-
+ticularly well suited for this domain. Moreover, we can only employ the simpler
+auction-based approaches (such as PSI) due to the lack of global communication.
+3. The limited-range online routing problem
+In this section we present the Limited-range Online Routing Problem. We
+ﬁrst describe the problem intuitively and present an example scenario. There-
+after, we show how it can be cast as a distributed task allocation problem.
+3.1. Motivating Example
+Consider a force of park rangers that acquires a ﬂeet of unmanned UAVs
+to help them monitor a large natural park. The force intends to request its
+5
+operator
+⇢1
+⇢2
+⇢3
+⌧1
+⌧2
+⌧3
+Figure 1: Example LORP scenario.
+UAVs to check certain locations when alerts are received, or as part of their
+routine surveillance plans. In turn, UAVs are expected to fulﬁll these requests
+as quickly as possible. Speciﬁcally, UAVs should try to minimize the average
+request service time, where service time is the amount of time passed between
+the issue of a request by an operator and the arrival of an UAV to the request’s
+location.1 A common approach to this kind of problems is to adopt a central-
+ized strategy: UAVs’ routes are planned at a central station, which is in charge
+of commanding them. Therefore, the central station guarantees cooperation
+between UAVs. However, if the natural park is signiﬁcantly larger than the
+UAVs communication ranges, performing centralized planning is unfeasible be-
+cause the resulting plan can not be eﬀectively transmitted to UAVs. Figure 1
+represents a snapshot of what the rangers’ scenario may look like at some point
+in time. In this example, the force owns three UAVs labeled ρ1, ρ2, and ρ3.
+The communication range of each UAV is drawn as a dotted circle around it.
+By inspecting these circles, we observe that UAVs ρ1 and ρ2 can communicate
+between them. Moreover UAV ρ3 can communicate with the rangers’ operator.
+However, there is no way for UAVsρ1 andρ2 to communicate neither with UAV
+ρ3 nor with the operator. The scenario contains three targets represented by
+the black circles labelled with τ1, τ2, and τ3. A solid line linking a UAV with
+a target indicates that the UAV is aware of that target. For instance, UAV ρ1
+and UAVρ2 know that targets τ2 andτ3 exist, but they are not aware of target
+τ1. Given this scenario, a centralized planner would probably send UAV ρ1 to
+targetsτ3 andτ1, UAVρ2 to target τ2, and leave ρ3 idle. However, this plan of
+action can never be computed nor implemented when assuming that UAVs have
+limited communication range, because there is simply no way for ρ1 to discover
+τ1 at this particular point in time.
+Notice that the LORP itself does not specify how agents should represent
+and relay information about which requests are pending and/or completed, nor
+which messages can be exchanged. Hence, it is part of a LORP solution to deﬁne
+a speciﬁc model and an algorithm that allows agents to make speciﬁc decisions.
+Moreover, within this decision lies an essential trade-oﬀ that designers must
+1We assume that a request is serviced as soon as a UAV reaches its location.
+6
+face. Intuitively, computing more accurate plans improves the quality of the
+solution to the currently known part of the problem , and hence it is a desirable
+goal. However, the better plans we want to compute, the more time our UAVs
+have to invest into it, thus hindering their ability to adapt to the new incoming
+requests. In contrast, we advocate for an approach speciﬁcally focused towards
+better handling the unknown part of the problem , as explained in the following
+section.
+3.2. Approach
+Notice that, unlike our example scenario above, the LORP is a highly dy-
+namic problem where UAVs constantly move and new requests can be intro-
+duced at any time. As a result, we argue that LORP solutions should strive
+to make quick decisions. On the one hand, a long decision making process can
+lead to arbitrarily bad decisions being made. That is, a decision that was good
+when the decision making process started may end up being arbitrarily bad if
+the process itself took too much time (during which the scenario’s conditions
+kept evolving). On the other hand, making complex decisions (such as long
+term plans for each UAV) is futile, because there’s a high probability that these
+plans are invalidated. Likewise, operating in a decentralized manner introduces
+an additional challenge: how to spread and maintain a consistent view of the
+system between agents. For instance, a LORP solution must specify how UAVs
+notify others of newly introduced requests, as well as of already serviced ones.
+In our approach, we deal with these issues by deﬁning three main processes
+that are going on simultaneously:
+1. At any time, an operator may introduce a new request by notifying a
+single UAV in its range, which becomes the request’s owner. If no UAV
+is currently in its range, the operator must wait until one comes around.
+So long as a UAV is the owner of a request, it is responsible for the
+eventual servicing of that request. However, ownership of a request may
+be transferred to another UAV as explained next. Since there is exactly
+one owner of each request at a particular point in time, this guarantees a
+consistent (yet distributed) view of the system by the UAVs.
+2. Concurrently, UAVs run cycles of a request reallocation process. The real-
+location process is a sequential process with three phases. First, the UAVs
+construct a snapshot of the current situation by broadcasting their location
+and the requests they currently own. Next, the UAVs run some decen-
+tralized request allocation algorithm based on the collected information.
+This phase may take several communication rounds between neighboring
+UAVs, but such number of rounds must be strictly limited and known
+beforehand. At the end of these rounds, the algorithm must have decided
+on which plane should own each request. Finally, these decisions are ex-
+ecuted by exchanging the requests’ ownership between planes. When a
+full reallocation cycle ﬁnishes, the UAVs start a new one with updated
+information.
+7
+3. Meanwhile, each UAV ﬂies towards the nearest it owns or tries to get in
+range of the closest operator if it does not own any request. When a UAV
+reaches the location of a request it owns, the request is considered serviced
+and removed from the system.
+We argue that this approach is particularly well suited for the LORP prob-
+lem. First, the ownership concept frees the allocation algorithms from having
+to maintain a consistent situational awareness because only the current owner
+of a request may decide to allocate it to another UAV. Additionally, by enforc-
+ing short allocation cycles the UAVs can make decisions quickly and re-consider
+them as the situation evolves. Obviously, enforcing quick allocations prevents us
+from employing sophisticated methods that best consider the currently known
+part of the problem. However, we expect the beneﬁt of being able to constantly
+reconsider those decisions to make up for –and even surpass– the loss in plan
+accuracy from employing simpler allocation methods.
+Arguably, another caveat of this approach is that it gives up the possibility
+of a more controlled network deployment that tries to maximize the UAV’s cov-
+erage of space, as introduced in other works [21, 25]. Nonetheless, our proposal
+provides several signiﬁcant qualities that those works cannot achieve. First and
+foremost, our proposal is inherently robust to failures. Even if a massive disrup-
+tion renders several UAVs useless, our system will remain operative to make the
+best possible use of the remaining ones. Second, by avoiding any centralization
+whatsoever, our approach can scale to arbitrarily large numbers of tasks, UAVs
+and space to cover. Finally, it allows for the emerge of self-organized network
+structures adapted to the situation’s characteristics. Because this characteris-
+tic is hard to understand, next we introduce a small example that illustrates
+how our approach works, and highlights how the UAVs may self-organize while
+following it.
+3.3. Example of operation
+Consider the example in Figure 2a. Here UAV ρ2 has no tasks assigned,
+and hence is ﬂying back to get into operator range (as per process 3 explained
+above). Meanwhile, UAV ρ1 is trying to complete task τ1, whereas UAV ρ3
+just got task τ2 from the operator, and starts moving towards its location (also
+because of process 3). After a while, as shown in Figure 2b, UAVs ρ2 andρ3 get
+into communication range, and start a reallocation round (process 2). At this
+point, a sensible allocation method probably assigns task τ2 to UAVρ2. Hence,
+τ2’s ownership is transferred from UAV ρ3 to UAVρ2, which becomes the new
+owner of this task. Finally, (by process 3) ρ2 now advances towardsτ2 whereas
+ρ3 goes back to the operator to gather new tasks, as shown in Figure 2c. Notice
+that, if further tasks are introduced around τ1 andτ2, UAVsρ2 andρ3 will keep
+acting as “messengers” bringing those tasks from the operator to UAV ρ1 as
+illustrated here. Thus, this example shows how UAVs following our approach
+can naturally form task relay chains, even if the actual tasks are further than
+what an connected communication chain could reach.
+8
+operator
+⇢1 ⇢2
+⇢3
+⌧1
+⌧2
+(a) Initial situation
+operator
+⇢1 ⇢2
+⇢3
+⌧1
+⌧2
+(b) A reallocation negotiation begins
+operator
+⇢1 ⇢2
+⇢3
+⌧1
+⌧2
+(c) Task relaying is now complete
+Figure 2: Example of task relaying without an enforced communication chain.
+9
+4. Coordination using Independent Valuations
+The work in [26] shows that it is possible to model multi-agent problems as
+MRFs, and then let agents ﬁnd the Maximum-A-Posteriori (MAP) of that ﬁeld
+to make their decisions. In this section we show how a snapshot of a LORP
+problem can be encoded as a MRF, assuming that requests are independent
+between them (i.e, that the cost for a UAV to service two requests is the same
+as the sum of costs of servicing them separately). Thereafter we use Max-Sum
+to let UAVs compute an allocation in a distributed manner.
+4.1. Problem Encoding as Binary MRF
+Prior to encoding our problem, some notation is in place. Henceforth, Let
+R ={τ1,...,τ m} be a set of requests, P ={ρ1,...,ρ n} be a set of UAVs, r and
+p be indexes for requests and UAVs respectively, Rp⊆R be the set of requests
+that UAV ρp can service, and Pr ⊆ P be the set of UAVs that can service
+request τr. A naive encoding of the requests-to-UAVs allocation as an MRF is:
+• Create a variable xr for each request τr. The domain of this variable is
+the set of UAVs that can service the request, namely Pr. If xr takes value
+ρp, it means that request τr will be serviced by UAV ρp.
+• Create an constraintcp for each UAVρp, that evaluates the cost of servic-
+ing the requests assigned to ρp. We assume independence, so the cost of
+servicing a set of requests is the sum of the costs of servicing each request.
+Xp is the set of variables that have ρp in their domains. An assignment of
+values to each of the variables in Xp is noted as Xp. Solving the MAP problem
+amounts to ﬁnding the combination of request-to-UAV assignments X∗ that
+satisﬁes X∗ = arg minX
+∑
+p∈Pcp(Xp).
+Figure 3a shows an encoding of the motivating example. There is a variable
+for each request. The domain of x1 is the set of UAVs that can service request
+τ1. This is eﬀectively the set of all UAVs that are in communication range of the
+owner of τ1. Hence, the domain of x1 is just{ρ3}. Likewise, the domain of x2
+andx3 is{ρ1,ρ 2} because both UAVs can fulﬁll it. Next, we create a functioncp
+for each UAVρp. Because ρ3 can only service τ1, the scope of function c3 isx1.
+As a result, c3 is a unary function that speciﬁes the cost for UAV ρ3 to service
+τ1, namely the distance between ρ3 and τ1 (hereafter δpr will be employed as
+a shorthand for the distance between ρp and τr). The scope of c2 is{x2,x 3},
+because UAV ρ2 can service both τ2 and τ3. Hence, c2 speciﬁes four costs for
+ρ2:
+1. 0 if both requests are allocated to ρ1.
+2. 2 (δ23) if τ2 is allocated to ρ1 but τ3 is allocated to ρ2.
+3. 2 (δ22) if τ2 is allocated to ρ2, but τ3 is allocated to ρ1.
+4. 4 (δ22 +δ23) if both requests are allocated to ρ2.
+10
+2
+0
+7
+2
+4
+1
+6
+5
+0
+x1
+ρ3
+c1
+c2
+c3
+x2x3
+ρ1ρ1
+ρ1
+ρ1
+ρ2
+ρ2
+ρ2ρ2
+x2x3
+ρ1ρ1
+ρ1
+ρ1
+ρ2
+ρ2
+ρ2ρ2
+x3
+x2
+x1
+(a) Naive MRF encoding.
+0
+2
+0
+2
+5
+0
+1
+0
+x2
+x2x3
+x3
+c23 c22
+c13 c12
+ρ1
+ρ2
+ρ1
+ρ2
+ρ1
+ρ2
+ρ1
+ρ2
+7
+x1
+ρ3
+x2
+x1
+c31
+x3 (b) Independent valuation.
+F 0
+T 2
+F 0
+T 2
+T 5
+F 0
+T 1
+F 0
+T
+F
+0
+T
+F
+F
+T
+T
+F
+0
+F
+T 0
+0
+7T
+F
+s3
+s2
+s1
+v23 v22
+v13 v12 v31
+z23 z22
+z13 z12 z31
+∞
+∞
+z13z23
+z12z22
+T
+F
+0
+T
+F
+F
+T
+T
+F
+0
+∞
+∞
+z31
+∞
+z23
+z13
+z12
+z22
+z31
+(c) Independent task valuation, binary encoding.
+Figure 3: Encoding the example LORP scenario.
+c1 is similarly computed. From Figure 3a costs, the optimal assignment is
+X∗ =⟨x1 =ρ3,x 2 =ρ2,x 3 =ρ1⟩.
+This encoding scales poorly. First, it does not exploit the fact that we assume
+independence when computing the cost of servicing a combination of requests in
+the constraintscp. The number of entries incp is the product of the domain sizes
+of each of the variables in its scope. Hence, the number of entries in cp scales
+exponentially with respect to the number of requests that UAV ρp can service.
+However, we can exploit the independence between requests by decomposing
+each cost function cp into smaller cost functions, each one evaluating the cost
+of servicing a single request. That is, thanks to that independence between
+requests, we can represent cp as a combination of cost functions cpr, one per
+variable in the scope of cp, such that cp(Xp) = ∑
+xr∈Xpcpr(xr). Now, the
+number of values to specify the cost of servicing a set of requests scales linearly
+with respect to the number of requests. Figure 3b represents the example in
+Figure 3a using this new encoding. Notice that for each UAV we specify the cost
+of servicing a given request when the request is assigned to it, or 0 when allocated
+to another UAV. However, the new encoding still suﬀers from redundancy. Say
+that another UAV ρ4 is in the communication range of both ρ1 and ρ2. Since
+this UAV would be eligible to serve requestsτ2 andτ3, the domain of x2 andx3
+would become{ρ1,ρ 2,ρ 4}. As a result, UAV ρ1 must extend its cost function
+c12 to include a new entry where τ2 is assigned to ρ4, whose cost is obviously 0.
+Therefore, we must aim at an encoding such that a cost function cpr contains
+only two values: δpr if τr is allocated to ρp, or 0 otherwise.
+With this aim, we now convert the request variables into binary variables,
+replacing each original variable xr ∈ X by a set of binary variables zpr, one
+per UAV in Pr. Previous cpr cost functions now generate vpr cost functions
+11
+on these binary variables. In addition, for each r, zpr are linked through a
+selection function sr to ensure that a request can be only serviced by a single
+UAV. For instance, consider variable x2 with domain{ρ1,ρ 2}. We create two
+binary variables z12 and z22. Intuitively, z12 being “on” means that request
+τ2 is assigned to UAV ρ1. A selection factor linked to both z12 and z22 would
+guarantee that only one of the two variables is set to “on”. In our example,
+this selection function is a cost function s2, which introduces an inﬁnite cost
+whenever there is no single variable active. Figure 3c shows the binary encoding
+of the example in Figure 3b.
+4.2. Solving the Problem with Max-Sum
+Now we optimize the Max-Sum algorithm to run on the last encoding of Sec-
+tion 4 (Figure 3c). Max-Sum sends messages from factors to variables and from
+variables to factors. However, our factor graph allows for some simpliﬁcations.
+Notice that each zpr is only linked to cost function vpr and to selector function
+sr. It is direct to observe that the message that zpr must send to vpr is exactly
+the one received from sr, while the message that it must send to sr is exactly
+the one received from vpr. Then, since each variable simply relays messages be-
+tween the cost function and selection function it is linked to, henceforth we will
+disregard variables’ messages and instead we consider that functions directly
+exchange messages.
+The Max-Sum general message expression from function f to function g is
+µf→g(Zf∩g) = min
+Zf−g
+[
+f(Zf−g, Zf∩g) +
+∑
+g′∈N (f )
+g′⁄=g
+µg′→f(Zg′∩f)
+]
+(1)
+where Zf∩g stands for an assignment to the variables in the scope of f and g,
+Zf−g stands for an assignment to the variables in the scope of f that are not
+ing,N(f) stands for the set of functions liked to f (f’s neighboring functions),
+and µg′→f stands for the message from function g′ to f.
+Observe in Figure 3c that selection and cost functions are connected by a
+single binary variable. Thus, the messages exchanged between functions in our
+problem will refer to the assignments of a single binary variable. In other words,
+the assignment Zf∩g will correspond to some binary variable zpr. Therefore, a
+message between functions must contain two values, one per assignment of a
+binary variable. At this point, we can make a further simpliﬁcation and consider
+sending the diﬀerence between the two values. Intuitively, a function sending
+a message with a single value for a binary variable transmits the diﬀerence
+between the variable being active and inactive. In general, we will deﬁne the
+single-valued message exchanged between two functions as
+νf→g =µf→g(1)−µf→g(0) . (2)
+Next, we compute the messages between cost and selection functions.
+12
+(1) From cost function to selection function. This message expresses the diﬀer-
+ence for a UAV ρp between serving request τr or not, therefore
+νvpr→sr =vpr(1)−vpr(0) =δpr− 0 =δpr . (3)
+(2) From selection function to cost function. Consider selection function sr and
+cost function vpr. From equation 1, we obtain
+µsr→vpr(1) = 0, and µsr→vpr(0) = min
+ρp′∈Pr−ρp
+δp′r .
+Then we can apply equation 2 to obtain the single-valued message νsr→vpr =
+− minρp′∈Pr−ρpδp′r. Moreover, this message can be computed eﬃciently. Con-
+sider the pair⟨ν∗,ν∗∗⟩ as the two lowest values received by the selection function
+sr. Then, the message that sr must send to each vpr is
+νsr→vpr =
+{
+−ν∗ νvpr→sr⁄=ν∗
+−ν∗∗ νvpr→sr =ν∗ . (4)
+To summarize, each cost function computes and sends messages using equa-
+tion 3; each selection function computes and sends messages using equation
+4.
+Max-Sum operation . Max-Sum is an approximate algorithm in the general
+case, but it is provably optimal on trees. Due to how we encoded the problem,
+the resulting factor graph contains a disconnected, tree-shaped component for
+each request r (see Figure 3c). Thus, Max-Sum operates optimally in this
+case. Moreover, the algorithm is guaranteed to converge after traversing the
+tree from the leaves to the root and then back to the leaves again. In our case,
+the tree-shaped component for each request is actually a star-like tree, with the
+selection functionsr at the center, and all others connected to it. Hence, we are
+guaranteed to compute the optimal solution in two steps if we pick sr as the
+root node of each component.
+Typically, Max-Sum’s decisions are made according to the costs seen by the
+variable nodes after running the algorithm. However, we have no variables in
+our graph anymore because we eliminated them. As a consequence, we have
+to make the decisions at either the selector nodes sr or at the cost nodes vpr.
+The best option is to let the selectors choose, because it guarantees that the
+same task is never simultaneously assigned to two diﬀerent UAVs. Because the
+decisions are made by the sr nodes, there is no need for the second Max-Sum
+iteration (messages from selector to cost functions) anymore.
+Notice that, after our reﬁnements, the only remaining Max-Sum nodes are
+the cost functions vpr and a selection function sr for each request. Hence, the
+UAVs can execute the algorithm distributedly by letting the cost functions vpr
+run on UAV ρp, and the selection functions sr run on the current owner of the
+request. Moreover, a UAV only needs to know which requests do its neighbors
+have to build the logical nodes it must run. Thus, the whole graph can also be
+built distributedly based only on the UAVs’ local information.
+13
+Max-Sum runs on our example as follows. First, each leaf cost function vpr
+must send its cost to the root of its tree, sr. That is, UAV ρ1 sends 1 to s3
+(within UAV ρ2), and 5 to s2 (within itself). Likewise, UAV ρ2 sends 2 to s2
+and 2 to s3, whereas UAV ρ3 sends 7 to s1. Thereafter, the sr nodes decide by
+choosing the UAV whose message had a lower cost. Hence, s3 (running within
+UAVρ2) decides to allocate τ3 toρ1,s2 allocatesτ2 toρ2, ands1 allocatesτ1 to
+ρ3. At this point the owner of each request knows whether a request should be
+reallocated or not and to whom, so we can use it to implement the reallocation
+phase described in Section 3.2.
+5. Coordination using Workload-based Valuations
+In realistic scenarios, requests do not appear uniformly across time and space
+but concentrated around one or several particular areas, hereafter referred to
+as hot spots. In that case, the assumption of independence in the valuation of
+the requests provides an allocation that assigns a large number of requests to
+the UAVs close to the hot spot, leaving the remaining UAVs idle. Thus, the
+independence assumption is too strong because it leads to utterly unbalanced
+allocations. Next, we show that it is possible to relax this assumption while
+keeping an acceptable time complexity for Max-Sum. We introduce a new factor
+for each UAV: a penalty that grows as the number of requests assigned to
+the UAV increases. Formally, let Zp ={zpr|τr∈ Rp} be the set of variables
+encoding the assignment to UAV ρp. The number of requests assigned to UAV
+p is ηp =∑
+r∈Rp zpr. The workload factor for UAV ρp is
+wp(Zp) =f(ηp) =k· (ηp)α , (5)
+where k≥ 0 and α≥ 1 are parameters that can be used to control the fairness
+in the distribution of requests (in terms of how many requests are assigned to
+each UAV). Thus, the larger theα and thek, the fairer the request distribution.
+The direct assessment of Max-Sum messages going out of the workload factor
+takes O(N· 2N−1) time, where N =|Zp|. Interestingly, the workload factor is
+a particular case of a cardinality potential as deﬁned by Tarlow et. al. [27]. A
+cardinality potential is a factor deﬁned over a set of binary variables ( Zp in
+this case) that does only depend on the number of active variables. That is, it
+does not depend on which variables are active, but only on how many of them
+are active. As described in [27], the computation of the Max-Sum messages for
+these potentials can be done in O(N logN). Thus, using Tarlow’s result we can
+reduce the time to assess the messages for the workload factors from exponential
+in the number of variables to linearithmic.
+To further speedup the algorithm and reduce message exchanges, we can
+add the workload factor and the cost factors that describe the cost for UAV ρp
+to service each of the requests. Lemma 2 in the appendix shows that if we have
+a procedure for determining the Max-Sum messages going out of a factor over
+binary variables, say f, we can reuse it to determine the messages going out of
+14
+Algorithm 1 process(vp) ⊿ All undeﬁned values are∞
+1: for r∈Rp do ⊿ Incorporate incoming messages
+2: I[r] =νsr→vp +vpr(1)
+3: end for
+4: Pos,I′ = sorted(I) ⊿ Pos are the reverse indices, and I’ the sorted list
+5: cs = 0
+6: for i = 0 to|I′| do ⊿ Compute cumulative sums
+7: CS 0[i] =cs +wp(i)
+8: CS−[i] =cs +wp(i− 1)
+9: CS +[i] =cs +wp(i + 1)
+10: cs =I′[i] +cs
+11: end for
+12: for i = 0 to|I′| do ⊿ Compute cumulative mins
+13: M +[i] =min(CS +[i],M +[i− 1])
+14: M L[i] =min(CS 0[i],M L[i− 1])
+15: M R[i] =min(CS 0[|I′|− i],M R[|I′|− i + 1])
+16: M−[i] =min(CS−[|I′|− i],M−[|I′|− i + 1])
+17: end for
+18: for r∈Rp do ⊿ Compute and send messages
+19: i =Pos [r]
+20: ξ0 =min(M L[i− 1],M−[i + 1]−I′[i])
+21: ξ1 =min(M +[i− 1],M R[i + 1]−I′[i])
+22: νwp→sr =ξ1−ξ0 +vpr(1)
+23: send( νwp→sr)
+24: end for
+a factor h that is the sum of f with a set of independent costs, one for each
+variable.
+Thus, we can deﬁne a single factor that expresses the complete cost of a UAV
+when assigned a set of requests, which amounts to the sum of the independent
+costs for each of the requests assigned plus the workload cost for accepting that
+number of requests. Formally the cost factor for UAV ρp is
+wp(Zp) +
+∑
+τr∈Rp
+vpr(zpr) . (6)
+Algorithm 1 deﬁnes how to assess the messages ﬂowing out of the cost factor
+vp. It is obtained by composing Lemma 2 with the algorithm described in [27]
+for cardinality potentials. 2 The algorithm is basically a dynamic programming
+procedure for computing minimizations over cumulative sums, which can be
+done in a few linear passes. The complexity is dominated by the initial sort
+operation.
+Summarizing, by introducing workload valuations that do not only depend
+on each individual request, but also on the number of requests, we have shown
+that it is possible to relax the assumption of independence between valuations
+with a very minor impact on the computational eﬀort required to assess the
+2The algorithm description provided in [27] is inaccurate. However, the authors own im-
+plementation of the algorithm is correct. It does not match the description in [27] and is closer
+to the description provided by Algorithm 1.
+15
+messages (from linear to linearithmic). In the next section we show that this
+relaxation provides signiﬁcantly better allocations in terms of median service
+time.
+6. Evaluation methodology
+In the following sections we want to empirically evaluate our MRF-based
+solutions for the LORP. The evaluation will be performed using the MAS-
+Planes [28] simulation environment. MASPlanes allows us to generate scenarios
+of varying characteristics, and then run any of the implemented algorithms
+against the exact same problem instances to see how they compare.
+Comparing our algorithm’s performance against the current state-of-the-art
+is tricky because, as explained in Section 2, most methods can not cope with
+the requirements of our problem domain. Therefore, we implemented a relaxed
+version of the problem to compare against them. In this relaxation, the allo-
+cation is performed by a central agent that has no communication restrictions.
+Furthermore, the centralized allocation procedure used by the centralized agent
+is considered to be instantaneous. That is, there is no delay at all introduced
+by the allocation procedure, whatever its computational cost may be. The
+only constraint that such central planner enforces is that a UAV can not be
+assigned to a request whose existence is unknown by that UAV. In the following
+experiments, the central agent employs one of two diﬀerent request allocation
+algorithms to make decisions using this relaxed problem.
+First, the c-hungarian algorithm runs the Hungarian method [15] to com-
+pute an allocation. This method optimally solves the assignment problem in
+O(n3) time. However, recall that our problem is not an assignment problem
+because: (i) unassigned requests will have to be performed later on; (ii) the cost
+of servicing a request changes depending on the order; and (iii) new requests
+may be introduced at any future time. Also notice that the solutions obtained
+using this method correspond to those that would be found by the auction algo-
+rithm [14]. Aside from the actual procedure, the only diﬀerence between these
+methods is that the auction algorithm may be distributed, at the expense of
+additional delays caused by communications. Hence, the results that we obtain
+for this method provide an upper bound on the best results that a distributed
+auction algorithm would obtain.
+Second, c-greedy represents a straightforward sequential greedy algorithm as
+presented in Algorithm 2. Initially, the central agent considers that no request
+is allocated to any UAV. Then, it computes the best allocation (the allocation
+with minimum cost) of a single task to a single UAV. Thereafter, it keeps ﬁnding
+the best possible allocation of a single request to an UAV, but taking into
+account the previously allocated requests. The process ends when all requests
+have been assigned to some UAV. This procedure can be seen as a centralized
+version of the Sequential Single Item [16] auctions mechanism. Hence, this
+solution represents an upper bound of the results we would be able to achieve
+while using SSI auctions if we were somehow able to use them. Because we
+want to minimize the average service time, the c-greedy algorithm employs the
+16
+Algorithm 2 GreedyAllocation(P,R,V )
+Input: P is a set of planes
+Input: R is a set of requests
+Input: V is a map where each V [p] are all requests known by p∈P
+1: A[p] =∅,∀p∈P
+2: while R⁄=∅ do
+3: ⟨p∗,r∗⟩ = arg min p∈P,r∈R|r∈V [p] evaluate(r,A [p])
+4: A[p∗] = insert(r∗,A [p∗])
+5: R =R\{r∗}
+6: end while
+Output: A, a map where each A[p] are all requests allocated to p
+recommended BidMinPath bidding rule from [18] as the evaluate() function
+in Algorithm 2. Finally, notice that this method is also equivalent to the SGA
+method presented in [24]. This implies that, as proven in that work, the decisions
+obtained by c-greedy are equivalent to the solutions that would be obtained by
+the Consensus-Based Bundle Algorithm (CBBA) in the ideal case of a static
+network structure. Thus, c-greedy also represents an upper bound on the quality
+of the solutions that CBBA would obtain if we were able to employ it.
+For completeness, we also implemented centralized versions of our algo-
+rithms: c-independent, that represents our MRF-based solution using indepen-
+dent valuations; and c-workload, that uses workload valuations as detailed in
+Section 5. These work exactly like the distributed versions, but within a single
+central agent and thus without latency penalties when messages are exchanged.
+All these centralized algorithms serve as baselines to assess the performance
+of the distributed solutions. Obviously, the distributed solutions include our pro-
+posed solutions d-independent (using independent valuations) and d-workload
+(using workload valuations). Additionally, we implemented the distributed
+state-of-the-art PSI method, and obtained very interesting results: the PSI
+method and our d-independent method provide exactly the same decisions.
+This can be seen by following the example execution in Section 4.2, and in-
+terpreting it as if request owners opened an auction for each of the tasks they
+have, and neighboring UAVs bid for them (lowest bid wins). Due to this exact
+functional match between PSI and our solution, we only report results about
+c-independent and d-independent, but these represent also the results obtained
+by the PSI method. At this point, a keen reader may ask whether we could
+employ workload evaluations (from eq. 6) in the PSI method. However, recall
+that in PSI all tasks are auctioned in parallel. Thus, when two UAVs meet
+and one has several more tasks than the other, the UAV with fewer tasks will
+actually win all tasks (at the same time) because it has a much lower workload.
+In the next reallocation cycle, the entirely opposite happens, and so on. In the
+end, the result is a thrashing behavior that blocks both planes from performing
+any useful work.
+To Summarize, Table 1 presents the algorithms we test and their relationship
+with other state-of-the-art approaches. Under the assumptions presented in
+that table, the algorithm’s decisions would match those that we obtain in our
+17
+Method is the ideal implementation of if disregarding
+c-hungarian Auction algorithm CD, SA
+c-greedy CBBA CD, ND, SA
+SSI auctions CD, ND, SA
+c-independent PSI auctions CD, SA
+Independent valuations CD, SA
+c-workload Workload valuations CD, SA
+d-independent PSI auctions -
+Independent valuations -
+d-workload Workload valuations -
+Table 1: Relationship of the evaluated algorithms with other state-of-the-art approaches. CD,
+DN and SA stand for Communication Delays, Network Dynamicity and Situational Awareness
+respectively.
+evaluation. However, this does not necessary imply that the algorithms can not
+work without such assumptions. For instance, CBBA can operate on a dynamic
+network, but would obtain worse results than those of c-greedy.
+7. Eﬀects of the spatial distribution of requests
+In this section we aim to validate the hypothesis that diﬀerent spatial dis-
+tributions of the incoming requests may favor some methods over others. Be-
+cause this assumption is independent of whether the algorithms can or cannot
+work in a distributed manner, we start by comparing all algorithms using their
+idealistic (centralized) implementation. Thereafter, we compare the results of
+c-independent and c-workload with their actually applicable d-independent and
+d-workload distributed counterparts.
+7.1. Empirical settings
+We prepared two scenarios that represent a time-span ( T ) of one month.
+During that time, 10 UAVs with a communication range of 2 km survey a square
+ﬁeld of 100 km 2. We assume that the UAVs always travel at a cruise speed of
+50 km/h. In these scenarios, a single operator submits requests at a mean rate
+of one request per minute. However, we introduce four crisis periods during
+which the rate of requests is much higher. To accomplish this, the requests
+submission times are sampled from a mixture of distributions. The mixture
+contains four normal distributions Ni(µi, 7.2 h) (one per crisis period) and a
+uniform distribution for the non-crisis period. The µi means themselves are
+sampled from a uniform distribution U(T ).
+The two scenarios diﬀer on the spatial distribution of requests. In the uni-
+form scenario, requests are uniformly distributed along space, whereas the hot
+spot scenario models a more realistic setting where crisis requests are localized
+around hot spots. These spatial hot spots are deﬁned as bivariate Gaussian
+distributions with randomly generated parameters. Figure 4 depicts an exam-
+ple of such scenario, where colored dots stand for requests. The scattered dots
+18
+correspond to non-related requests, whereas related requests form dot clouds
+around their hot spot. Finally, the strong dot represents the operator, and the
+circle surrounding it represents its communication range.
+To use the c-workload method we have to set values for the k andα param-
+eters. Hence, we performed an exploration on the space of these parameters to
+determine which values are suitable to thehot spot scenarios. Figure 5 shows the
+results we obtained after this exploration. The colors correspond to the median
+of the average service time that we obtained after running the algorithm in 30
+diﬀerent scenarios for each pair (k,α ). For instance, when k = 102 andα = 1.12
+the algorithm achieved a median average service time of 137 s. Observe that the
+algorithm exhibits a smooth gradient for any ﬁxed value of α ork. Hence, good
+combinations of k and α can be found by ﬁxing one parameter to a reasonable
+value and performing a descent search on the other one. We chose k = 1000,
+and found the best corresponding α to be 1 .36 with 0.01 precision. We also
+conducted a similar exploration in the uniform scenario. However, the results
+were similar for k values between 10 2 and 10 5, and α values between 1.01 and
+1.68. Hence, we use the same values than in the hot spot scenario.
+7.2. Results
+Next we ran all centralized algorithms on a new set of 30 new problems of
+each scenario to ensure that the parameters were not overﬁtted. Figure 6a shows
+the average service time (time passed between when the request is generated
+and when the planes service it) achieved by the diﬀerent algorithms in the
+uniform scenario. The best performing algorithm is c-independent, with c-
+workload being just 1% worse. Despite the small diﬀerence, all results are found
+signiﬁcant by the (paired, nonparametric) Wilcoxon signed rank test [29] with
+p = 0.01. The worst algorithm is clearly c-hungarian, taking nearly 16% more
+time on average.
+These results contrast with those of the hot spot scenario. As shown in
+Figure 6b, c-workload rises as the best method in this case, taking 10% less
+time than c-greedy and 14% less time than c-independent. Interestingly, this
+means that both c-workload and c-greedy are able to capture and exploit the
+underlying spatial distribution of requests, whereas c-independent works very
+well when the requests are randomly distributed but is not well equipped to
+handle other, more realistic distributions. Finally, c-hungarian’s results show
+that completely disregarding the dynamism of the problem leads to overall bad
+decisions.
+At this point, it is clear that the underlying spatial distribution of tasks has
+diﬀerent eﬀects on the varying methods. However, we must check whether such
+diﬀerences still hold in the actually applicable distributed versions. Hence, we
+ran the same scenarios, but this time using d-independent and d-workload to
+compare their results with the respective idealized cases. Figure 7 shows the
+results obtained on both scenarios. Notice that the diﬀerences persist, with d-
+independent achieving insigniﬁcantly (p = 0.01) better results than d-workload
+in the uniform scenario while being signiﬁcantly worse in the hot spots one.
+19
+In fact, d-workload turns out to be as good as c-independent in that scenario
+according to the Wilcoxon test.
+Aside from conﬁrming our hypothesis about the spatial distribution of re-
+quests, this experiment also provides an idea about the cost of distributed
+solving. Speciﬁcally, it shows that there’s a 20% time increase between the
+distributed methods and their idealized counterparts in the uniform scenario,
+and between 6% ({c,d}-independent) and 13% ({c,d}-workload) in the hot spots
+one. The lower overhead in the hot spots scenario is due to requests being closer
+between them, giving the planes more opportunities to coordinate.
+8. Exploring d-workload’s behavior
+In the previous Section we presented results on two scenarios that diﬀered
+only on the spatial distribution of requests. However, it is still unclear how
+d-workload will perform in other scenarios. Hence, in this section we aim at
+providing a better inside on the behavior of d-workload under varying scenario’s
+characteristics.
+8.1. Empirical settings
+To this end, we chose a number of scenario’s characteristics and prepared
+a full factorial experiment to evaluate their impact on the diﬀerent algorithms.
+To capture a wide range of scenarios yet keep the number of experiments within
+a reasonable number, we selected the following four characteristics:
+• Load. Deﬁnes the overall amount of requests per UAV. To keep things
+simple, we always introduce a total of 43 , 200 requests (1 req/min on av-
+erage), so the load is controlled solely by varying the number of available
+UAVs.
+• Spread. Captures how spatially spread the requests are between them.
+In scenarios with low spread, the requests tend to be clustered together
+around hotspots. In high-spread scenarios, the tasks are scattered around
+a larger area. We control the spread of the scenario by deﬁning a hostspot-
+radius. In the problems of that scenario, approximately 90% of the tasks
+of each hotspot will be within hotspot-radius distance from the hotspot
+center. Such distribution is achieved by sampling from an Inverse Wishart
+distribution with 2.5 degrees of freedom and a scale matrix experimentally
+adjusted to produce locations within the desired hotspot radius.
+• Communication Range. Represents the UAVs’ (and operator) commu-
+nication ranges.
+• Time distribution Sharpness. Speciﬁes how constant is the rate at
+which requests are introduced. Because we keep a constant number of
+tasks for all scenarios, sharpness can be deﬁned fully in terms of the num-
+ber of crises. In high sharpness scenarios, there is a single short and highly
+active crisis period. In contrast, low sharpness scenarios contain nine dif-
+ferent crisis periods of moderate activity, but no highly active period.
+20
+Feature Parameter (Low, Mid, High)
+Load number of planes 20, 10, 5
+Spread hotspot-radius 1 km, 3 km, 6 km
+Communication Range communication range 1 km, 2 km, 3 km
+Time distribution Sharpness number of crises 9, 3, 1
+Table 2: Problem dimensions explored and their values
+The chosen values for each feature are detailed in Table 2. For the character-
+istics not described here we employed the values reported in Section 7. Namely,
+the scenarios represent a full month of simulated time, with planes that move
+at a constant speed of 52 km/h on a square area of 100 km 2.
+Once again, we must decide the k and α values to use in our d-workload
+method. From the previous results, we know that a good value for α can be
+found for any reasonable k value. Therefore, we ﬁxed k = 1000 and explored
+on the α parameter. Thus, we generated an example problem from each of the
+above 81 scenarios, and ran d-workload with k = 1000 and α = [1.01, 1.02,.., 2]
+on each of them. Figure 8 shows the mean and median average request service
+times obtained for each α value. In those graphs we observe a (somewhat
+rough) gradient, as expected by the previous results. Overall, the best α value
+is α = 1.25, with a median service time of 276.9 s and a mean service time of
+183.1 s.
+8.2. Results
+After choosing the k and α values, we are ready to compare all algorithms
+in the diﬀerent scenarios. With this aim, we generated 30 problems of each
+scenario (for a total of 2430 problems). On each of these problems we evaluate
+the performance of: (i) d-independent, which represents both the state-of-the-
+art PSI auctions method as well as our MRF-based solution with independent
+valuations; (ii) c-greedy, that came up as the best existing centralized method;
+(iii) d-workload, which is our novel proposed algorithm; and (iv) c-workload,
+which represents a bound on the best performance achievable by our novel d-
+workload mechanism.
+Figure 9 shows the main eﬀects plots of each characteristic, with the results
+of each algorithm represented as a percentage of the average service time with
+respect to that of c-greedy. Albeit sometimes small, the diﬀerences between all
+methods are deemed signiﬁcant by the Wilcoxon signed-rank test withp = 0.01.
+Each plot shows the eﬀect of the studied characteristic averaging across the
+levels of all other characteristics. For instance, the Low point for d-workload in
+Figure 9a represents the average service time ofd-workload between all problems
+with a Low load, whatever their spread, communication range and sharpness
+levels are.
+Figure 9a shows that the higher the load, the worse d-workload compares
+to c-greedy. However, notice that c-workload displays an opposite behavior,
+becoming better than c-greedy when there are more tasks per plane. This may
+seem counterintuitive at ﬁrst, but has an easy explanation: recall that we control
+21
+the load by varying the number of available planes. Hence, the higher the load,
+the less planes involved in the experiment. As a consequence, d-workload’s per-
+formance degrades not because there are more tasks, but because the planes are
+more spread and have less opportunities to coordinate. Moreover, d-workload
+approaches c-greedy’s results when the number of planes increases (reading the
+graph from right to left), almost catching up to it despite operating in a dis-
+tributed manner.
+Figure 9b shows that, unsurprisingly, d-workload achieves comparatively
+worse results as the spatial distribution of requests becomes sparser. This is
+due to two reasons. First, because the more spread request are, the more UAVs
+will ﬂy apart, and the lower chances to coordinate because of the communication
+range limit. Second, because workload methods exploit the spatial correlation
+between requests: if requests are more spread, this means that there is a lower
+spatial correlation between them, and hence the workload heuristic becomes
+worse. Finally, the previous section showed that d-independent works compar-
+atively better when the requests are uniformly distributed. This works at its
+favor when the spread increases. However, being distributed mechanism it is
+also negatively aﬀected by the ﬁrst reason above. As a consequence, the relative
+performance of d-independent varies unpredictably when the spread changes.
+In Figure 9c we can observe that, as the communication range increases, the
+distributed methods’ results approach those of the centralized ones. This is be-
+cause, as the communication range grows, the UAVs have more opportunities to
+coordinate. There is an exception in the case of d-independent and a high com-
+munication range. In this case, a larger communication range actually worsens
+the results, because it causes the planes to stay very spread out, thus dealing
+much worse especially in the low spread scenarios. In contrast, d-workload ends
+up achieving very close (less than 1% worse) results to those of c-greedy in the
+largest range we tested.
+Finally, Figure 9d also shows some interesting behaviors. On the one hand,
+d-independent becomes better as the sharpness increases. This is because UAVs
+that coordinate with this method tend to evenly split the covered space between
+them. Hence, the more requests there are at the same time, the better its
+outcome. In contrast, c-greedy and d-workload try to be more clever than that,
+which pays oﬀ better when there are less requests than when the system is
+overloaded. This is even more noticeable with the workload-based methods.
+Recall that the main strength of such methods is to prepare for future requests.
+However, high sharpness scenarios reward better plans for the current requests
+than better predictions about the future.
+Given that the only state-of-the-art method that satisﬁes all our problem’s
+constrains is d-independent, these graphs show a very interesting ﬁgure: d-
+workload outperforms d-independent on all scenarios, lowering the average ser-
+vice time between 36 s (16%) and 18 s (6%). Hence d-workload becomes the
+method of choice for the limited range online routing problem. Moreover, in
+our experiments d-workload closes between 25% and 100% of the gap exist-
+ing between d-workload and the state-of-the-art centralized c-greedy algorithm.
+Finally, these results imply that, in the face of highly dynamic situations, it be-
+22
+comes more important to properly capture the distribution of incoming requests
+(as d-workload does) than to compute better plans for the currently known ones
+(as c-greedy does).
+9. Conclusions and future work
+This paper introduced the limited-range online routing problem, which re-
+quires that UAVs coordinate to serve requests submitted by external operators.
+To tackle this problem, we employed an MRF-based solution instead of the
+more common market-based approaches. Using a novel encoding of the prob-
+lem and the max-sum algorithm, we showed that this approach can functionally
+mimic the operation of a decentralized parallel single-auctions approach. While
+the re-discovery of a method on top of a diﬀerent theoretical foundation may
+seem irrelevant, it is a signiﬁcant result in our case. Namely, the MRF-based
+approach provides an easily extensible framework where the PSI method does
+not. Particularly, in this work we have shown that it is possible to introduce
+new factors to represent the workload of each UAV while maintaining low com-
+putational and communication requirements. Empirical evaluation shows that
+the improved version achieves up to 16% lower service times than the single-
+auctions approach. Moreover, the actual performance comes very close to that
+of employing state-of-the-art centralized SSI auctions. Because of the commu-
+nication range limit, centralized SSI auctions can not be implemented in the
+real-world. Therefore, our workload-based mechanism stands as a good choice
+for robust decentralized coordination with a communication range limit.
+In the future, we would like to improve our approach and allocation methods
+in two ways. Firstly, we would like to allow for planes to notify the operators
+when their tasks are completed. This could be achieved by introducing new tasks
+into the system that represent such notiﬁcations. Also, some further signaling
+would be required to avoid losing tasks when a UAV fails (and hence disappears
+along with those tasks it is carrying). Secondly, we envision better cost functions
+for the UAVs. A clear improvement in that front would be to better consider the
+actual paths UAVs will follow while completing tasks [30]. Likewise, it would be
+desirable to introduce additional factors in the cost function to better control
+the spread of UAVs throughout space, as well as the need for UAVs to visit
+operators regularly to allow them to introduce new tasks in the system.
+Acknowledgements
+Work partially funded by projects Collectiveware (TIN2015-66863-C2-1-R)
+and RASO (TIN2015-71799-C2-1-P).
+References
+[1] D. Kingston, R. W. Beard, R. S. Holt, Decentralized perimeter surveillance
+using a team of UAVs, IEEE Transactions on Robotics 24 (6) (2008) 1394–
+1404.
+23
+[2] T. H. Cox, C. J. Nagy, M. A. Skoog, I. A. Somers, R. Warner, Overview
+of the civil UAV assessment document, http://www.nasa.gov/centers/
+dryden/pdf/111760main_UAV_Assessment_Report_Overview.pdf
+(2005).
+[3] N. R. C. Steering Committee for the Decadal Survey of Civil Aeronau-
+tics, Decadal Survey of Civil Aeronautics: Foundation for the Future, The
+National Academies Press, 2006.
+[4] R. Zlot, A. Stentz, M. B. Dias, S. Thayer, Multi-robot exploration con-
+trolled by a market economy, in: IEEE International Conference on
+Robotics and Automation., Vol. 3, 2002, pp. 3016–3023.
+[5] Y. Weiss, W. T. Freeman, On the optimality of solutions of the max-
+product belief-propagation algorithm in arbitrary graphs, IEEE Transac-
+tions on Information Theory 47 (2) (2001) 736–744.
+[6] M. Vinyals, Exploiting the structure of Distributed Constraint Optimiza-
+tion Problems to assess and bound coordinated actions in Multi-Agent
+Systems, Ph.D. Thesis, 2011.
+[7] A. Rogers, A. Farinelli, R. Stranders, N. R. Jennings, Bounded approxi-
+mate decentralised coordination via the max-sum algorithm, Artiﬁcial In-
+telligence 175 (2) (2011) 730–759.
+[8] M. Pujol-Gonzalez, J. Cerquides, P. Meseguer, J. A. Rodr´ ıguez-Aguilar,
+M. Tambe, Engineering the decentralized coordination of uavs with lim-
+ited communication range, in: Advances in Artiﬁcial Intelligence: 15th
+Conference of the Spanish Association for Artiﬁcial Intelligence, CAEPIA
+2013, Madrid, Spain, September 17-20, 2013. Proceedings, Springer, 2013,
+pp. 199–208. doi:10.1007/978-3-642-40643-0_21 .
+URL http://dx.doi.org/10.1007/978-3-642-40643-0_21
+[9] B. P. Gerkey, M. J. Matari´ c, A formal analysis and taxonomy of task alloca-
+tion in multi-robot systems, The International Journal of Robotics Research
+23 (9) (2004) 939–954.
+[10] M. B. Dias, A. Stentz, A free market architecture for distributed control
+of a multirobot system, in: 6th International Conference on Intelligent
+Autonomous Systems (IAS-6), 2000, pp. 115–122.
+[11] B. P. Gerkey, M. J. Mataric, Sold!: Auction methods for multirobot co-
+ordination, IEEE Transactions on Robotics and Automation 18 (5) (2002)
+758–768.
+[12] M. B. Dias, R. Zlot, N. Kalra, A. Stentz, Market-based multirobot coor-
+dination: A survey and analysis, Proceedings of the IEEE 94 (7) (2006)
+1257–1270.
+24
+[13] R. K. Dash, P. Vytelingum, A. Rogers, E. David, N. R. Jennings, Market-
+based task allocation mechanisms for limited-capacity suppliers, IEEE
+Transactions on Systems, Man, and Cybernetics - Part A: Systems and
+Humans 37 (3) (2007) 391–405. doi:10.1109/TSMCA.2007.893474.
+[14] D. P. Bertsekas, The auction algorithm: A distributed relaxation method
+for the assignment problem, Annals of operations research 14 (1) (1988)
+105–123.
+[15] H. W. Kuhn, The hungarian method for the assignment problem, Naval
+research logistics quarterly 2 (1-2) (1955) 83–97.
+[16] S. Koenig, P. Keskinocak, C. Tovey, Progress on agent coordination with
+cooperative auctions, in: Proc. AAAI, Vol. 10, 2010, pp. 1713–1717.
+[17] S. Koenig, C. Tovey, M. Lagoudakis, V. Markakis, D. Kempe, P. Ke-
+skinocak, A. Kleywegt, A. Meyerson, S. Jain, The power of sequential
+single-item auctions for agent coordination, in: Proceedings of the National
+Conference on Artiﬁcial Intelligence, Vol. 21, Menlo Park, CA; Cambridge,
+MA; London; AAAI Press; MIT Press; 1999, 2006, p. 1625.
+[18] M. G. Lagoudakis, E. Markakis, D. Kempe, P. Keskinocak, A. J. Kleywegt,
+S. Koenig, C. A. Tovey, A. Meyerson, S. Jain, Auction-based multi-robot
+routing., in: Robotics: Science and Systems, 2005.
+[19] M. Alighanbari, J. P. How, Decentralized task assignment for unmanned
+aerial vehicles, in: IEEE Conference on Decision and Control, IEEE, 2005,
+pp. 5668–5673.
+[20] Z. Li, Z. Duan, G. Chen, L. Huang, Consensus of multiagent systems and
+synchronization of complex networks: a uniﬁed viewpoint, IEEE Transac-
+tions on Circuits and Systems I: Regular Papers 57 (1) (2010) 213–224.
+[21] A. R. Mosteo, L. Montano, M. G. Lagoudakis, Multi-robot routing un-
+der limited communication range, in: IEEE International Conference on
+Robotics and Automation, IEEE, 2008, pp. 1531–1536.
+[22] W. Ren, R. Beard, Cooperative ﬁre monitoring with multiple UAVs, in:
+Distributed Consensus in Multi-vehicle Cooperative Control, Communi-
+cations and Control Engineering, Springer London, 2008, pp. 247–264.
+doi:doi:10.1007/978-1-84800-015-5_13 .
+[23] W. Zhao, Q. Meng, P. W. H. Chung, A heuristic distributed task allocation
+method for multivehicle multitask problems and its application to search
+and rescue scenario, IEEE Transactions on Cybernetics 46 (4) (2016) 902–
+915. doi:10.1109/TCYB.2015.2418052.
+[24] H.-L. Choi, L. Brunet, J. P. How, Consensus-based decentralized auctions
+for robust task allocation, IEEE Transactions on Robotics 25 (4) (2009)
+912–926.
+25
+[25] J. J. Acevedo, B. C. Arrue, J. M. Diaz-Banez, I. Ventura, I. Maza, A. Ollero,
+Decentralized strategy to ensure information propagation in area moni-
+toring missions with a team of uavs under limited communications, in:
+Unmanned Aircraft Systems (ICUAS), 2013 International Conference on,
+IEEE, 2013, pp. 565–574.
+[26] J. Butterﬁeld, O. Jenkins, B. Gerkey, Multi-robot markov random ﬁelds, in:
+Proceedings of the international joint conference on Autonomous Agents
+and Multiagent Systems, Vol. 3, 2008, pp. 1211–1214.
+[27] D. Tarlow, I. E. Givoni, R. S. Zemel, HOP-MAP : Eﬃcient Message Pass-
+ing with High Order Potentials, in: International Conference on Artiﬁcial
+Intelligence and Statistics, Vol. 9, 2010, pp. 812–819.
+[28] M. Pujol-Gonzalez, J. Cerquides, P. Meseguer, MASPlanes: A multi-agent
+simulation environment to investigate decentralised coordination for teams
+of UAVs (demonstration), in: The 13th International Conference on Au-
+tonomous Agents and Multiagent Systems, International Foundation for
+Autonomous Agents and Multiagent Systems, 2014, pp. 1695–1696.
+[29] F. Wilcoxon, Individual comparisons by ranking methods, Biometrics bul-
+letin 1 (6) (1945) 80–83.
+[30] M. Niendorf, P. T. Kabamba, A. R. Girard, Stability of solutions to classes
+of traveling salesman problems, IEEE Transactions on Cybernetics 46 (4)
+(2016) 973–985. doi:10.1109/TCYB.2015.2418737.
+Appendix
+Lemma 1. Let f(x1,...,x n) be a factor over binary variables x1,...,x n. Let
+g(xi) =γixi be another factor deﬁned only over variable xi. Let h(x1,...,x n) =
+f(x1,...,x n) +g(xi) be the factor obtained by adding factors f and g. Let
+µf→xj (xj,ν 1,...,ν n) = min
+X−j
+
+f (X) +
+∑
+k⁄=j
+νkxk
+
+ (.1)
+and
+νf→xj (ν1,...,ν n) =
+=µf→xj (1,ν 1,...,ν n)−µf→xj (0,ν 1,...,ν n) (.2)
+Then we have that:
+νh→xj (ν1,...,ν n) =
+=
+{
+νf→xj (ν1,...,ν i +γi,...,ν n) j⁄=i
+νf→xj (ν1,...,ν i +γi,...,ν n) +γi j =i (.3)
+Proof. see the suplementary material.
+26
+In terms of the Max-Sum algorithm, this means that if we can eﬃciently
+compute the messages ﬂowing out of f, we can also eﬃciently compute the
+messages ﬂowing out of h.
+Lemma 2. Letf be a factor over binary variablesY ={y1,...,y n}. Let g(Y) =∑n
+i=1γiyi be another factor deﬁned as the addition of a set of n independent
+factors, one over each variable yi. Let h(Y) = f(Y) + g(Y) be the factor
+obtained by adding f and g. Let
+µf→yj (yj,ν 1,...,ν n) = min
+Y−j
+
+f (Y) +
+∑
+k⁄=j
+νkyk
+
+,
+and
+νf→yj (ν1,...,ν n) =
+=µf→yj (1,ν 1,...,ν n)−µf→yj (0,ν 1,...,ν n).
+We have that
+νh→yj (ν1,...,ν n) = νf→yj (ν1 +γ1,...,ν n +γn) +γj.
+Proof. see the supplementary material.
+27
+Figure 4: Example hot spots requests
+distribution.
+100 101 102 103 104
+k
+1.00
+1.12
+1.26
+1.41
+1.58
+1.78
+2.00α
+115
+120
+125
+130
+135
+140
+145
+150
+155
+Avg. service time (s)
+Figure 5: Parameter exploration in the hot spots
+scenarios.
+c-hungarian c-independent c-greedy c-workload
+340
+360
+380
+400
+420
+440Avg. service time (s)
+(a) uniform scenario
+120
+140
+160
+180
+200Avg. service time (s) (b) hot spots scenario
+Figure 6: Eﬀects of the spatial distribution of requests. Error bars show the standard error
+of the mean.
+c-independent d-independent c-workload d-workload
+340
+360
+380
+400
+420
+440
+460Avg. service time (s)
+(a) uniform scenario
+110
+120
+130
+140
+150
+160Avg. service time (s) (b) hot spots scenario
+Figure 7: Impact of distributed solving.
+28
+1.0 1.2 1.4 1.6 1.8 2.0
+alpha
+2750
+2800
+2850
+2900
+2950
+3000
+3050mean service time
+α exploration
+1.0 1.2 1.4 1.6 1.8 2.0
+alpha
+1800
+1850
+1900
+1950
+2000
+2050
+2100
+2150median service time
+Figure 8: Exploration of α values.
+d-independent c-workload d-workload
+Low Mid High
+−10
+−5
+0
+5
+10
+15
+20
+25
+30
+Avg. service time
+(% over c-greedy)
+(a) Load
+Low Mid High
+−10
+−5
+0
+5
+10
+15
+20
+25
+30
+Avg. service time
+(% over c-greedy) (b) Spread
+Low Mid High
+−10
+−5
+0
+5
+10
+15
+20
+25
+30
+Avg. service time
+(% over c-greedy)
+(c) Communication Range
+Low Mid High
+−10
+−5
+0
+5
+10
+15
+20
+25
+30
+Avg. service time
+(% over c-greedy) (d) Time distribution Sharpness
+Figure 9: Main eﬀects plots (percentage w.r.t. c-greedy).
+29

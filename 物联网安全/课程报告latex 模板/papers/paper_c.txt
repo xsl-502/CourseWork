@@ -1,0 +1,689 @@
+Untangling Climate’s Complexity: Methodological
+Insights
+Alka Yadav1,, Sourish Das 2,*, and Anirban Chakraborti 1,**
+1School of Computational and Integrative Sciences, Jawaharlal Nehru University, New Delhi-110067, India
+2Chennai Mathematical Institute, Chennai-603103, Tamil Nadu, India
+*sourish@cmi.ac.in
+**anirban@jnu.ac.in
+ABSTRACT
+In this article, we review the interdisciplinary techniques (borrowed from physics, mathematics, statistics,
+machine-learning, etc.) and methodological framework that we have used to understand climate systems,
+which serve as examples of “complex systems”. We believe that this would offer valuable insights to
+comprehend the complexity of climate variability and pave the way for drafting policies for action against
+climate change, etc. Our basic aim is to analyse time-series data structures across diverse climate
+parameters, extract Fourier-transformed features to recognize and model the trends/seasonalities in the
+climate variables using standard methods like detrended residual series analyses, correlation structures
+among climate parameters, Granger causal models, and other statistical machine-learning techniques.
+We cite and briefly explain two case studies: (i) the relationship between the Standardised Precipitation
+Index (SPI) and specific climate variables including Sea Surface Temperature (SST), El Niño Southern
+Oscillation (ENSO), and Indian Ocean Dipole (IOD), uncovering temporal shifts in correlations between
+SPI and these variables, and reveal complex patterns that drive drought and wet climate conditions in
+South-West Australia; (ii) the complex interactions of North Atlantic Oscillation (NAO) index, with SST
+and sea ice extent (SIE), potentially arising from positive feedback loops.
+1 Introduction
+“If you think the economy is more important than the environment, try holding your breath
+while counting your money. ”– Professor Guy McPherson
+The climate system is an excellent example of a “complex system”, which is composed of many
+interconnected and interdependent parts that exhibit “emergent” behaviors and properties not easily
+predictable from the behavior of individual parts or “sum of its parts”1–3. Complex systems are ubiquitous
+and hence are studied in various domains such as physics, biology, ecology, sociology, economics,
+environmental science, etc. They exhibit characteristics like: (i) non-linearity: Small changes in one
+part of the system can lead to significant and often unpredictable effects throughout the system; (ii)
+emergence: Novel properties or behaviors emerge at higher levels of organization that are not directly
+attributable to the individual components of the system; (iii) dynamical behavior and adaptation: systems
+often exhibit dynamic behaviors such as self-organization, chaos, phase transitions, and they have the
+ability to adapt and evolve in response to changes in their environment or internal dynamics; (iv) feedback
+loops: Interactions among system components create feedback loops, where the output of a process feeds
+back into the system, influencing further interactions, and often leading to catastrophic instabilities 4.
+Understanding the dynamics of complex systems, therefore, necessitates a multidisciplinary approach
+1
+arXiv:2405.18391v1  [physics.data-an]  28 May 2024
+integrating mathematics, physics, statistics, machine learning, and other tools of data science5. We must
+mention here the work of Klaus Hasselmann, a German climate scientist and Nobel Laureate, who made
+substantial contributions to our understanding of climate dynamics and the development of climate models.
+In his groundbreaking 1976 work6, Hasselmann introduced the concept of stochastic climate modeling,
+incorporating random processes into climate models to elucidate how natural variability and random factors
+can influence long-term climate trends. He also devised statistical methods to distinguish between natural
+climate variability and human-induced effects, providing strong evidence of human impact on global
+warming. Additionally, he played a key role in developing coupled atmosphere-ocean models, crucial
+for accurately simulating and predicting climate dynamics. In 2021, Hasselmann, alongside Syukuro
+Manabe and Giorgio Parisi, received the Nobel Prize in Physics7 for his pioneering contributions to climate
+modeling and the understanding of complex physical systems. In many social and environmental systems
+(including climate), we often do not have a clear understanding of the causal relationships between different
+variables. This makes the understanding of complex climate dynamics significantly more challenging.
+Therefore, we take the help of Granger causal models8 and other tools of statistical inference9, 10 to deepen
+our comprehension of the dynamic interactions among key climate variables, and expand our insights into
+the intricate mechanisms shaping climate patterns.
+Climate change poses a significant challenge globally, affecting ecosystems, economies, well-being of
+humans as well as livestock11–14.
+“Climate change is the greatest threat we face. It’s the defining issue of our time, and we
+have to address it if we want to leave a thriving planet for future generations. ”– Katharine
+Hayhoe, a climate scientist and professor
+We hope that understanding of the complex processes behind phenomena of climate change, etc. using
+insights from multiple disciplines will help us develop effective strategies for mitigation and adaptation.
+In this respect, we must mention the pioneering works of the economist and Nobel Laureate, William
+Nordhaus, who developed dynamic and quantitative models (now called integrated assessment models)
+that described the global interplay between society, the economy, and climate change 15. The present
+interdisciplinary research approaches may supplement existing models and their applications in public
+policy (see e.g., Epilogue in Chakraborti et al.16).
+Traditionally, people have been building climate models with computer-based simulations of mathe-
+matical equations to represent the interactions and processes within the earth’s climate system17–19. These
+models have been then used to understand the past climate variations, predict future climate trends, and also
+assess the potential impacts of climate change. Generally, climate models integrate data on atmospheric
+dynamics (simulations of the movement of air masses, circulation patterns, and atmospheric processes
+such as convection, precipitation, and radiation), ocean dynamics (currents, temperature variations, and
+interactions between the ocean and atmosphere, including El Niño and La Niña), land surface properties
+(vegetation cover, soil moisture, and land use changes, which influence energy and water exchanges
+with the atmosphere), and other relevant factors like carbon, nitrogen, and other biogeochemical cycles
+that play a role in regulating the Earth’s climate. Hence, the computer-based climate models provide
+a physical foundation for the climate change projections and are therefore built to include some of the
+most comprehensive range of physical, chemical, and biological processes with immense computational
+complexity; thereby calling for simpler approaches20. In the recent past, we too have proposed alternate
+and simple approaches, based on machine learning and data science, to identify significant statistical
+relationships among these climate variables and enhance our understanding of climate dynamics21, 22.
+In this review article, the basic aim is to introduce the simple methods we have used to analyse
+time-series data structures across diverse climate parameters, extract Fourier-transformed features to
+2/21
+recognize and model the trends/seasonalities in the climate variables. We have used standard methods
+like detrended residual series analyses, correlation structures among climate parameters, Granger causal
+models, and other statistical machine-learning techniques. Below, we explain the background and rationale
+for our two case studies21, 22:
+1. The relationship between the Standardised Precipitation Index (SPI) and specific climate variables,
+including Sea Surface Temperature (SST), El Niño Southern Oscillation (ENSO), and Indian Ocean
+Dipole (IOD)23–27, uncovering temporal shifts in correlations between SPI and these variables, and
+reveals complex patterns that drive drought and wet climate conditions in South-West Australia.
+Droughts manifest in various forms, with meteorological drought being a critical indicator of extreme
+climate conditions28. Previous studies have explored the dynamics of meteorological droughts and
+their relationship with climatic factors such as ENSO and IOD cycles25–27, 29–37. However, there was
+a necessity for multivariate approaches to understanding drought dynamics, and hence we developed
+Granger causal models to examine the causal relationships among the variables (SST, NINO 3.4,
+and IOD) and their collective impact on SPI in South-West Australia, leveraging machine-learning
+techniques21.
+2. The complex interactions of the North Atlantic Oscillation (NAO) index, with SST and sea ice extent
+(SIE), potentially arising from positive feedback loops. We delved into another study22 focusing
+on the complex dynamics of climate variables such as the North Atlantic Oscillation (NAO), a key
+atmospheric pressure index affecting weather patterns across North America and Northern Europe.
+Past research has highlighted the NAO’s substantial impact on cold air outbreaks, storm occurrences,
+and climate variability in these regions. Previous studies had also underscored the positive feedback
+loop between melting Arctic SIE and increasing SST, driven by atmospheric new particle formation
+and growth, accelerating Arctic warming38. Recent studies had shown: (i) a significant decrease
+in SIE in the coming years, intensifying global atmospheric circulation and directly impacting
+SIE melting39, 40. (ii) The winter NAO plays an important role in weather variability in northwest
+Europe, with recent studies highlighting the predictive power of autumnal Arctic sea ice for winter
+NAO forecasting41. (iii) NAO variability accounts for a substantial portion of atmospheric pressure
+variability and correlates with SST anomalies42–44. Besides, climate models have illustrated how
+multidecadal variations in the NAO induce corresponding fluctuations in Atlantic circulation and
+Arctic sea ice loss, contributing to hemispheric warming45. Hence, we developed a hybrid model to
+analyse the relationships: (a) the SPI to SST, NINO 3.4, and IOD, (b) the interplay among North
+Atlantic Oscillation (NAO), SST, and Sea Ice Extent (SIE). Utilizing machine learning algorithms
+like LASSO, we identified significant Fourier harmonics essential for modeling long-term memory.
+Additionally, to capture short-term memory, we incorporated lagged estimators such as IOD, SST,
+and NINO 3.4 within the framework of a Granger causal model. Employing data-driven techniques,
+we revealed intricate interactions among NAO, sea surface temperature (SST), and sea ice extent
+(SIE), shedding light on critical instabilities and feedback loops crucial for addressing climate
+change38–51. Our approach had two distinct advantages: (i) It offered a broader perspective for
+addressing climate change compared to traditional climate forecast models52. (ii) While previous
+studies had focused on specific Arctic regions and seasons, our approach employed statistical
+machine learning models to provide a comprehensive view of the entire North Atlantic region.
+3/21
+2 Methodology
+The primary goal is to analyse and model the climate variables and learn about the intricate interdepen-
+dences. The climate variables are typically observed and analysed as multivariate time series datasets.
+Suppose,
+xt = (x1,t,x2,t, . . . ,xk,t)T (1)
+is a vector of different climate variables observed at time point t; where xk,t represents the value of the kth
+climate variable at a time at t. The superscript T denotes the transpose operation, which converts the row
+vector into a column vector.
+Simple measures of dependences
+Autocorrelation function, also known as serial correlation53, is a statistical concept that measures the
+degree of similarity between a given time series of a climate variable and a lagged version of itself over
+successive time intervals. It quantifies how much the current value of a climate variable is related to its
+past values. For example, we may be interested in knowing if the past 30 days’ values of SST influence
+the current value of SST. If this is so, that might help us to predict the possible value of SST 30 days ahead
+from today. The autocorrelation function (ACF) is described as follows:
+ACF(k) = Cov(xt,xt−k)p
+Var(xt)× Var(xt−k)
+(2)
+where ACF(k), is the autocorrelation between the values of the climate variables at time t and those at
+time t− k, and k represents the number of time units (lags) by which the series is shifted. The covariance
+Cov(xt,xt−k) is between the values of the climate variables at time t and those at time t− k; and Var(xt)
+and Var(xt−k) represent the variance of the climate variables at the timet and those at time t−k. A positive
+ACF value at lag k indicates a positive correlation between the values of the same climate variables
+separated by k time units.
+Cross-Correlation Function (CCF) is a statistical measure that indicates the relationship between values
+of two different climate variables separated by a time lag 54. The cross-correlation function (CCF) is
+defined as:
+CCF(k) = Cov(xt,yt−k)p
+Var(xt)× Var(yt−k)
+(3)
+where Cov(xt,yt−k) is the covariance between the variable xt at time t and the lagged value of variable yt
+at time t− k. The CCF can take on positive, negative, or zero values. A positive CCF indicates a positive
+correlation between the two variables at the specified lag, while a negative CCF indicates a negative
+correlation. A CCF close to zero suggests no significant correlation between the variables at that lag.
+Calculating Periodicity using ACF
+For examining the enduring memory span of each time series, which indicates the persistence of past
+observations influencing current values, we utilised the following algorithms:
+(i) Calculating the ACF (Eqn. 2) on training data.
+4/21
+(ii) Identifying periods P1,P2,··· ,Pms, where the autocorrelation ρm exceeds a threshold s, with
+s = 1
+M ∑M
+m=1|ρm− ˆρ|; here, ρm represents the mth lag autocorrelation, ˆρ is the median of all autocor-
+relations, and M represents the maximum lag considered in our invastigation study.
+To illustrate this algorithm, we take the example of the SPI time series of West South Australia
+(coordinates: longitude 113.7158 and latitude -26.6969) and plot the ACF (shown later). Utilising a dataset
+spanning 450 months, ranging from June 1973 to November 2010, we detected three noteworthy periods:
+216, 151, and 60 months. These periods suggested that the current SPI value exhibited a notable positive
+correlation with past SPI values, with periodicities of approximately 5.5 years for the specified location.
+Modelling Temporal Structure and Seasonalities
+Temporal patterns in data can be effectively modeled to uncover underlying trends and periodic behavior.
+We introduce a comprehensive model ( Ms) to analyse the components contributing to the observed
+variability:
+Ms : y(t) = β0 + β1t + η(t) +z(t), (4)
+where (Ms) is the model for a location s time series, y(t) represents the observed variable at time t, β0
+denotes the intercept, β1 is the trend coefficient, η(t) accounts for the periodicity of the process, and z(t)
+captures short-term memory using the Granger Causal Model (explained below).
+In time series analysis, capturing seasonality is important for understanding recurring patterns. Here,
+we present a model (η(t)) aimed at quantifying seasonal effects:
+η(t) =
+ms
+∑
+j=1
+ K
+∑
+i=1
+β ji sin(i∗ ω j∗t) +
+K
+∑
+i=1
+γ ji cos(i∗ ω j∗t)
+
+. (5)
+This equation breaks down seasonal variation into Fourier series, where ω j = 2π
+Pj , j = 1,2,··· ,ms, Pj is
+estimated via ACF, and ms denotes the number of periods for sth location time series. Then, we typically
+applied the LASSO (least absolute shrinkage and selection operator) technique 55, a machine learning
+shrinkage method, to identify the most significant harmonics in the Fourier model. LASSO selects
+harmonics that significantly reduce error, enhancing model accuracy.
+Modelling Spatial Correlation
+To estimate y(t) at location s while accounting for spatial correlation, we introduce the estimated value
+ˆys(t) for the tth month, employing a spatially correlated Gaussian process model,
+¯ys(t) = Σ(s,s′)[Σ(s,s′) +τ2I]−1 ˆy(t), (6)
+where, ys(t)follows a Gaussian process with a mean of zero and a covariance function defined asΣ(s,s′) =
+τ2 exp−ρ|s− s′|2. Note that the covariance matrix Σ(s,s′) models the spatial correlation between the
+location s and s′ for which Var(ε) = σ 2, and Σ(s,s′) = exp{−ρ|s− s|2}.
+5/21
+Granger-causal model
+For the short-term memory or autoregressive structure, denoted as z(t) (mentioned above), we employ the
+Granger causal model. The Granger causality model serves as a powerful tool for assessing the changing
+causal dynamics between variables over time8. Here, we present hypotheses regarding the influence of
+one variable on another using this framework.
+Null Hypothesis (H0):
+The null hypothesis represents that the variable of interest (Z) is solely dependent on its own historical
+memory, without any influence from other variables. It can be represented as:
+z(t) = β0 + β1z(t− 1) +··· + βkz(t− k) +ε(t). (7)
+This equation represents a time series model where z(t) is the variable of interest at time t. The term β0
+is the intercept, and β1, β2, . . . ,βk are coefficients that indicate the influence of past values of z(t) on its
+current value. The ε(t) term represents the error or residual component of the model at time t, assumed to
+follow a normal distribution with mean 0 and variance σ 2.
+Alternate Hypothesis (Ha):
+Under the alternate hypothesis, we propose that the variable of interest (z(t)) is not only influenced by
+its own historical memory but also by the past values of another variable (x(t)). This can be represented as
+follows:
+z(t) = β0 + β1z(t− 1) +··· + βkz(t− k)
++γ1x(t− 1) +··· + γkx(t− k) +ε(t). (8)
+In this equation, the coefficients γ1, γ2, . . . ,γk represent the influence of past values of the variable x(t) on
+the current value of z(t). Each γi indicates the strength and direction of influence from the corresponding
+lagged value of x(t). This model allows us to investigate whether the variable of interest (z(t)) is affected
+by the past values of another variable (x(t)), thereby examining potential causal relationships between
+them.
+To determine whether the null hypothesis should be rejected, we assess whether all coefficientsγi in
+the alternate hypothesis are equal to zero. Specifically, the null hypothesis H0 states that γ1 =··· = γk = 0.
+To reject this null hypothesis in favor of our alternate hypothesisHa, we need to ascertain if at least one
+coefficient γi is not equal to zero. This rejection allows us to clearly understand the effect of the variables
+under consideration.
+3 Two case studies of climate complexity
+3.1 Complex Dynamics of Drought in South-West Australia
+Our first study delves into the complex interactions among climatic variables such as SST, NINO 3.4, and
+IOD, examining their influence on the SPI in South-West Australia.
+Data Description
+We utilised four primary climate variables: SPI, SST, NINO 3.4, and IOD indices, with a focus on
+South-West Australia. Our analysis involved SPI monthly time series data spanning 58 years (1961–2018),
+6/21
+obtained from daily precipitation observations across 194 stations in the region, sourced from the Bureau
+of Meteorology (BOM) website56. The datasets for NINO 3.4 and IOD were sourced from the NOAA
+website57, 58. Our study area encompasses longitudes 113.72 to 137.12 and latitudes -26.70 to -35.73.
+Analyses were conducted using monthly averaged SST data from 1982 to 201821.
+(a)
+ (b)
+Figure 1. Time series plots illustrating the Standardised Precipitation Index (SPI) for the south-western
+region of Australia are depicted for (a) 1-month and (b) 12-month periods, covering a span of 58 years
+(1961-2018). In both plots, the 12-month moving average is represented by the solid red line. A notable
+increase in the signal-to-noise ratio is observed in the SPI 12-month series compared to the SPI 1-month
+series, thereby enhancing the reliability of our analysis59. This consistent observation was evident across
+all 194 monitoring stations, prompting our selection of the SPI 12-month series for further analysis.
+(a)
+ (b)
+ (c)
+Figure 2. Time-series plots illustrating (a) El Niño–Southern Oscillation (ENSO) NINO 3.4, (b) Indian
+Ocean Dipole (IOD), and (c) Sea Surface Temperature (SST) data are presented, covering a period of 37
+years (1982-2018) for the south-western region of Australia.
+This region holds significant agricultural importance, contributing substantially to Australia’s gross
+agricultural production and grain exports. However, the agriculture sector faces considerable vulnerability
+due to the unpredictable nature of climate variables, resulting in reduced water supplies and impacting
+wheat and broadacre livestock production60. Climate change exacerbates these challenges, evident from
+increasing temperature and fluctuating rainfall anomalies12, 14, 59, 61, 62. Understanding these complexities
+is crucial, as they severely impact agriculture, water resources, and public health.
+7/21
+Results and Analyses
+Our exploration into the dynamics between the Standardised Precipitation Index (SPI) and climate
+variables—SST, IOD, and NINO 3.4 —across the extensive period from 1982 to 2018 revealed insightful
+findings. Time series plots in Figure (1) depict the SPI for both one-month and 12-month periods spanning
+58 years (1961-2018). The solid red line represents the 12-month moving average, indicating a higher
+signal-to-noise ratio in the SPI 12-month series compared to the SPI 1-month series. This observation,
+supported by59, bolsters the reliability of our analysis. The consistency of this observation across all
+194 monitoring stations prompted us to select the SPI 12-month series for our further analysis. Our
+investigation also unveiled a tendency for SST, Nin 3.4, and IOD to exhibit mean-reverting behavior,
+as evidenced in Figure (2), where values tended to regress to their means over time. This observation
+aligns with findings from the Hurst exponent coefficient analysis63, Table (1) indicates a long memory
+characteristic in these variables, with values surpassing 0.5.
+Figure (3) provides illustrative insight into one of the 194 locations studied. Utilising algorithm 2, we
+identified significant periodicities at intervals of 60, 151, and 216 months. For instance, at the specific
+location (longitude 113.7158 and latitude -26.6969), the SPI displayed a notable positive correlation with
+past SPI values, recurring at approximately 5.5-year intervals. Such findings contribute valuable insights
+into the complex interplay between precipitation patterns and key climatic drivers, shedding light on the
+underlying mechanisms governing long-term climate variability.
+Figure (4) is a visual representation of the correlation matrix illustrating SPI among the 194 locations.
+This matrix underscores the spatial correlation observed across all locations, highlighting the cohesive
+nature of SPI dynamics throughout the region.
+To further explore the dynamics, we analysed cross-correlation functions (2) among monthly time-
+series of SPI, SST, IOD, and NINO 3.4 variables, as shown in Figures (5) and (6). With a maximum
+lag of 120 months, these CCFs reveal mutual influences among climate variables. Figure (5) illustrates
+the Cross-Correlation Function (CCF) spanning the years 1999 to 2008, revealing the interplay among
+climate variables (SST, NINO 3.4, and IOD) and their mutual influence. This interaction results in a dense
+network, as depicted in Figure (7a). In Figure (6), spanning 2009-2018, we observe that SST weakly
+couples with SPI (Figure (6a)), while IOD does not directly couple with SPI (Figure (6b)). Conversely,
+NINO 3.4 couples with SPI (Figure (6c)). Additionally, IOD couples with SST and NINO 3.4, though not
+reciprocally (Figures (6d) and (6e)). Notably, NINO 3.4 and SST exhibit mutual coupling (Figure (6f)).
+This comprehensive analysis, spanning 2009–2018, is depicted as a network diagram in Figure (7b).
+Our hybrid model (2), combining Fourier harmonics for long-term memory and Granger causal
+modeling (2) for short-term memory, effectively captured SPI dynamics. Validation through Root Mean
+Square Error (RMSE) assessments demonstrated (Table (2)) the superiority of models incorporating
+LASSO selection and Gaussian process (GP) spatial correction (2), particularly when considering SST
+as a covariate55. Notably, the incorporation of SST significantly improved SPI estimation accuracy. In
+Figure (8), we presented the out-of-sample estimates alongside the actual SPI values. Visual examination
+suggests satisfactory performance of the proposed model (4) for December 2010. However, it’s crucial
+to emphasize that this validation is specific to a single month. To comprehensively evaluate the model’s
+effectiveness, we extended the assessment period from December 2010 to November 2018 (eight years)
+and calculated the out-of-sample Root Mean Square Error (RMSE) for all 194 locations. The median
+RMSE results are outlined in Table (2). The first model (Type I) used Fourier series methods on SPI to
+capture long-term memory, while other models (Type II, III, IV) integrated Nino 3.4, IOD, and SST as
+covariates, employing various combinations and lags. Our investigation revealed that incorporating the
+LASSO approach for the Fourier model with spatial correction notably enhanced model performance,
+with Type III and Type IV models demonstrating superior efficacy. Notably, SPI 12 months exhibited
+8/21
+lower RMSE values across all Type II, III, and IV models, indicating enhanced generalizability compared
+to SPI 1 month. Furthermore, our study identified SST as a significant factor influencing SPI estimation,
+and its inclusion as a covariate contributed to improved model performance.
+Analysis of SPI trends in Figure (9) revealed evolving drought conditions, with inland areas showing
+mild increasing trends, particularly post-2008. The negative correlation between IOD and SPI until 2008
+shifted to a positive correlation thereafter, indicating a reversal in drought conditions64. Similarly, NINO
+3.4 exhibited a consistent negative relationship with SPI, suggesting wetter conditions in south-west
+Australia. Rising SST trends further corroborated expectations of increasingly wet conditions in the
+region65.
+Overall, our findings underscore the complex interplay of climate variables and the evolving nature of
+drought conditions in south-west Australia, emphasizing the importance of considering long-term trends
+and spatial correlations in climate modeling and prediction. Specifically, the LASSO selection process
+within spatial correction models, effectively enhances the accuracy of the proposed models.
+Figure 3. The autocorrelation plot, with a maximum lag of 400 months, pertains to rainfall data obtained
+from a specific location at longitude 113.7158 and latitude -26.6969. A dataset spanning 450 months,
+from June 1973 to November 2010, was utilized to construct the autocorrelation function. Notably, three
+significant periods of 216, 151, and 60 months were identified. These periods indicate a substantial
+positive correlation between current and past SPI values, suggesting a periodicity of approximately 5.5
+years.
+Index Hurst Value
+Standard Precipitation Index (SPI) 0.71 ( ±0.05 )
+El Niño Southern Oscillation (ENSO)
+NINO 3.4
+0.66 (±0.04)
+Indian Ocean Dipole (IOD) 0.69 ( ±0.06)
+Sea Surface Temperature (SST) 0.58 ( ±0.05)
+Table 1. This table displays the Hurst exponent values along with Bootstrap margins of error for all
+indices, including SPI, IOD, SST, and NINO 3.4. These values collectively suggest the presence of long
+memory within the system. The table was reproduced from Yadav et al.21
+9/21
+Figure 4. A visual representation of the correlation matrix depicting SPI-12 months across 194 locations
+reveals significant spatial correlation across all locations.
+(a)
+ (b)
+ (c)
+(d)
+ (e)
+ (f)
+Figure 5. During the period from 1999 to 2008, cross-correlation function (CCF) plots were generated
+for the following pairs: (a) Standardized Precipitation Index (SPI) and Sea Surface Temperature (SST), (b)
+SPI and Indian Ocean Dipole (IOD), (c) SPI and Nino 3.4, (d) IOD and Nino 3.4, (e) IOD and SST, and (f)
+Nino and SST, with a lag of 120 months. The cross-correlation coefficients indicate significant coupling
+among these indices (Nino, IOD, and SST). All plots were generated using monthly temporal datasets.
+The figure was reproduced from Yadav et al.21
+10/21
+(a)
+ (b)
+ (c)
+(d)
+ (e)
+ (f)
+Figure 6. From 2009 to 2018, cross-correlation function (CCF) plots were generated for the following
+pairs: (a) SPI and SST, (b) SPI and IOD, (c) SPI and Nino 3.4, (d) IOD and Nino 3.4, (e) IOD and SST,
+and (f) Nino and SST, with a lag of 120 months. In Figure (a), despite a small CCF value, SPI and SST
+are observed to exhibit coupling. Figure (b) reveals a one-way cross-correlation between IOD and SPI,
+and vice versa, albeit statistically insignificant. Figure (c) highlights a significant coupling between Nino
+3.4 and SPI. Conversely, Figure (d) indicates that while IOD influences Nino 3.4, the reverse is not
+observed. Figure (e) suggests a minor effect of IOD on SST, with no reciprocal influence observed.
+Notably, both SST and Nino 3.4 exhibit significant coupling. The substantial CCF coefficients indicate the
+significant influence of SST, Nino, and IOD on each other. Plots were generated using monthly temporal
+datasets. The figure was reproduced from Yadav et al.21
+.
+11/21
+(a) (b)
+Figure 7. The network analysis based on Cross-Correlation plots (5) and (6) for the periods (a) 1999 to
+2008 and (b) 2009 to 2018 reveals distinct patterns. In Figure (a), spanning 1999 to 2008, IOD exhibits
+direct effects on SST, Nino 3.4, and SPI. However, in the subsequent decade (Figure (b), 2009 to 2018),
+IOD’s direct impact on SPI diminishes. Nevertheless, both SST and Nino 3.4 continue to directly
+influence SPI in both periods, and vice versa. Consequently, IOD indirectly couples with SPI. The
+significant CCF coefficients indicate substantial mutual influences among these climate variables. The
+figure was reproduced from Yadav et al.21
+Model Type I Type II Type III Type IV
+SPI 1m 12m 1m 12m 1m 12m 1m 12m
+Model without 0.75 1.26 0.80 0.49 0.80 0.51 0.84 0.38
+Spatial Correction
+Model with 7.21 0.96 6.40 0.45 8.66 0.46 24.21 0.37
+Spatial Correction
+Model with LASSO 0.75 0.77 0.80 0.35 0.80 0.34 0.84 0.34
+and Spatial Correction
+Table 2. The out-of-sample Root Mean Square Error (RMSE) values are calculated for all four types of
+models from December 2010 to November 2018, covering a period of 8 years. Here, the target variable is
+SPI (1 month and 12 months). A brief overview of the model types is as follows: Type I captures
+long-term memory solely using Fourier Series methods. Type II incorporates NINO 3.4 and IOD as
+covariates. Type III includes lag values of NINO 3.4 and IOD as covariates. Type IV incorporates NINO
+3.4, IOD, and SST as covariates. It is observed that Type III and Type IV , considering LASSO and GP
+correction, yield the lowest (best) RMSE value of 0.34 for estimating SPI-12 months. The table was
+reproduced from Yadav et al.21
+12/21
+Figure 8. Plot of the Standardized Precipitation Index (SPI) for December 2010 using training data
+ranging from June 1973 to November 2010. The SPI values are categorized into four color ranges: Black
+represents SPI > 1 (Extremely Wet), Blue represents 0 < SPI > 1 (Wet), Red represents 0 > SPI > -1 (Dry),
+and Brown represents SPI < -1 (Extremely dry). The figure was reproduced from Yadav et al.21
+(a)
+ (b)
+ (c)
+Figure 9. Plots illustrating the average regression coefficient value (δ) corresponding to NINO 3.4, SST,
+and IOD are displayed for the period from 1995 to 2018. A red smooth curve represents the three-year
+moving average of δ. The analysis highlights that NINO 3.4 consistently exerts a significant negative
+impact on SPI. In contrast, SST exhibits a consistent negative correlation with SPI until 2004. However,
+between 2005 and 2014, the δ of SST fluctuates between negative and positive correlations. IOD
+demonstrates a negative correlation with SPI until 2009, followed by a positive range from 2009 to 2013,
+and then returns to a significantly negative correlation with SPI thereafter. The figure was reproduced
+from Yadav et al.21
+3.2 North Atlantic Climate Instabilities
+Our second study incorporates three distinct datasets: daily mean Arctic Sea Ice Extent (SIE), daily mean
+Sea Surface Temperature (SST), and daily mean North Atlantic Oscillation (NAO) index.
+Data Description
+The NAO and SST datasets are sourced from the NOAA website58, 66, while the SIE dataset is obtained
+from the National Snow and Ice Data Centre’s website67. These datasets cover various time periods, with
+NAO data available from 1950, SIE data from 1979, and SST data from 1982. Our analysis spans from
+January 1982 to September 2019, encompassing 38 years.
+13/21
+Results and Analyses
+Figure (10a) depicts the NAO plot spanning from 1979 to 2019. NAO, which signifies the difference in
+sea-level air pressure between the Icelandic Low and the Azores, demonstrates a stationary process with a
+mean of zero. The time series plot confirms the mean-zero stationary nature of NAO. This observation
+was further validated through the Augmented Dickey-Fuller test, as evidenced by the small p-value.
+Additionally, the Auto-correlation function (ACF) analysis illustrated in Figure (10b) with a maximum lag
+of 5000 days (approximately 13 years) reveals the presence of long memory.
+(a)
+ (b)
+Figure 10. (a) Plot of the NAO time series over the period of 1979–2019 (b) Autocorrelation plot of
+NAO with a maximum lag of 5000 days (almost 13 years), indicating the existence of long memory. The
+figure was reproduced from Yadav et al.22
+Figure(11) represents the residual for SIE and SST obtained from the best fit of Model (4). It is
+observed that both SIER and SSTR exhibit characteristics of zero-mean stationary processes, similar to
+the North Atlantic Oscillation (NAO).
+(a)
+ (b)
+Figure 11. Time series plots of (a) Residual of SIE (SIER) and (b) Residual of SST (SSTR). The figure
+was reproduced from Yadav et al.22
+The Hurst exponent values detailed in Table (3) collectively underscore the long memory inherent
+in residuals of SIE (SIER) and residual of SST (SSTR), with values surpassing 0.5. Additionally, the
+correlation matrix in Table (4) highlights robust correlations, particularly notable between SSTR and NAO,
+and between SIER and SSTR.
+To explore the potential presence of a feedback loop between the SIER, SSTR, and NAO by employed
+the Granger causality test 2. Our exploration into Granger causal models uncovers significant causal
+14/21
+relationships among NAO, SIER, and SSTR. ANOV A F-tests reject null hypotheses, affirming Granger
+causality between these variables, as elaborated in Table (5). Furthermore, employing an Akaike informa-
+tion criterion-based model selection process helps identify optimal configurations for Model Equation
+2.
+The synthesis of these findings highlights the existence of a reciprocal feedback loop involving
+NAO, SIER, and SSTR. Moving forward, we aim to demonstrate the affirmative nature of this loop. By
+emphasizing the skewness of NAO in Table (6), we provide insight into the bootstrap confidence intervals
+(C.I.) across various time intervals—daily, weekly, and monthly. In a scenario where NAO is stable,
+a skewness value of zero is anticipated. However, our results reveal a negatively skewed distribution,
+suggesting a statistically significant departure from stability. Notably, the skewness of NAO in Table (6)
+indicates a departure from stability, hinting at underlying instability within its dynamics. In Figure (12),
+we present visualizations of projected and observed trajectories within the test dataset spanning 2010 to
+2019. Our modeling approach demonstrates strong performance, as indicated by Root Mean Square Error
+(RMSE) values of 0.36 for the training set and 0.41 for the test set, underscoring its high generalization
+capability.
+Hurst Exponent SIER SSTR
+Simple R/S Hurst estimation 0.77 0.81
+Corrected R over S Hurst exponent 0.83 0.89
+Empirical Hurst exponent 0.82 0.90
+Corrected empirical Hurst exponent 0.81 0.89
+Theoretical Hurst exponent 0.53 0.52
+Table 3. The Hurst Exponent value of the SIER, and SSTR using different methods. The table was
+reproduced from Yadav et al.22
+NAO SIER SSTR
+NAO 1.000 0.016 (0.063) -0.133 ( < 2.2∗ 10−16)
+SIER 1.000 -0.173 ( < 2.2∗ 10−16)
+SSTR 1.000
+Table 4. Over a span of 38 years, from January 1982 to September 2019, the correlation matrix for NAO,
+SIER, and SSTR is examined. The accompanying P-values enclosed in parentheses provide insights into
+the significance of the correlations. Notably, the correlation between SSTR and NAO is statistically
+significant. Similarly, a robust correlation is observed between SIER and SSTR. However, the correlation
+between NAO and SIER exhibits relatively weak significance. The table was reproduced from Yadav et
+al.22
+15/21
+GC Models F-value p-value
+SSTR + SIER→ NAO 2.31 0.0178
+NAO + SIER→ SSTR 5.546 2 .16× 10−6
+NAO + SSTR→ SIER 7.714 2 .27× 10−10
+Table 5. Table of F-value and p-value of different combinations of Granger Causal Models. Small
+p-values indicate that there is a feedback loop among NAO, SIER, and SSTR. The table was reproduced
+from Yadav et al.22
+Period Skewness C.I.
+Daily -.210 [-0.242, -0.169]
+Weekly -.213 [-0.305, -0.107]
+Monthly -.194 [-0.368, -0.005]
+Table 6. The presented table highlights the skewness of NAO, along with bootstrap-derived confidence
+intervals (C.I.), across daily, weekly, and monthly time spans. While an anticipated stable NAO would
+exhibit a skewness of zero, our observations indicate a negatively skewed distribution. This statistically
+significant result underscores the presence of instability in NAO. The table was reproduced from Yadav et
+al.22
+Figure 12. To evaluate the effectiveness of our proposed model a machine learning assessment was
+carried out. The training dataset spanned from 1979 to 2009, while the test dataset encompassed the years
+2010 to 2019. The figure was reproduced from Yadav et al.22
+Our analyses revealed crucial instability driven by positive feedback loops among melting SIE, rising
+SST, and the North NAO. Key findings included reciprocal Granger causality between SIE and SST,
+mutual Granger causality between SST and NAO, and an anti-correlation between SST and NAO. This
+anti-correlation suggested that increasing SST trends may lead to more negative NAO occurrences, a
+phenomenon supported by the negative skewness of the NAO index across various time scales.
+16/21
+The negative skewness of the NAO index, despite its mean-zero stationary nature, indicated impending
+critical instability, foreshadowing increased bouts of frigid climates in the North Atlantic region. This
+study contributed to predicting notable climate transformations by enhancing our understanding of critical
+instability within complex climate systems. Overall, through the application of statistical machine learning
+and interdisciplinary methods, as opposed to climate modelling, we tried to enrich the understanding of
+the dynamic interplay among crucial climate variables and its implications for the entire North Atlantic
+region.
+4 Outlook
+This review study contributes to untangling the complexity (transformations and critical instabilities) of
+climate systems. Through the application of statistical machine learning and interdisciplinary methods,
+borrowed from physics, mathematics, statistics, etc. we tried to give a flavour of the alternate approaches
+to climate modeling.
+Climate change presents numerous challenges across various domains, including environmental, social,
+economic, and geopolitical aspects. Addressing these challenges requires coordinated efforts at local,
+national, regional, and global levels, including mitigation measures to reduce greenhouse gas emissions,
+adaptation strategies to build resilience, investments in clean energy and sustainable practices, policy
+interventions, technological innovations, education, and public awareness campaigns. We hope that these
+insights would pave the way for drafting policies for action against climate change and addressing its
+multifaceted challenges. Finally, we accept our limitations as scientists, encapsulated by the famous quote:
+“I used to think the top environmental problems were biodiversity loss, ecosystems collapse
+and climate change. I thought that with 30 years of good science we could address those
+problems. But I was wrong. The top environmental problems are selfishness, greed and
+apathy. . . and to deal with those we need a spiritual and cultural transformation and we,
+(Lawyers) and scientists, don’t know how to do that. ”– James Gustave Speth, US Advocate
+Acknowledgements
+The authors would like to thank K.S. Bakar for some of the collaborative work that has been included in
+this review article.
+References
+1. Parisi, G. Complex systems: a physicist’s viewpoint. Phys. A: Stat. Mech. its Appl. 263, 557–564
+(1999).
+2. Vemuri, V .Modeling of complex systems: an introduction (Academic Press, 2014).
+3. Gell-Mann, M. What is complexity? In Complexity and industrial clusters: Dynamics and models in
+theory and practice, 13–24 (Springer, 2002).
+4. Chakraborti, A. et al. Emerging spectra characterization of catastrophic instabilities in complex
+systems. New J. Phys. 22, 063043 (2020).
+5. Chakrabarti, A. S., Bakar, K. S. & Chakraborti, A. Data Science for Complex Systems (Cambridge
+University Press, 2023).
+6. Hasselmann, K. Stochastic climate models part i. theory. Tellus 28, 473–485 (1976).
+17/21
+7. The nobel prize in physics 2021. Link to the website: https://www.nobelprize.org/prizes/physics/
+2021/summary/.
+8. Granger, C. W. J. Investigating causal relations by econometric models and cross-spectral methods.
+Econometrica 37, 424–438 (1969).
+9. Tibshirani, R. Regression shrinkage and selection via the lasso. J. Royal Stat. Soc. Ser. B (Method-
+ological) 58, 267–288 (1996).
+10. James, G., Witten, D., Hastie, T. & Tibshirani, R. An Introduction to Statistical Learning with
+Applications in R, vol. XIV , 426 (Springer New York, NY , 2013).
+11. What is climate change? Link to the website: https://www.un.org/en/climatechange/
+what-is-climate-change.
+12. Climate change – trends and extremes. Australian Government Bureau of Meteorology, Link to the
+website: http://www.bom.gov.au/climate/change/.
+13. Climate trends in western australia. Department of Primary Industries and Regional Development,
+Link to the website: https://www.agric.wa.gov.au/climate-change/climate-trends-western-australia.
+14. Climate change and broadacre livestock production in western australia. Department of Primary Indus-
+tries and Regional Development, Link to the website: https://www.agric.wa.gov.au/climate-change/
+climate-change-and-broadacre-livestock-production-western-australia.
+15. Nordhaus, W. D. Reflections on the economics of climate change. J. Econ. Perspectives 7, 11–25
+(1993).
+16. Chakraborti, A., Haven, E., Patra, S. & Singh, N. Quantum decision theory and complexity modelling
+in economics and public policy (Springer Nature, 2023).
+17. Schneider, S. H. & Dickinson, R. E. Climate modeling. Rev. Geophys. 12, 447–493 (1974).
+18. Hoskins, B. J. Dynamical processes in the atmosphere and the use of models. Q. J. Royal Meteorol.
+Soc. 109, 1–21 (1983).
+19. Held, I. M. The gap between simulation and understanding in climate modeling. Bull. Am. Meteorol.
+Soc. 86, 1609 – 1614 (2005).
+20. When less is more: Opening the door to simpler climate models. Link to the website: https:
+//eos.org/opinions/when-less-is-more-opening-the-door-to-simpler-climate-models.
+21. Yadav, A., Das, S., Bakar, K. S. & Chakraborti, A. Understanding the complex dynamics of climate
+change in south-west australia using machine learning. Phys. A: Stat. Mech. its Appl. 627, 129139
+(2023).
+22. Yadav, A., Das, S. & Chakraborti, A. Understanding north atlantic climate instabilities and complex
+interactions using data science (2023). arXiv:2001.10171.
+23. Li, W., Fu, R., Negrón-Juárez, R. & Fernandes, K. Observed change of the standardized precipitation
+index, its potential cause and implications to future climate change in the amazon region. Philos.
+transactions Royal Soc. London. Ser. B, Biol. sciences 363, 1767–72 (2008).
+24. Wu, Renguang, K. & L., J. Analysis of the relationship of us droughts with sst and soil moisture
+distinguishing the time scale of droughts. Am. Meteorol. Soc. 22, 4520–4538 (2008).
+25. Delage, F. & Power, S. The impact of global warming and the el niño-southern oscillation on seasonal
+precipitation extremes in australia. Clim. Dyn. (2020).
+18/21
+26. Wen, N., Liu, Z. & Liu, Y . Direct impact of el niño on east asian summer precipitation in the
+observation. Clim. Dyn. 44 (2015).
+27. Loughran, T., Pitman, A. & Perkins-Kirkpatrick, S. The el niño–southern oscillation’s effect on
+summer heatwave development mechanisms in australia. Clim. Dyn. 52 (2018).
+28. Heim, R. A review of twentieth–century drought indices used in the united states. Bull. Am. Meteorol.
+Soc. 83 (2002).
+29. McKee, Thomas B., D., Kleist, N. J. & John. The relationship of drought frequency and duration to
+time scales. Eighth Conf. on Appl. Climatol. 17–22 (1993).
+30. Karavitis, A., Christos, A., Stavros, T., Demetrios E., A. & George. Application of the standardized
+precipitation index (spi) in greece. Water 3, 787–805 (2011).
+31. Sonmez, F. Kemal, K., Ali Umran Komuscu, E., Ayhan, T. & Ertan. An analysis of spatial and
+temporal dimension of drought vulnerability in turkey using the standardized precipitation index. Nat.
+Hazards 35, 243–264 (2005).
+32. Lee, C., Shen, S., Bailey, B. & North, G. Factor analysis for el nino signals in sea surface temperature
+and precipitation. Theor. Appl. Climatol. 97, 195–203 (2009).
+33. Taschetto, Andréa S., E. & H., M. El niño modoki impacts on australian rainfall. Am. Meteorol. Soc.
+22, 3167–3174 (2009).
+34. Koll, R., Gualdi, S., Drbohlav, H.-K. & Navarra, A. Seasonality in the relationship between el nino
+and indian ocean dipole. Clim. Dyn. 37, 221–236 (2011).
+35. Ndehedehe, C. E. et al. What if the rains do not come? J. Hydrol. 595, 126040 (2021).
+36. Izumo, T. et al. Influence of Indian Ocean Dipole and Pacific recharge on following year’s El Niño:
+interdecadal robustness. Climate Dynamics 42, 291–310 (2014).
+37. Nicholls & Neville. Sea surface temperatures and australian winter rainfall. J. Clim. 2, 965–973
+(1989).
+38. DallÓsto, M. et al. Arctic sea ice melt leads to atmospheric new particle formation. Sci. Reports 7,
+3318 (2017).
+39. Das, P., Lahiri, A. & Das, S. Understanding sea ice melting via functional data analysis. Curr. Sci.
+115, 920–929 (2018).
+40. Cressey, D. Arctic sea ice at record low. Nature (2007).
+41. Warner, J. L. Arctic sea ice – a driver of the winter nao? Weather 73, 307–310 (2018).
+42. Kwok, R. Recent changes in arctic ocean sea ice motion associated with the north atlantic oscillation.
+Geophys. Res. Lett. 27, 775–778 (2000). https://agupubs.onlinelibrary.wiley.com/doi/pdf/10.1029/
+1999GL002382.
+43. Miettinen, A., Koç, N., Hall, I. R., Godtliebsen, F. & Divine, D. North atlantic sea surface temperatures
+and their relation to the north atlantic oscillation during the last 230 years. Clim. Dyn. 36, 533–543
+(2011).
+44. Pan, L.-L. Observed positive feedback between the nao and the north atlantic ssta tripole. Geophys.
+Res. Lett. 32 (2005).
+45. Delworth, T. L. et al. The North Atlantic Oscillation as a driver of rapid climate change in the
+Northern Hemisphere. Nat. Geosci. 9, 509–512 (2016).
+19/21
+46. Jaiser, R., Dethloff, K., Handorf, D. & Cohen, J. Impact of sea ice cover changes on the northern
+hemisphere atmospheric winter circulation. Tellus A: Dyn. Meteorol. Oceanogr. 64, 11595 (2012).
+47. Becker, G. A. & Pauly, M. Sea surface temperature changes in the north sea and their causes. ICES J.
+Mar. Sci. 53, 887–898 (1996).
+48. Slonosky, V . C. & Yiou, P. The north atlantic oscillation and its relationship with near surface
+temperature. Geophys. Res. Lett. 28, 807–810 (2001).
+49. Dai, G., Mu, M. & Wang, L. The influence of sudden arctic sea-ice thinning on north atlantic
+oscillation events. Atmosphere-Ocean 59, 39–52 (2021).
+50. Horvath, S., Stroeve, J., Rajagopalan, B. & Jahn, A. Arctic sea ice melt onset favored by an
+atmospheric pressure pattern reminiscent of the north american-eurasian arctic pattern. Clim. Dyn. 57
+(2021).
+51. Parkinson, L. C. Recent trend reversals in arctic sea ice extents: Possible connections to the north
+atlantic oscillation. Polar Geogr. 24, 1–12 (2000).
+52. Kolstad, E. W. & Screen, J. A. Nonstationary relationship between autumn arctic sea ice and the
+winter north atlantic oscillation. Geophys. Res. Lett. 46, 7583–7591 (2019).
+53. Autocorrelation 2024, april 28. In Wikipedia. https://en.wikipedia.org/wiki/Autocorrelation.
+54. Cross-correlation 2024, april 28. In Wikipedia. https://en.wikipedia.org/wiki/Cross-correlation.
+55. Tibshirani, R. Regression shrinkage and selection via the lasso. J. Royal Stat. Soc. Ser. B (Method-
+ological) 58, 267–288 (1996).
+56. Indian ocean dipole. Australian Government Bureau of Meteorology, Link to the website: http:
+//www.bom.gov.au/climate/data/.
+57. Global climate observing syatems. Working Group on Surface Pressure, Download Climate Timeseries,
+Link to the website: https://psl.noaa.gov/gcos_wgsp/Timeseries/.
+58. NOAA. Noaa optimum interpolation (oi) sea surface temperature (sst) v2 (2020).
+Data can be downloaded from: https://psl.noaa.gov/repository/entry/show?entryid=
+f8d470f4-a072-4c1e-809e-d6116a393818.
+59. Lehner, B., Doell, P., Alcamo, J., Henrichs, T. & Kaspar, F. Estimating the impact of global change
+on flood and drought risks in europe: A continental, integrated analysis. Clim. Chang. 75, 273–299
+(2006).
+60. National recovery and resilience agency. Link to the website: https://www.agriculture.gov.au/abares/
+research-topics/aboutmyregion/wa.
+61. Ludwig, F., Milroy, S. & Asseng, S. Impacts of recent climate change on wheat production systems in
+western australia. Clim. Chang. 92, 495–517 (2009).
+62. Boruff, B., Biggs, E., Pauli, N., Callow, N. & Clifton, J. Changing water system vulnerability in
+western australia’s wheatbelt region. Appl. Geogr. 91, 131–143 (2018).
+63. Kirichenko, L., Radivilova, T. & Deineko, Z. Comparative analysis for estimating of the hurst
+exponent for stationary and nonstationary time series. Inf. Technol. & Knowl. 5, 371–388 (2011).
+64. Saji, N. H., Goswami, B. N., Vinayachandran, P. N. & Yamagata, T. A dipole mode in the tropical
+indian ocean. Nature 401, 360–363 (1999).
+20/21
+65. Climate data online. Australian Government Bureau of Meteorology, Link to the website: http:
+//www.bom.gov.au/climate/enso/history/ln-2010-12/IOD-what.shtml.
+66. NSIDC. Daily sea ice extent (2020). Data can be downloaded from: https://psl.noaa.gov/repository/
+entry/show?entryid=f8d470f4-a072-4c1e-809e-d6116a393818.
+67. NOAA. Daily nao index since january 1950 (2020). Data can be downloaded from: https://nsidc.org/
+data/G02135/versions/3.
+21/21

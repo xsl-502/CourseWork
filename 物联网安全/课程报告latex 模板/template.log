@@ -1,10 +1,10 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.1)  2 OCT 2026 14:12
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.1)  3 OCT 2026 15:39
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**"/Users/xsl/Desktop/CourseLearning/TemplateOfUESTC/课程报告latex 模板/template"
-(/Users/xsl/Desktop/CourseLearning/TemplateOfUESTC/课程报告latex 模板/template.tex
+**"/Users/xsl/Desktop/CourseLearning/物联网安全/课程报告latex 模板/template"
+(/Users/xsl/Desktop/CourseLearning/物联网安全/课程报告latex 模板/template.tex
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
 (./cumcmthesis.cls
@@ -292,11 +292,7 @@ File: ctex-name-utf8.cfg 2022/07/14 v2.5.10 Caption with encoding UTF-8 (CTEX)
 Package: indentfirst 2023/07/02 v1.03 Indent first paragraph (DPC)
 ) (/usr/local/texlive/2026basic/texmf-dist/tex/latex/ctex/ctex-c5size.clo
 File: ctex-c5size.clo 2022/07/14 v2.5.10 c5size option (CTEX)
-) (/usr/local/texlive/2026basic/texmf-dist/tex/latex/ctex/fontset/ctex-fontset-mac.def
-File: ctex-fontset-mac.def 2022/07/14 v2.5.10 macOS fonts definition (CTEX)
- (/usr/local/texlive/2026basic/texmf-dist/tex/latex/ctex/fontset/ctex-fontset-macold.def
-File: ctex-fontset-macold.def 2022/07/14 v2.5.10 macOS fonts definition for Yosemite or earlier version (CTEX)
-))) (/usr/local/texlive/2026basic/texmf-dist/tex/latex/ctex/config/ctex.cfg
+)) (/usr/local/texlive/2026basic/texmf-dist/tex/latex/ctex/config/ctex.cfg
 File: ctex.cfg 2022/07/14 v2.5.10 Configuration file (CTEX)
 ) (/usr/local/texlive/2026basic/texmf-dist/tex/latex/geometry/geometry.sty
 Package: geometry 2020/01/02 v5.9 Page Geometry
@@ -789,18 +785,20 @@ Package cleveref Info: `listings' support loaded on input line 3131.
 \c@example=\count387
 \c@proof=\count388
 \c@solution=\count389
-Package hyperref Info: Option `CJKbookmarks' set `true' on input line 260.
-Package hyperref Info: Option `bookmarksnumbered' set `true' on input line 260.
-Package hyperref Info: Option `bookmarksopen' set `true' on input line 260.
-Package hyperref Info: Option `colorlinks' set `true' on input line 260.
-Package hyperref Info: Option `breaklinks' set `true' on input line 260.
+Package hyperref Info: Option `CJKbookmarks' set `true' on input line 271.
+Package hyperref Info: Option `bookmarksnumbered' set `true' on input line 271.
+Package hyperref Info: Option `bookmarksopen' set `true' on input line 271.
+Package hyperref Info: Option `colorlinks' set `true' on input line 271.
+Package hyperref Info: Option `breaklinks' set `true' on input line 271.
 ) (/usr/local/texlive/2026basic/texmf-dist/tex/latex/natbib/natbib.sty
 Package: natbib 2010/09/13 8.31b (PWD, AO)
 \bibhang=\skip109
 \bibsep=\skip110
 LaTeX Info: Redefining \cite on input line 694.
 \c@NAT@ctr=\count390
-) (/Users/xsl/Library/texmf/tex/latex/mdframed/mdframed.sty
+)
+CITE-MEANING=macro:->\protect \cite  ; CITEP-MEANING=macro:->\protect \citep  ; CITE-TEXT-MEANING=macro:->\protect \citet  
+(/Users/xsl/Library/texmf/tex/latex/mdframed/mdframed.sty
 Package: mdframed 2013/07/01 1.9b: mdframed
  (/Users/xsl/Library/texmf/tex/latex/zref/zref-abspage.sty
 Package: zref-abspage 2026-09-16 v2.38 Module abspage for zref (HO)
@@ -1110,78 +1108,78 @@ File: lstlang1.sty 2025/11/14 1.11b listings language file
 ) (./template.aux)
 \openout1 = `template.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 119.
-LaTeX Font Info:    ... okay on input line 119.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 119.
-LaTeX Font Info:    ... okay on input line 119.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 119.
-LaTeX Font Info:    ... okay on input line 119.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 119.
-LaTeX Font Info:    ... okay on input line 119.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 119.
-LaTeX Font Info:    ... okay on input line 119.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 119.
-LaTeX Font Info:    ... okay on input line 119.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 119.
-LaTeX Font Info:    ... okay on input line 119.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 119.
-LaTeX Font Info:    ... okay on input line 119.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 119.
-LaTeX Font Info:    ... okay on input line 119.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 119.
-LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 121.
+LaTeX Font Info:    ... okay on input line 121.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 121.
+LaTeX Font Info:    ... okay on input line 121.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 121.
+LaTeX Font Info:    ... okay on input line 121.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 121.
+LaTeX Font Info:    ... okay on input line 121.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 121.
+LaTeX Font Info:    ... okay on input line 121.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 121.
+LaTeX Font Info:    ... okay on input line 121.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 121.
+LaTeX Font Info:    ... okay on input line 121.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 121.
+LaTeX Font Info:    ... okay on input line 121.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 121.
+LaTeX Font Info:    ... okay on input line 121.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 121.
+LaTeX Font Info:    ... okay on input line 121.
 \symlegacymaths=\mathgroup9
 LaTeX Font Info:    Overwriting symbol font `legacymaths' in version `bold'
-(Font)                  OT1/cmr/m/n --> OT1/cmr/bx/n on input line 119.
-LaTeX Font Info:    Redeclaring math accent \acute on input line 119.
-LaTeX Font Info:    Redeclaring math accent \grave on input line 119.
-LaTeX Font Info:    Redeclaring math accent \ddot on input line 119.
-LaTeX Font Info:    Redeclaring math accent \tilde on input line 119.
-LaTeX Font Info:    Redeclaring math accent \bar on input line 119.
-LaTeX Font Info:    Redeclaring math accent \breve on input line 119.
-LaTeX Font Info:    Redeclaring math accent \check on input line 119.
-LaTeX Font Info:    Redeclaring math accent \hat on input line 119.
-LaTeX Font Info:    Redeclaring math accent \dot on input line 119.
-LaTeX Font Info:    Redeclaring math accent \mathring on input line 119.
-LaTeX Font Info:    Redeclaring math symbol \Gamma on input line 119.
-LaTeX Font Info:    Redeclaring math symbol \Delta on input line 119.
-LaTeX Font Info:    Redeclaring math symbol \Theta on input line 119.
-LaTeX Font Info:    Redeclaring math symbol \Lambda on input line 119.
-LaTeX Font Info:    Redeclaring math symbol \Xi on input line 119.
-LaTeX Font Info:    Redeclaring math symbol \Pi on input line 119.
-LaTeX Font Info:    Redeclaring math symbol \Sigma on input line 119.
-LaTeX Font Info:    Redeclaring math symbol \Upsilon on input line 119.
-LaTeX Font Info:    Redeclaring math symbol \Phi on input line 119.
-LaTeX Font Info:    Redeclaring math symbol \Psi on input line 119.
-LaTeX Font Info:    Redeclaring math symbol \Omega on input line 119.
-LaTeX Font Info:    Redeclaring math symbol \mathdollar on input line 119.
-LaTeX Font Info:    Redeclaring symbol font `operators' on input line 119.
+(Font)                  OT1/cmr/m/n --> OT1/cmr/bx/n on input line 121.
+LaTeX Font Info:    Redeclaring math accent \acute on input line 121.
+LaTeX Font Info:    Redeclaring math accent \grave on input line 121.
+LaTeX Font Info:    Redeclaring math accent \ddot on input line 121.
+LaTeX Font Info:    Redeclaring math accent \tilde on input line 121.
+LaTeX Font Info:    Redeclaring math accent \bar on input line 121.
+LaTeX Font Info:    Redeclaring math accent \breve on input line 121.
+LaTeX Font Info:    Redeclaring math accent \check on input line 121.
+LaTeX Font Info:    Redeclaring math accent \hat on input line 121.
+LaTeX Font Info:    Redeclaring math accent \dot on input line 121.
+LaTeX Font Info:    Redeclaring math accent \mathring on input line 121.
+LaTeX Font Info:    Redeclaring math symbol \Gamma on input line 121.
+LaTeX Font Info:    Redeclaring math symbol \Delta on input line 121.
+LaTeX Font Info:    Redeclaring math symbol \Theta on input line 121.
+LaTeX Font Info:    Redeclaring math symbol \Lambda on input line 121.
+LaTeX Font Info:    Redeclaring math symbol \Xi on input line 121.
+LaTeX Font Info:    Redeclaring math symbol \Pi on input line 121.
+LaTeX Font Info:    Redeclaring math symbol \Sigma on input line 121.
+LaTeX Font Info:    Redeclaring math symbol \Upsilon on input line 121.
+LaTeX Font Info:    Redeclaring math symbol \Phi on input line 121.
+LaTeX Font Info:    Redeclaring math symbol \Psi on input line 121.
+LaTeX Font Info:    Redeclaring math symbol \Omega on input line 121.
+LaTeX Font Info:    Redeclaring math symbol \mathdollar on input line 121.
+LaTeX Font Info:    Redeclaring symbol font `operators' on input line 121.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `normal' on input line 119.
+(Font)              `operators' in the math version `normal' on input line 121.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  OT1/cmr/m/n --> TU/TimesNewRoman(0)/m/n on input line 119.
+(Font)                  OT1/cmr/m/n --> TU/TimesNewRoman(0)/m/n on input line 121.
 LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
-(Font)              `operators' in the math version `bold' on input line 119.
+(Font)              `operators' in the math version `bold' on input line 121.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  OT1/cmr/bx/n --> TU/TimesNewRoman(0)/m/n on input line 119.
+(Font)                  OT1/cmr/bx/n --> TU/TimesNewRoman(0)/m/n on input line 121.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
-(Font)                  TU/TimesNewRoman(0)/m/n --> TU/TimesNewRoman(0)/m/n on input line 119.
+(Font)                  TU/TimesNewRoman(0)/m/n --> TU/TimesNewRoman(0)/m/n on input line 121.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
-(Font)                  OT1/cmr/m/it --> TU/TimesNewRoman(0)/m/it on input line 119.
+(Font)                  OT1/cmr/m/it --> TU/TimesNewRoman(0)/m/it on input line 121.
 LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
-(Font)                  OT1/cmr/bx/n --> TU/TimesNewRoman(0)/b/n on input line 119.
+(Font)                  OT1/cmr/bx/n --> TU/TimesNewRoman(0)/b/n on input line 121.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
-(Font)                  OT1/cmss/m/n --> TU/Arial(0)/m/n on input line 119.
+(Font)                  OT1/cmss/m/n --> TU/Arial(0)/m/n on input line 121.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
-(Font)                  OT1/cmtt/m/n --> TU/YaHei.Consolas.1.11b.ttf(1)/m/n on input line 119.
+(Font)                  OT1/cmtt/m/n --> TU/YaHei.Consolas.1.11b.ttf(1)/m/n on input line 121.
 LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
-(Font)                  TU/TimesNewRoman(0)/m/n --> TU/TimesNewRoman(0)/b/n on input line 119.
+(Font)                  TU/TimesNewRoman(0)/m/n --> TU/TimesNewRoman(0)/b/n on input line 121.
 LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
-(Font)                  OT1/cmr/bx/it --> TU/TimesNewRoman(0)/b/it on input line 119.
+(Font)                  OT1/cmr/bx/it --> TU/TimesNewRoman(0)/b/it on input line 121.
 LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
-(Font)                  OT1/cmss/bx/n --> TU/Arial(0)/b/n on input line 119.
+(Font)                  OT1/cmss/bx/n --> TU/Arial(0)/b/n on input line 121.
 LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
-(Font)                  OT1/cmtt/m/n --> TU/YaHei.Consolas.1.11b.ttf(1)/b/n on input line 119.
+(Font)                  OT1/cmtt/m/n --> TU/YaHei.Consolas.1.11b.ttf(1)/b/n on input line 121.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
@@ -1221,7 +1219,7 @@ LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: hyperref package is loaded.
 Package caption Info: End \AtBeginDocument code.
-Package hyperref Info: Link coloring ON on input line 119.
+Package hyperref Info: Link coloring ON on input line 121.
 (./template.out) (./template.out)
 \@outlinefile=\write5
 \openout5 = `template.out'.
@@ -1234,32 +1232,183 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 LaTeX Font Info:    Trying to load font information for U+msb on input line 1.
  (/usr/local/texlive/2026basic/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-))
-\tf@toc=\write6
-\openout6 = `template.toc'.
+)
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [1
 
-]
+])
+\tf@toc=\write6
+\openout6 = `template.toc'.
 
-Package caption Warning: Unused \captionsetup[sub] on input line 11.
+ [2]
+
+LaTeX Font Warning: Font shape `TU/STSong(0)/b/n' undefined
+(Font)              using `TU/STSong(0)/m/n' instead on input line 130.
+
+[1]
+
+Package natbib Warning: Citation `nist8259a' on page 2 undefined on input line 143.
+
+
+Package natbib Warning: Citation `etsi303645' on page 2 undefined on input line 143.
+
+[2]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [3]
+Underfull \hbox (badness 10000) in paragraph at lines 210--210
+[]|\TU/TimesNewRoman(0)/m/n/12.045 1D-CNN\TU/STSong(1)/m/n/12.045 、| \TU/TimesNewRoman(0)/m/n/12.045 LSTM\TU/STSong(1)/m/n/12.045 、|
+ []
+
+[4]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [5] [6]
+
+Package natbib Warning: Citation `meidan2018nbaiot' on page 7 undefined on input line 239.
+
+
+Package natbib Warning: Citation `mirsky2018kitsune' on page 7 undefined on input line 239.
+
+
+Package natbib Warning: Citation `ciciot2023' on page 7 undefined on input line 239.
+
+
+Package natbib Warning: Citation `edgeiiotset' on page 7 undefined on input line 239.
+
+
+Package natbib Warning: Citation `meidan2018nbaiot' on page 7 undefined on input line 241.
+
+
+Package natbib Warning: Citation `lewis2020rag' on page 7 undefined on input line 243.
+
+
+Package natbib Warning: Citation `mirsky2018kitsune' on page 7 undefined on input line 245.
+
+[7]
+
+Package natbib Warning: Citation `koroniotis2019botiot' on page 8 undefined on input line 248.
+
+
+Package natbib Warning: Citation `soe2020sequential' on page 8 undefined on input line 250.
+
+[8]
+
+Package natbib Warning: Citation `owaspllm2023' on page 9 undefined on input line 258.
+
+[9]
+Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 294.
+ [10] [11]
+Underfull \hbox (badness 10000) in paragraph at lines 360--360
+[]|\TU/TimesNewRoman(0)/m/n/7.52812 9 \TU/STSong(0)/m/n/7.52812 台 商 用 \TU/TimesNewRoman(0)/m/n/7.52812 IoT \TU/STSong(0)/m/n/7.52812 设 备；| \TU/TimesNewRoman(0)/m/n/7.52812 Mi-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 360--360
+\TU/TimesNewRoman(0)/m/n/7.52812 rai/BASHLITE\TU/STSong(0)/m/n/7.52812 ；| \TU/TimesNewRoman(0)/m/n/7.52812 115 \TU/STSong(0)/m/n/7.52812 个 流 量 特
+ []
+
+
+Underfull \hbox (badness 1014) in paragraph at lines 360--360
+[]|\TU/TimesNewRoman(0)/m/n/7.52812 TPR=100%\TU/STSong(0)/m/n/7.52812 ；|  平 均 \TU/TimesNewRoman(0)/m/n/7.52812 FPR=$\OT1/cmr/m/n/7.52812 0\OML/cmm/m/it/7.52812 :\OT1/cmr/m/n/7.52812 007 \OMS/cmsy/m/n/7.52812 ^^F
+ []
+
+
+Package natbib Warning: Citation `ciciot2023' on page 12 undefined on input line 363.
+
+[12] [13]
+
+Package natbib Warning: Citation `soe2020sequential' on page 14 undefined on input line 409.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 431--431
+[]|\TU/TimesNewRoman(0)/m/n/7.52812 TPR=100%\TU/STSong(0)/m/n/7.52812 ；|
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 431--431
+\TU/TimesNewRoman(0)/m/n/7.52812 FPR=$\OT1/cmr/m/n/7.52812 0\OML/cmm/m/it/7.52812 :\OT1/cmr/m/n/7.52812 007 \OMS/cmsy/m/n/7.52812 ^^F \OT1/cmr/m/n/7.52812 0\OML/cmm/m/it/7.52812 :\OT1/cmr/m/n/7.52812 01$\TU/STSong(0)/m/n/7.52812 ；|
+ []
+
+
+Underfull \hbox (badness 2818) in paragraph at lines 432--432
+[]|\TU/STSong(0)/m/n/7.52812 在 线 集 成 模 型 适 合 低 资 源 边
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 433--433
+[]|\TU/TimesNewRoman(0)/m/n/7.52812 SVM/RNN/LSTM Ac-
+ []
+
+
+Underfull \hbox (badness 1348) in paragraph at lines 433--433
+\TU/TimesNewRoman(0)/m/n/7.52812 curacy\TU/STSong(0)/m/n/7.52812 、| \TU/TimesNewRoman(0)/m/n/7.52812 Recall \TU/STSong(0)/m/n/7.52812 高，|  但
+ []
+
+
+Underfull \hbox (badness 2818) in paragraph at lines 433--433
+[]|\TU/STSong(0)/m/n/7.52812 大 规 模 数 据 和 特 征 选 择 会 改
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 434--434
+[]|\TU/TimesNewRoman(0)/m/n/7.52812 N-BaIoT 849234
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 434--434
+\TU/STSong(0)/m/n/7.52812 样 本；| \TU/TimesNewRoman(0)/m/n/7.52812 66%/34%
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 435--435
+[]|\TU/TimesNewRoman(0)/m/n/7.52812 105 \TU/STSong(0)/m/n/7.52812 台 设 备；| \TU/TimesNewRoman(0)/m/n/7.52812 33
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 435--435
+\TU/STSong(0)/m/n/7.52812 种 攻 击；|  随 机
+ []
+
+[14]
+Underfull \hbox (badness 10000) in paragraph at lines 452--452
+[]|\TU/TimesNewRoman(0)/m/n/12.045 RF/XGBoost/1D-CNN
+ []
+
+[15] [16] [17] (./template.bbl
+
+Package natbib Warning: Empty `thebibliography' environment on input line 10.
+
+)
+
+Package caption Warning: Unused \captionsetup[sub] on input line 12.
 See the caption package documentation for explanation.
 
-[1] (./template.aux)
+
+Package natbib Warning: There were undefined citations.
+
+[18
+
+] (./template.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2022/08/05>
  ***********
+
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
 Package rerunfilecheck Info: File `template.out' has not changed.
-(rerunfilecheck)             Checksum: E4265939F378A06D24DB7C18A60D85CF;633.
+(rerunfilecheck)             Checksum: E1A7497B4C12780FB1D97D83603707B6;4821.
  ) 
 Here is how much of TeX's memory you used:
- 33953 strings out of 469709
- 706268 string characters out of 5466024
- 1295844 words of memory out of 5000000
- 61960 multiletter control sequences out of 15000+600000
- 637694 words of font info for 128 fonts, out of 8000000 for 9000
+ 34589 strings out of 469709
+ 735763 string characters out of 5466024
+ 1413142 words of memory out of 5000000
+ 62594 multiletter control sequences out of 15000+600000
+ 644244 words of font info for 156 fonts, out of 8000000 for 9000
  319 hyphenation exceptions out of 8191
- 108i,11n,128p,599b,369s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 108i,12n,116p,650b,2005s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on template.pdf (2 pages).
+Output written on template.pdf (20 pages).

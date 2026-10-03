@@ -1,0 +1,34 @@
+\contentsline {section}{\numberline {一、}引言}{2}{section.1}%
+\contentsline {section}{\numberline {二、}背景与威胁模型}{2}{section.2}%
+\contentsline {subsection}{\numberline {2.1}物联网体系结构与攻击面}{2}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}本文讨论范围}{3}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}攻击链、资产状态与安全目标}{3}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}数据与标签的可信性}{4}{subsection.2.4}%
+\contentsline {section}{\numberline {三、}AI 赋能物联网安全的分类框架}{4}{section.3}%
+\contentsline {subsection}{\numberline {3.1}模型在安全闭环中的分层角色}{5}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}证据链与不确定性传播}{6}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}大模型自身的新增攻击面}{6}{subsection.3.3}%
+\contentsline {section}{\numberline {四、}代表性研究综述}{6}{section.4}%
+\contentsline {subsection}{\numberline {4.1}固件与协议漏洞挖掘}{6}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}流量与日志入侵检测}{7}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Bot-IoT 数据集与轻量顺序检测}{8}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}设备识别与威胁情报}{8}{subsection.4.4}%
+\contentsline {subsection}{\numberline {4.5}安全智能体与自动化响应}{9}{subsection.4.5}%
+\contentsline {subsection}{\numberline {4.6}小结：现有工作的共性问题}{9}{subsection.4.6}%
+\contentsline {section}{\numberline {五、}实验评估}{9}{section.5}%
+\contentsline {subsection}{\numberline {5.1}数据集与实验设置}{9}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}对比方法}{11}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}结果与分析}{11}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}公开论文结果对照}{12}{subsection.5.4}%
+\contentsline {subsection}{\numberline {5.5}Bot-IoT 与顺序检测的详细结果}{13}{subsection.5.5}%
+\contentsline {subsection}{\numberline {5.6}跨论文结果的统一解释}{14}{subsection.5.6}%
+\contentsline {section}{\numberline {六、}综合讨论与工程建议}{15}{section.6}%
+\contentsline {subsection}{\numberline {6.1}从离线指标到线上服务等级}{15}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}模型选择的决策矩阵}{16}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}如何把大模型纳入可验证闭环}{16}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}复现与论文写作清单}{16}{subsection.6.4}%
+\contentsline {section}{\numberline {七、}挑战与展望}{16}{section.7}%
+\contentsline {section}{\numberline {八、}结论}{16}{section.8}%
+\contentsline {section}{\numberline {A}复现实验记录模板}{17}{appendix.A}%
+\contentsline {section}{参考文献}{18}{section*.11}%
+\contentsfinish 

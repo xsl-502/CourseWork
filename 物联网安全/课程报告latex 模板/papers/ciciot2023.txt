@@ -1,0 +1,1140 @@
+Citation: Neto, E.C.P .; Dadkhah, S.;
+Ferreira, R.; Zohourian, A.; Lu, R.;
+Ghorbani, A.A. CICIoT2023: A
+Real-Time Dataset and Benchmark
+for Large-Scale Attacks in IoT
+Environment. Sensors 2023, 23, 5941.
+https://doi.org/10.3390/
+s23135941
+Academic Editor: Antonio Puliaﬁto
+Received: 14 April 2023
+Revised: 16 June 2023
+Accepted: 20 June 2023
+Published: 26 June 2023
+Copyright: © 2023 by the authors.
+Licensee MDPI, Basel, Switzerland.
+This article is an open access article
+distributed under the terms and
+conditions of the Creative Commons
+Attribution (CC BY) license (https://
+creativecommons.org/licenses/by/
+4.0/).
+sensors
+Article
+CICIoT2023: A Real-Time Dataset and Benchmark for
+Large-Scale Attacks in IoT Environment
+Euclides Carlos Pinto Neto, Sajjad Dadkhah *
+ , Raphael Ferreira, Alireza Zohourian, Rongxing Lu
+and Ali A. Ghorbani
+Faculty of Computer Science, University of New Brunswick (UnB), Fredericton, NB E3B 5A3, Canada;
+e.neto@unb.ca (E.C.P .N.); raphael.ferreira@unb.ca (R.F.); alireza.zohourian@unb.ca (A.Z.); rlu1@unb.ca (R.L.);
+ghorbani@unb.ca (A.A.G.)
+* Correspondence: sdadkhah@unb.ca
+Abstract: Nowadays, the Internet of Things (IoT) concept plays a pivotal role in society and brings
+new capabilities to different industries. The number of IoT solutions in areas such as transportation
+and healthcare is increasing and new services are under development. In the last decade, society
+has experienced a drastic increase in IoT connections. In fact, IoT connections will increase in the
+next few years across different areas. Conversely, several challenges still need to be faced to enable
+efﬁcient and secure operations (e.g., interoperability, security, and standards). Furthermore, although
+efforts have been made to produce datasets composed of attacks against IoT devices, several possible
+attacks are not considered. Most existing efforts do not consider an extensive network topology with
+real IoT devices. The main goal of this research is to propose a novel and extensive IoT attack dataset
+to foster the development of security analytics applications in real IoT operations. To accomplish this,
+33 attacks are executed in an IoT topology composed of 105 devices. These attacks are classiﬁed into
+seven categories, namely DDoS, DoS, Recon, Web-based, brute force, spooﬁng, and Mirai. Finally, all
+attacks are executed by malicious IoT devices targeting other IoT devices. The dataset is available on
+the CIC Dataset website.
+Keywords: Internet of Things (IoT); dataset; security; machine learning; deep learning; DoS; DDoS;
+reconnaissance; web attacks; brute force; spooﬁng; Mirai
+1. Introduction
+Nowadays, the Internet of Things (IoT) plays a pivotal role in society and brings new
+capabilities to different industries [1–3]. IoT projects in areas such as transportation and
+healthcare are becoming increasingly popular, and new applications are under develop-
+ment [4,5]. This new paradigm relies on an extensively connected sensors and actuators
+network with multiple devices producing network trafﬁc [6–8]. Research and industrial
+communities have been evolving this concept for years, and these devices are becoming
+more present in our daily lives [9–11].
+Several areas have been transformed by this technology. For example, in healthcare
+applications, patients can be regularly monitored using IoT technology [12–14]. In trans-
+portation, IoT devices have been used to detect and prevent accidents [15–17]. Industrial
+IoT (IIoT) has also brought different solutions, such as high reliability and low latency
+automated monitoring and collaborative control [ 18]. IoT applications have also been
+developed for areas such as education [ 19], aviation [ 20], and forestry [ 21]. In the last
+decade, society has experienced a drastic increase in IoT connections [ 22]. In fact, IoT
+connections will increase in the next few years across different areas [23]. This motivates
+the creation and development of business ideas and new concepts that rely on a highly
+distributed infrastructure. In addition, various strategies have been proposed to solve
+potential problems in IoT operations, i.e., the deployment of new services is leveraged by
+the scientiﬁc ﬁndings achieved in the past few years.
+Sensors 2023, 23, 5941. https://doi.org/10.3390/s23135941 https://www.mdpi.com/journal/sensors
+Sensors 2023, 23, 5941 2 of 26
+Conversely, despite these beneﬁts, several challenges still need to be faced to enable
+efﬁcient and secure operations (e.g., interoperability, security, standards, and server tech-
+nologies) [24–27]. The development of new applications may also bring new requirements
+to the systems [28,29]. For example, the Internet of Vehicles (IoV) may require more restric-
+tive response times than common IoT applications. Furthermore, detecting and mitigating
+attacks performed against IoT devices is challenging due to several factors. For example,
+distributed connections and light devices without security mechanisms may harden the
+process of detecting and mitigating attacks [30–33].
+Furthermore, although efforts have been made to produce datasets composed of at-
+tacks against IoT devices, several possible attacks are not considered. In addition, most
+efforts do not consider an extensive network topology with real IoT devices. Finally, the
+attacks performed against IoT devices are executed by computer systems (i.e., non-IoT de-
+vices), highlighting the need for a dataset composed of attacks performed by malicious IoT
+devices. To enable the development of security analytics solutions for intrusion detection
+in real-world scenarios, the data produced need to (i) include a variety of attacks that can
+harm IoT operations, (ii) be collected from an extensive topology with real IoT devices of
+different types and brands, and (iii) include attacks performed by malicious IoT devices.
+The main goal of this research is to propose a novel and extensive IoT attack dataset
+to foster the development of security analytics applications in real IoT operations. To
+accomplish this, 33 attacks are executed in an IoT topology composed of 105 devices. These
+attacks are classiﬁed into seven categories, namely DDoS, DoS, Recon, Web-based, brute
+force, spooﬁng, and Mirai. In addition, all attacks are executed by malicious IoT devices
+targeting other IoT devices. This dataset includes multiple attacks not available in other
+IoT datasets and enables IoT professionals to develop new security analytics solutions.
+Furthermore, the data are available in different formats, allowing researchers to use features
+extracted in our evaluation or engineer new features.
+The main contributions of this research are:
+• We design a new realistic IoT attack dataset, CICIoT2023, using an extensive topology
+composed of several real IoT devices acting as either attackers or victims;
+• We perform, document, and collect data from 33 attacks divided into 7 classes against
+IoT devices and demonstrated how they can be reproduced;
+• We evaluate the performance of machine and deep learning algorithms using the
+CICIoT2023 dataset to classify and detect IoT network trafﬁc as malicious or benign.
+This paper is organized as follows: Section 2 presents an extensive comparison of the
+contributions of this research with other works present in the literature. Secondly, Section 3
+introduces the CICIoT2023 dataset and presents the steps involved in the data collection.
+After that, Section 4 presents the feature extraction process and describes the data.Section 5
+presents the machine learning (ML) evaluation in the classiﬁcation of different attacks using
+the CICIoT2023 dataset. Finally, Section 6 presents the conclusion of this research.
+2. Related Works
+In the past few years, different contributions have been published regarding IoT
+security datasets. In fact, data have been produced with different goals and using different
+methods and resources. To better understand the characteristics of existing datasets, we
+review several initiatives present in the literature and compare them with the proposed
+CICIoT2023. The authors in [ 34] propose a novel network-based dataset for detecting
+botnet attacks in the IoT environment called N-BaioT (2018). Mirai and BASHLITE botnets
+were used to attack nine commercial IoT devices. Multiple features were extracted from the
+network trafﬁc and used by a deep-learning autoencoder for attack detection. In [35], the
+authors introduce a host-based IoT dataset composed of data from real IoT devices. This
+dataset, called IoTHIDS (2018), is produced based on experiments considering a topology
+of three devices infected by Mirai, Hajime, Adira, BASHLITE, Doﬂo, Tsunami, and Wroba
+malware botnets.
+Sensors 2023, 23, 5941 3 of 26
+IoT-SH (2019) [36] is a dataset composed of captures of twelve attacks (categorized
+into four classes) against eight different smart home devices. A three-layer Intrusion
+Detection System (IDS) is used considering various combinations of rule-based and machine
+learning approaches to classify the attacks. BoT-Iot (2019) is introduced in [37] as a realistic
+trafﬁc dataset, produced considering heterogeneous network proﬁles. Multiple attacks are
+performed (e.g., DDoS, DoS, data theft, and scan) against ﬁve devices. In the evaluation
+process, a set of new features are selected and used based on correlation coefﬁcient and joint
+entropy techniques. Various machine and deep learning models are trained to evaluate the
+attack detection accuracy.
+The authors in [38] introduce the Kitsune (2019) dataset, which is composed of four dif-
+ferent categories of attacks executed against nine IoT devices. In the experiments conducted,
+a security camera was infected by a real Mirai botnet sample. This dataset is intended to
+support the development of plug-and-play Network Intrusion Detection Systems (NIDS)
+to detect normal and malicious trafﬁc. Similarly, IoTNIDS (2019) [39] represent an initiative
+focused on collecting data from a real-world IoT networking environment based on the
+interaction between two IoT devices (speaker and camera). Multiple attacks are analyzed
+in this effort, e.g., Mirai, MITM, DoS, and scanning. MedBIoT (2020) [40] is an IoT network
+architecture dataset based on using real and emulated devices. The authors evaluated
+multiple machine learning techniques using 100 statistical features extracted from the IoT
+network trafﬁc. In [ 41], the authors propose the IoT-23 (2020) dataset. This contribution
+refers to a botnet dataset captured composed of real network environment captures of
+benign and malicious trafﬁc.
+IoTIDs (2020) [42] is proposed as a dataset composed of IoT-related ﬂow-based fea-
+tures, selected and ranked by the correlation coefﬁcients technique and the Shapiro–Wilk
+algorithm, respectively. In the experiments, the authors performed four different attacks
+against two IoT devices (speaker and camera) and recorded the data. Multiple machine
+learning methods were used in the evaluation process (e.g., SVM, G-NB, LDA, and LR)
+focusing on attack detection and classiﬁcation. The authors in [43] present the MQTT (2020)
+dataset with the primary goal of providing realistic data that include a protocol dedicated
+to IoT network scenarios. Furthermore, eight IoT devices were connected to the MQTT
+broker and a set of 33 different features were extracted and provided to various machine
+learning algorithms. Similarly, MQTT-IoT-IDS (2020) [44] is another contribution focused
+on producing a dataset using a lightweight protocol, i.e., MQTT, which is used in IoT
+networks. The authors focus on replicating a realistic IoT network by using a camera feed,
+twelve MQTT sensors, and a broker. Five scenarios are considered based on the variation in
+the attacks performed. Several packet-based, uni-, and bi-ﬂow features are used alongside
+six different machine learning algorithms in the evaluation phase.
+In [45], the authors proposed a new telemetry-based data-driven IoT/IIoT dataset
+called TON-IoT (2020). This heterogeneous dataset comprises both normal and attack
+samples captured in different scenarios. Targeting the development of a realistic dataset,
+the authors include attack sub-categories, data recorded from operating system logs, and
+network trafﬁc. Several machine learning and deep learning algorithms are used in the
+evaluation phase and the achieved results are reported in detail. Finally, the Edge-IIoTSet
+(2022) dataset is introduced as a realistic cybersecurity resource for IoT and IIoT applica-
+tions to enable the development of Intrusion Detection Systems (IDS) in centralized and
+distributed applications [46]. Throughout the paper, an in-depth description of the testbed
+used is presented. In addition, the authors also describe the dataset generation framework.
+Regarding the machine learning evaluation process, centralized and federated learning
+considerations are presented.
+3. The Proposed CICIoT2023
+This section introduces the CICIot2023 dataset. We aim to present an in-depth descrip-
+tion of all steps and resources involved in producing this dataset. First, we describe the
+CIC IoT Lab. Then, we focus on the IoT topology, listing all IoT and network devices used
+Sensors 2023, 23, 5941 4 of 26
+and how they are connected. Then, we present a discussion on all attacks that have been
+executed. Finally, we provide insights into how the data were collected for benign and
+malicious scenarios.
+3.1. IoT Lab
+The production of IoT security data that can be used to support real applications is
+challenging for several reasons. One of the main problems is having an extensive network
+composed of several real IoT devices, similar to topologies of real IoT applications. Many
+works adopt simulated or very few IoT devices due to costs, network equipment required
+(e.g., switches, routers, and network tap), and personnel dedicated to maintaining such an
+infrastructure.
+Thereupon, the Canadian Institute for Cybersecurity (CIC) has a distinguished pres-
+ence in the cybersecurity ecosystem and a history of high-impact contributions to industry
+and academia. Examples are datasets used to develop new cybersecurity applications and
+several partnerships with the industry to improve the cybersecurity practice and develop
+new solutions. This success enabled CIC to establish an IoT lab with a dedicated network
+to foster the development of IoT security solutions. In fact, by sharing the data collected
+from this extensive topology, we intend to foster the advancement of IoT security research
+and support several initiatives in different IoT security aspects.
+Figure 1 shows the IoT lab at the CIC and its devices. Indeed, IoT devices are dis-
+tributed across the lab, in which some of them are placed on the table, others on the ﬂoor,
+and some on the walls. We adopt a local network topology and several power plugs are
+available in the lab. Additionally, there are racks and storage rooms in order to organize
+the IoT and network devices.
+Figure 1. CIC IoT Lab.
+3.2. IoT Topology
+The IoT topology deployed to produce the CICIoT2023 is illustrated in Figure 2 and
+comprises 105 IoT devices. A total of 67 IoT devices were directly involved in the attacks
+and other 38 Zigbee and Z-Wave devices were connected to ﬁve hubs.
+This topology mimics a real-world deployment of IoT products and services in a smart
+home environment. The devices list includes smart home devices, cameras, sensors, and
+micro-controllers which are connected and conﬁgured to enable the execution of several
+attacks and capture the corresponding attack trafﬁc. The lab is also equipped with various
+tools and software, which enable us to perform several attacks and capture both benign
+and malicious attack trafﬁc.
+This topology is divided into two parts. In the ﬁrst part, an ASUS router connects
+the network to the Internet and a Windows 10 Desktop computer shares this connectivity.
+In addition, a Cisco switch is placed between this computer and a VeraPlus access point
+connecting 7 Raspberry Pi devices. These devices are responsible for executing the attacks
+and malicious activities in the experiments. Using IoT devices as malicious agents is a
+Sensors 2023, 23, 5941 5 of 26
+CICIoT2023 characteristic not found in other efforts. Then, the Cisco switch is connected
+to the second part through a Gigamon Network Tap. This network device collects all the
+IoT trafﬁc and sends it to two network monitors, which are responsible for storing the
+trafﬁc using wireshark [ 47]. In fact, a network tap is a hardware device that allows for
+monitoring and analyzing network trafﬁc by connecting to a network cable and providing
+a copy of the trafﬁc to other monitoring and security tools. Network taps are connected in a
+way so as not to affect the normal operation and provide a full-duplex, non-intrusive, and
+passive way of accessing network trafﬁc, without introducing any latency or affecting the
+performance of the network. This device has two network and two monitoring ports and is
+placed between the attacking and legitimate devices, connecting one port to the attackers
+and the other to the victim networks. Using the monitor ports, we are able to capture the
+trafﬁc to and from the IoT network.
+Figure 2. IoT network topology used in the experiments.
+In the second part, a Netgear Unmanaged Switch is connected to ﬁve gateways and
+base stations to enable communication with IoT devices with protocols such as Zigbee
+and Z-Wave. Furthermore, another VeraPlus controller is connected to the switch. This
+controller is also connected to other two Zigbee/Z-Wave hubs and to several devices
+considered victims in the attacks performed. The list of all IoT devices used in this dataset
+is presented in Table 1. Note that Zigbee and Z-wave devices do not have a MAC address
+and are labeled as “Not Applicable” (N/A) for that particular column.
+Sensors 2023, 23, 5941 6 of 26
+Table 1. List of IoT devices used to produce the dataset.
+Device Name Category MAC Address Device Name Category MAC Address
+Amazon Alexa Echo Dot 1 Audio 1C:FE:2B:98:16:DD Lumiman bulb Lighting 84:E3:42:42:ED:0B
+Amazon Alexa Echo Dot 2 Audio A0:D0:DC:C4:08:FF Philips Hue Bridge Hub 00:17:88:60:D6:4F
+Amazon Alexa Echo Spot Audio 1C:12:B0:9B:0C:EC Smart Board Home Automation 00:02:75:F6:E3:CB
+Amazon Alexa Echo Studio Audio 08:7C:39:CE:6E:2A Teckin Light Strip Lighting 18:69:D8:EB:D4:3E
+Amazon Echo Show Audio 2C:71:FF:05:F1:15 Teckin Plug 1 Power Outlet D4:A6:51:76:06:64
+Google Nest Mini Speaker Audio CC:F4:11:9C:D0:00 Teckin Plug 2 Power Outlet D4:A6:51:78:97:4E
+harman kardon (Ampak Technology) Audio B0:F1:EC:D3:E7:98 Wemo smart plug 1 (Wemo id: Wemo.Mini.AD3) Power Outlet 30:23:03:F3:84:2B
+Sonos One Speaker Audio 48:A6:B8:F9:1B:88 Wemo smart plug 2 (Wemo id: Wemo.Mini.4A3) Power Outlet 30:23:03:F3:57:CB
+AMCREST WiFi Camera Camera 9C:8E:CD:1D:AB:9F Yutron Plug 1 Power Outlet D4:A6:51:20:91:D1
+Arlo Base Station Camera 3C:37:86:6F:B9:51 Yutron Plug 2 Power Outlet D4:A6:51:21:6C:29
+Arlo Q Indoor Camera Camera 40:5D:82:35:14:C8 LG Smart TV Home Automation AC:F1:08:4E:00:82
+Borun/Sichuan-AI Camera Camera C0:E7:BF:0A:79:D1 Netatmo Weather Station Home Automation 70:EE:50:6B:A8:1A
+DCS8000LHA1 D-Link Mini Camera Camera B0:C5:54:59:2E:99 Raspberry Pi 4—2 GB NextGen DC:A6:32:C9:E6:F4
+HeimVision Smart WiFi Camera Camera 44:01:BB:EC:10:4A Raspberry Pi 4—2 GB NextGen DC:A6:32:C9: E4:C6
+Home Eye Camera Camera 34:75:63:73:F3:36 Raspberry Pi 4—2 GB NextGen DC:A6:32:C9:E5:02
+Luohe Cam Dog Camera 7C:A7:B0:CD:18:32 Fibaro Door/Window Sensor 1 Sensor N/A
+Nest Indoor Camera Camera 44:BB:3B:00:39:07 Fibaro Door/Window Sensor 2 Sensor N/A
+Victms
+Netatmo Camera Camera 70:EE:50:68:0E:32 Fibaro Door/Window Sensor 3 Sensor N/A
+Rbcior Camera Camera 10:5A:17:97:A5:C6 Fibaro Flood Sensor 1 Sensor N/A
+SIMCAM 1S (AMPAKTec) Camera 10:2C:6B:1B:43:BE Fibaro Flood Sensor 2 Sensor N/A
+TP-Link Tapo Camera Camera 6C:5A:B0:44:1D:90 Fibaro Motion Sensor 1 Sensor N/A
+Wyze Camera Camera 7C:78:B2:86:0D:81 Fibaro Motion Sensor 2 Sensor N/A
+Yi Indoor Camera Camera 84:7A:B6:64:62:58 Fibaro Motion Sensor 3 Sensor N/A
+Yi Indoor 2 Camera Camera 84:7A:B6:62:3A:6C Fibaro Motion Sensor 4 Sensor N/A
+Yi Outdoor Camera Camera 2C:D2:6B:66:D2:87 Fibaro Motion Sensor 5 Sensor N/A
+Eufy HomeBase 2 Hub 8C:85:80:6C:B6:47 Fibaro Wall Plug 1 Power Outlet N/A
+Amazon Plug Power Outlet B8:5F:98:D0:76:E6 Fibaro Wall Plug 2 Power Outlet N/A
+Atomi Coffee Maker Home Automation 68:57:2D:56:AC:47 Ring Alarm Keypad Home Automation N/A
+Cocoon Smart HVAC Fan Home Automation 08:3A:F2:1F:BC:68 Ring Range Extender Home Automation N/A
+Globe Lamp ESP_B1680C Lighting 50:02:91:B1:68:0C Ring Contact Sensor (1) Sensor N/A
+GoSund Bulb Lighting C4:DD:57:13:07:C6 Ring Contact Sensor (2) Sensor N/A
+Sensors 2023, 23, 5941 7 of 26
+Table 1. Cont.
+Device Name Category MAC Address Device Name Category MAC Address
+Gosund Power strip (1) Power Outlet 50:02:91:1A:CE:E1 AeoTec TriSensor Sensor N/A
+GoSund Power strip (2) Power Outlet B8:F0:09:03:9A:AF AeoTec Doorbell 6 Home Automation N/A
+GoSund Smart plug WP2 (1) Power Outlet B8:F0:09:03:29:79 AeoTec Indoor Siren Home Automation N/A
+GoSund Smart Plug WP2 (2) Power Outlet 50:02:91:10:AC:D8 AeoTec Smart Switch 7 Home Automation N/A
+GoSund Smart plug WP2 (3) Power Outlet 50:02:91:10:09:8F AeoTec Water Sensor 6 Sensor N/A
+GoSund Smart Plug WP3 (1) Power Outlet C4:DD:57:0C:39:94 AeoTec NanoMote Quad Home Automation N/A
+Gosund Smart Plug WP3 (2) Power Outlet 24:A1:60:14:7F:F9 AeoTec Door/Window Sensor 7 Pro Sensor N/A
+Govee Smart Humidifer Home Automation D4:AD:FC:29:C8:A2 AeoTec Temperature and Humidity Sensor Sensor N/A
+HeimVision SmartLife Radio/Lamp Lighting D4:A6:51:30:64:B7 Philips Hue White 1 Lighting N/A
+iRobot Roomba Home Automation 50:14:79:37:80:18 Philips Hue White 2 Lighting N/A
+LampUX RGB Lighting F4:CF:A2:34:48:6B SmartThings Smart Bulb 1 Lighting N/A
+Levoit Air Puriﬁer Home Automation 1C:9D:C2:8C:9A:94 SmartThings Smart Bulb 2 Lighting N/A
+LIFX Lightbulb Lighting D0:73:D5:35:FB:C8 Aeotec Button Home Automation N/A
+SmartThings Hub Hub 28:6D:97:7A:2B:2D AeoTec Motion Sensor Sensor N/A
+AeoTec Smart Home Hub Hub 28:6D:97:9E:F4:D5 AeoTec Multipurpose Sensor Sensor N/A
+Sengled Smart Plug 2 Power Outlet N/A AeoTec Water Leak Sensor Sensor N/A
+SmartThings Button Home Automation N/A Sengled Smart Plug 1 Power Outlet N/A
+SmartThings Smart Bulb 3 Lighting N/A Sonoff Smart Plug 2 Power Outlet N/A
+Sonoff Smart Plug 1 Power Outlet N/A Arlo Ultra 2 Outdoor Camera Camera N/A
+Raspberry Pi 4—4 GB NextGen E4:5F:01:55:90:C4 Raspberry Pi 4—2 GB NextGen DC:A6:32:C9:E4:D5
+Raspberry Pi 4—8 GB NextGen DC:A6:32:DC:27:D5 Raspberry Pi 4—2 GB NextGen DC:A6:32:C9:E5:EF
+Raspberry Pi 4—2 GB NextGen DC:A6:32:C9:E4:AB Raspberry Pi 4—2 GB NextGen DC:A6:32:C9:E4:90
+Raspberry Pi 4—2 GB NextGen DC:A6:32:C9:E5:A4 Ring Base Station Hub B0:09:DA:3E:82:6C
+Attackers
+Fibaro Home Center Lite Hub AC:17:02:05:34:27 Eufy Doorbell Camera Camera N/A
+Sensors 2023, 23, 5941 8 of 26
+3.3. Data Collection of Benign and Malicious Scenarios
+As described in Section 3.2, a network tap and two trafﬁc monitors are dedicated to
+monitoring the network trafﬁc. Every packet sent through the network is stored in separate
+computers. In fact, the network has two different interfaces, which are associated with two
+other monitoring ports that send incoming packets to these computers. Hence, the network
+trafﬁc is monitored using Wireshark [47] and stored in pcap format. Since two data streams
+are stored, mergecap [48] is used to unify pcap ﬁles for each experiment.
+For each attack, a different experiment is performed targeting all applicable devices.
+In all scenarios, the attacks are performed by malicious IoT devices targeting vulnerable IoT
+devices. For example, DDoS attacks are executed against all devices, whereas web-based
+attacks target devices that support web applications. Table 2 depicts the tools used to
+perform all attacks alongside the number of rows generated. In addition, Figures 3 and 4
+illustrate the instances count for each attack and category. The values are also presented in
+Table 3.
+Table 2. CICIoT2023: tools and frameworks used to execute attacks.
+Attack Rows Tool
+ACK Fragmentation 285,104 hping3 [49]
+UDP Flood 5,412,287 udp-ﬂood [50]
+SlowLoris 23,426 slowloris [51]
+ICMP Flood 7,200,504 hping3 [49]
+RSTFIN Flood 4,045,285 hping3 [49]
+PSHACK Flood 4,094,755 hping3 [49]
+HTTP Flood 28,790 golang-httpﬂood [52]
+UDP Fragmentation 286,925 udp-ﬂood [50]
+ICMP Fragmentation 452,489 hping3 [49]
+TCP Flood 4,497,667 hping3 [49]
+SYN Flood 4,059,190 hping3 [49]
+DDoS
+SynonymousIP Flood 3,598,138 hping3 [49]
+TCP Flood 2,671,445 hping3 [49]
+HTTP Flood 71,864 golang-httpﬂood [52]
+SYN Flood 2,028,834 hping3 [49]DoS
+UDP Flood 3,318,595 hping3 [49] and udp-ﬂood [50]
+Ping Sweep 2262 nmap [53] and fping [54]
+OS Scan 98,259 nmap [53]
+Vulnerability Scan 37,382 nmap [53] and vulscan [55]
+Port Scan 82,284 nmap [53]
+Recon
+Host Discovery 134,378 nmap [53]
+Sql Injection 5245 DVWA [56]
+Command Injection 5409 DVWA [56]
+Backdoor Malware 3218 DVWA [56] and Remot3d [57]
+Uploading Attack 1252 DVWA [56]
+XSS 3846 DVWA [56]
+Web-Based
+Browser Hijacking 5859 Beef [58]
+Brute Force Dictionary Brute Force 13,064 nmap [53] and hydra [59]
+Arp Spooﬁng 307,593 ettercap [60]
+Spooﬁng DNS Spooﬁng 178,911 ettercap [60]
+GREIP Flood 751,682 Adapted Mirai Source Code [61]
+Greeth Flood 991,866 Adapted Mirai Source Code [61]Mirai
+UDPPlain 890,576 Adapted Mirai Source Code [61]
+Sensors 2023, 23, 5941 9 of 26
+Table 3. Number of rows for each attack and category.
+Attack Rows Attack Rows Category Rows
+DDoS-ICMP_Flood 7,200,504 DoS-TCP_Flood 2,671,445 DDoS 33,984,560
+DDoS-UDP_Flood 5,412,287 DoS-SYN_Flood 2,028,834 DoS 8,090,738
+DDoS-TCP_Flood 4,497,667 BenignTrafﬁc 1,098,195 Mirai 2,634,124
+DDoS-PSHACK_Flood 4,094,755 Mirai-greeth_ﬂood 991,866 Benign 1,098,195
+DDoS-SYN_Flood 4,059,190 Mirai-udpplain 890,576 Spooﬁng 486,504
+DDoS-RSTFINFlood 4,045,285 Mirai-greip_ﬂood 751,682 Recon 354,565
+DDoS-SynonymousIP_Flood 3,598,138 DDoS-ICMP_Fragmentation 452,489 Web 24,829
+DoS-UDP_Flood 3,318,595 MITM-ArpSpooﬁng 307,593 BruteForce 13,064
+Recon-PingSweep 2262 Uploading_Attack 1252
+DDoS-UDP_Fragmentation 286,925 DDoS-HTTP_Flood 28,790
+DDoS-ACK_Fragmentation 285,104 DDoS-SlowLoris 23,426
+DNS_Spooﬁng 178,911 DictionaryBruteForce 13,064
+Recon-HostDiscovery 134,378 BrowserHijacking 5859
+Recon-OSScan 98,259 CommandInjection 5409
+Recon-PortScan 82,284 SqlInjection 5245
+DoS-HTTP_Flood 71,864 XSS 3846
+VulnerabilityScan 37,382 Backdoor_Malware 3218
+Figure 3. Number of rows for each scenario.
+Figure 4. Number of rows for each category.
+3.3.1. Benign Data Generation
+The benign data represent the legitimate use of the IoT network. In this sense, the
+main goal of the data-capturing procedure relies on gathering IoT trafﬁc in idle states and
+with human interactions (e.g., sensor data, echo dot requests, and accessing video feeds
+from smart cameras).
+In terms of hardware for capturing, we relied on a network tap combined with two
+network monitors. In terms of software used, we adopted Wireshark to capture the entire
+trafﬁc. Furthermore, all IoT devices are conﬁgured with default parameters and without
+malicious or attacking scripts. In this sense, benign data trafﬁc gathering happens when
+there are no attacks. This process was conducted over a period of 16 h.
+Sensors 2023, 23, 5941 10 of 26
+3.3.2. Executing DoS and DDoS Attacks
+These attacks refer to ﬂooding threats to compromise the availability of IoT operations.
+In the case of Denial-of-Service (DoS) attacks, one Raspberry Pi is responsible for ﬂooding
+IoT devices. Furthermore, multiple Raspberry Pis are used to execute Distributed Denial-
+of-Service (DDoS) attacks through an SSH-based master-client conﬁguration. The attacks
+executed are:
+• ACK Fragmentation: a relatively small number of maximum-sized packets is used
+to compromise the network operation. In many cases, these fragmented packets are
+successfully sent and handled by routers, ﬁrewalls, and intrusion prevention systems,
+given that fragmented packets recompilation is not performed [62];
+• Slowloris: relies on using partial HTTP requests via open connections to a targeted
+Web server focusing on the application layer [63];
+• ICMP/HTTP/UDP/TCP Flood: based on overwhelming a targeted device with differ-
+ent packet types [64–66];
+• RST-FIN Flood: degrades networking capabilities by forwarding continuously RST-
+FIN packets towards a speciﬁc target [67];
+• PSH-ACK Flood: degrades server operation by ﬂooding using PUSH and ACK re-
+quests [68];
+• UDP Fragmentation: refers to a special UDP ﬂood that consumes more bandwidth
+while reducing the number of packets [69];
+• ICMP Fragmentation: relies on the use of identical fragmented IP packets containing
+a portion of a fragmented ICMP message [70];
+• SYN Flood: is a speciﬁc type of TCP ﬂood that targets the initial handshake of the
+TCP connection. The SYN ﬂood sends a large number of SYN (synchronize) packets
+to the targeted server, but it never completes the handshake by sending the ﬁnal ACK
+(acknowledge) packet [71];
+• Synonymous IP Flood: an extensive number of manipulated TCP-SYN packets with
+source and destination addresses as the targeted address, which leads the server to
+use its resources to process the incoming trafﬁc [72].
+3.3.3. Gathering Information from the IoT Topology
+These attacks gather all possible information about the target. In addition, an attacker
+can use a reconnaissance (i.e., scan) attack as a preparation step for other attacks. There
+are multiple ways to perform these attacks, and some of the most popular and threatening
+variations are:
+• Ping Sweep: A ping sweep attack, also known as a ping scan, is a type of reconnais-
+sance attack used to identify active hosts on a network. It involves sending a series of
+ICMP (Internet Control Message Protocol) Echo Request (ping) packets to a range of
+IP addresses on a network, and then analyzing the ICMP Echo Reply (pong) packets
+that are returned to identify which hosts are active and responding [73];
+• OS Scan: An OS (operating system) scan attack, also known as an operating system
+ﬁngerprinting attack, is a type of reconnaissance attack that is used to identify the
+type and version of an operating system running on a targeted host. The attacker uses
+various techniques to gather information about the targeted host, such as analyzing the
+responses to network packets, or examining the behavior of open ports and services,
+in order to determine the type and version of the operating system [74];
+• Vulnerability Scan: A vulnerability scan attack is a type of network security assess-
+ment that involves automated tools to identify potential vulnerabilities in a computer
+system or network. The goal of a vulnerability scan is to identify security weaknesses
+that could be exploited by an attacker to gain unauthorized access to a system or steal
+sensitive information [75];
+• Port Scan: A port scan attack is a type of reconnaissance attack that is used to identify
+open and active ports on a targeted host. The attacker sends a series of packets to
+various ports on the targeted host, attempting to establish a connection. The responses
+Sensors 2023, 23, 5941 11 of 26
+to these packets are then analyzed to determine which ports are open, closed, or
+ﬁltered [76].
+• Host Discovery: A host discovery attack, also known as a host identiﬁcation or
+host enumeration attack, is a type of reconnaissance attack that is used to identify
+active hosts on a network. It involves using various techniques to identify the IP
+addresses of devices that are connected to a network, and it is the ﬁrst step in many
+cyber-attacks [77].
+3.3.4. Exploiting Web-Based Vulnerabilities
+When executing these attacks, web services running on IoT devices were targeted.
+Web-based attacks are concerned with targeting web services in several ways. These attack
+types include injection, hijacking, poisoning, spooﬁng, and DoS [78]. The web-based attacks
+executed in this research are:
+• SQL Injection: an attack that targets web applications by injecting malicious SQL
+code into the application’s input ﬁelds. The goal of an SQL injection attack is to gain
+unauthorized access to a database, steal sensitive information, or execute arbitrary
+commands on the database server [79];
+• Command Injection: an attack that targets web applications by injecting malicious
+commands into an input ﬁeld with the ultimate goal of gaining unauthorized access
+to a system, stealing sensitive information, or executing arbitrary commands on the
+targeted system [80];
+• Backdoor Malware: involves installing malware on a targeted system that allows
+the attacker to gain unauthorized access to the system at a later time. The malware,
+known as a “backdoor,” creates a hidden entry point into the system that can be
+used to bypass security measures and gain access to sensitive information or perform
+malicious actions [81];
+• Uploading Attack: targets a web application by exploiting vulnerabilities in the ap-
+plication’s ﬁle upload functionality. The goal of an uploading attack is to upload
+malicious ﬁles, such as malware, to a targeted system and use them to gain unautho-
+rized access or execute arbitrary code on the targeted system;
+• Cross-Site Scripting (XSS): allows an attacker to inject malicious code (e.g., a script)
+into a web page. The injected script can then be executed by the web browser of any
+user with access to the page, allowing the attacker to steal sensitive information (e.g.,
+cookies, session tokens, and personal data) or to perform other malicious activities
+(e.g., trafﬁc redirection) [82];
+• Browser Hijacking: a type of cyber attack in which an attacker modiﬁes a web
+browser’s settings, such as the home page, default search engine, or bookmarks in
+order to redirect the user to a different website or display unwanted ads. The goal
+of a browser hijacking attack is to generate revenue through advertising or to steal
+personal information [83].
+3.3.5. Spooﬁng Communication
+Spooﬁng attacks enable malicious actors to operate under the identity of a victim
+system and gain illegitimate access to the network trafﬁc. The main focus of such a
+procedure includes gaining access to systems, stealing data, and spreading malware [84].
+Two of the most popular spooﬁng attacks are:
+• ARP spooﬁng: relies on the transmission of manipulated ARP (Address Resolution
+Protocol) messages to associate the MAC address of the malicious device with the
+IP address of some other legitimate device in the network. This enables attackers to
+intercept, modify, or block network trafﬁc [85];
+• DNS spooﬁng: relies on the alteration of DNS entries in a DNS server’s cache, redi-
+recting users to manipulated or malicious websites. This enables attackers to steal
+sensitive information, spread malware, and perform other malicious actions [86].
+Sensors 2023, 23, 5941 12 of 26
+3.3.6. Brute-Force Threats
+Brute-force attacks consist of the submission of data (e.g., passwords or passphrases) to
+eventually gain access to systems [87]. Among the several procedures that can be executed,
+a dictionary brute-force attack is a type of attack that attempts to guess a password or
+passphrase by repeatedly trying words from a pre-deﬁned list of words obtained from
+various sources. The goal of the attack is to ﬁnd the correct password by trying all the
+words in the dictionary [88].
+3.3.7. Mirai as an IoT Threat
+The Mirai attack is a large-scale DDoS that can target IoT devices. In this paper, we
+are conducting different variations of Mirai attacks by using ﬁve different raspberries, as
+illustrated in Figure 5, alongside the connections considered in the different IoT network
+layers. In order to connect to the Internet, a gateway uses a Windows 10 instance to
+provide and monitor Internet access. This access is possible through a Netgear unmanaged
+switch that connects attackers and general IoT devices. Several tools are used to perform
+the attacks and a special Mirai conﬁguration is also adopted. An online IoT supervisor
+coordinates the operation of the multiple IoT devices in the topology (e.g., sensors, cameras,
+and smart speakers). Finally, some other works do not consider Mirai in their attack set. In
+fact, we focus on several attacks that can be executed against IoT devices, and we consider
+the analysis and execution of new IoT attacks in the future directions of this research (e.g.,
+attacks using future protocols).
+Figure 5. Basic attack framework for the dataset.
+Sensors 2023, 23, 5941 13 of 26
+This attack infected devices to form a botnet that can ﬂood targeted victims. This threat
+can cause disruption in different contexts and some of its most popular variations are:
+• GREIP: Within the GRE packet, this attack ﬂoods the target system with encapsulated
+packets. The internal data comprise random IPs and ports, whereas the external layer
+contains actual IPs [89];
+• GREETH: This attack presents a similar procedure to GREIP . However, the main focus
+is on the packet encapsulation approach, which is based on the ethernet header [89];
+• UDP Plain: This threat focuses on ﬂooding targeted victim systems with UDP packets
+considering a repeated packet segment. However, the payload sent is different for
+each packet [89].
+4. Feature Extraction and Data Description
+The CICIoT2023 dataset is available in two different ﬁle formats: pcap and csv. Pcap
+ﬁles comprise the original data generated and collected in the CIC IoT network in different
+scenarios. These ﬁles contain all packets sent and can be used to extract and engineer
+other features. Furthermore, csv ﬁles present a simpler way of loading and using the data.
+Those ﬁles are composed of features extracted from the original pcap ﬁles summarized by
+a ﬁxed-size packet window. In other words, the features are extracted from a sequence of
+packets carrying information between two hosts.
+The method adopted to produce the dataset is illustrated in Figure 6. Firstly, the data
+are generated (i.e., captured), extracted, and labeled. This refers to the initial step, in which
+the actual attacks are executed against IoT devices. Then, the data are processed in a way
+to enable researchers to access the data generated easily. Finally, we conduct a machine
+learning (ML) evaluation to show how classiﬁcation capabilities can be leveraged by the
+proposed dataset.
+Figure 6. Method adopted to produce the dataset.
+Figure 7 illustrates how the data generation, extraction, and labeling are conducted
+for each attack scenario (and benign scenario). The ﬁrst phase relies on the use of different
+tools presented in Table 2 to execute attacks against IoT devices in the network. After that,
+the network trafﬁc is captured in pcap format using Wireshark. Finally, for each attack
+executed, the entire trafﬁc captured is labeled as belonging to that particular attack.
+Figure 7. Method adopted to produce the dataset.
+Regarding the data processing step, illustrated in Figure 8, the network trafﬁc data
+composed of captures of all attacks alongside benign trafﬁc are used. As it represents
+about 548 GB worth of trafﬁc data, we split it into smaller chunks of 10 MB to perform
+the conversion in parallel. This process is conducted using TCPDUMP [90]. After that, a
+parallel procedure is executed to extract several features using the DPKT package [91] and
+store them in separate csv ﬁles. These features are described in Table 4. In this process,
+DPKT is used to enable a ﬂexible feature extraction procedure considering important
+attributes of the IoT operation highlighted in previous works. Conversely, other tools
+can also be used to extract features, e.g., CICFlowMeter [ 92] and Nfstream [93]. In this
+stage, we also perform the data cleaning by removing incomplete packets (i.e., packets that
+Sensors 2023, 23, 5941 14 of 26
+present null features). In our experiments, we only remove the timestamp from the list
+since it does not illustrate the network behavior—instead, it is used for sorting. In this case,
+all other features are directly used to evaluate how different ML models perform in such
+circumstances.
+Figure 8. Data processing: converting pcap ﬁles to csv.
+These features are extracted based on proposals present in the literature regarding
+IoT security [8,46]. In fact, although these features have been used and validated in other
+efforts, our main goal is to present a ﬂexible approach to training ML models with multiple
+features. Thus, several other features can be extracted or engineered based on the scripts
+used in this research as well as the raw network trafﬁc (i.e., pcap ﬁles).
+With the extracted features, we group the values captured in window sizes of 10 (i.e.,
+Backdoor Malware, Benign Trafﬁc, Browser Hijacking, Command Injection, Dictionary
+brute force, DNS spooﬁng, MITM ARP spooﬁng, Host Discovery, OS Scan, Ping Sweep,
+Port Scan, SQL Injection, Uploading Attack, Vulnerability Scan, and XSS) and 100 (DDoS
+ACK Fragmentation, DDoS HTTP Flood, DDoS ICMP Flood, DDoS ICMP Fragmentation,
+DDoS PSHACK Flood, DDoS RSTFIN Flood, DDoS SlowLoris, DDoS SYN Flood, DDoS
+SynonymousIP Flood, DDoS TCP Flood, DDoS UDP Flood, DDoS UDP Fragmentation, DoS
+HTTP Flood, DoS SYN Flood, DoS TCP Flood, DoS UDP Flood, Mirai GREIP Flood, Mirai
+Greeth Flood, and Mirai UDPPlain) packets to mitigate data size discrepancy (e.g., DDoS
+and CommandInjection) and calculate their mean values using Pandas [94] and Numpy [95].
+Finally, we combine all subﬁles into a processed csv dataset using Pandas. Thereupon, the
+resulting csv datasets represent the combination of features of each data chunk.
+Moreover, each attack conducted in this research presents different characteristics. For
+example, the network trafﬁc generated by a DDoS attack tends to be larger than the network
+trafﬁc generated by a spooﬁng attack. Indeed, these differences can also be observed in
+other features of the dataset. Table 4 lists all features provided in the dataset, which Table 5
+presents the characteristics of these features. For each feature in the entire dataset, we
+present the mean, standard deviation (std), minimum (min), 25th percentile (25%), median
+(50%), 75th percentile (75%), and maximum (max) values.
+Sensors 2023, 23, 5941 15 of 26
+Table 4. Features extracted from the network trafﬁc.
+# Feature Description
+1 ts Timestamp
+2 ﬂow duration Duration of the packet’s ﬂow
+3 Header Length Header Length
+4 Protocol Type IP , UDP , TCP , IGMP , ICMP , Unknown (Integers)
+5 Duration Time-to-Live (ttl)
+6 Rate Rate of packet transmission in a ﬂow
+7 Srate Rate of outbound packets transmission in a ﬂow
+8 Drate, Rate of inbound packets transmission in a ﬂow
+9 ﬁn ﬂag number Fin ﬂag value
+10 syn ﬂag number Syn ﬂag value
+11 rst ﬂag number Rst ﬂag value
+12 psh ﬂag numbe Psh ﬂag value
+13 ack ﬂag number Ack ﬂag value
+14 ece ﬂag numbe Ece ﬂag value
+15 cwr ﬂag number Cwr ﬂag value
+16 ack count Number of packets with ack ﬂag set in the same ﬂow
+17 syn count Number of packets with syn ﬂag set in the same ﬂow
+18 ﬁn count Number of packets with ﬁn ﬂag set in the same ﬂow
+19 urg coun Number of packets with urg ﬂag set in the same ﬂow
+20 rst count Number of packets with rst ﬂag set in the same ﬂow
+21 HTTP Indicates if the application layer protocol is HTTP
+22 HTTPS Indicates if the application layer protocol is HTTPS
+23 DNS Indicates if the application layer protocol is DNS
+24 Telnet Indicates if the application layer protocol is Telnet
+25 SMTP Indicates if the application layer protocol is SMTP
+26 SSH Indicates if the application layer protocol is SSH
+27 IRC Indicates if the application layer protocol is IRC
+28 TCP Indicates if the transport layer protocol is TCP
+29 UDP Indicates if the transport layer protocol is UDP
+30 DHCP Indicates if the application layer protocol is DHCP
+31 ARP Indicates if the link layer protocol is ARP
+32 ICMP Indicates if the network layer protocol is ICMP
+33 IPv Indicates if the network layer protocol is IP
+34 LLC Indicates if the link layer protocol is LLC
+35 Tot sum Summation of packets lengths in ﬂow
+36 Min Minimum packet length in the ﬂow
+37 Max Maximumpacket length in the ﬂow
+38 AVG Average packet length in the ﬂow
+39 Std Standard deviation of packet length in the ﬂow
+40 Tot size Packet’s length
+41 IAT The time difference with the previous packet
+42 Number The number of packets in the ﬂow
+43 Magnitude (Average of the lengths of incoming packets in the ﬂow +
+average of the lengths of outgoing packets in the ﬂow) 0.5
+44 Radius (Variance of the lengths of incoming packets in the ﬂow +
+variance of the lengths of outgoing packets in the ﬂow) 0.5
+45 Covariance Covariance of the lengths of incoming and outgoing packets
+46 Variance Variance of the lengths of incoming packets in the ﬂow/
+variance of the lengths of outgoing packets in the ﬂow
+47 Weight Number of incoming packets × Number of outgoing packets
+Sensors 2023, 23, 5941 16 of 26
+Table 5. Dataset description.
+Feature Mean Std Min 25% 50% 75% Max
+ﬂow_duration 5.76544939 285.034171 0 0 0 0.10513809 394,357.207
+Header_Length 76,705.9637 461,331.747 0 54 54 280.555 9,907,147.75
+Protocol Type 9.06568989 8.94553292 0 6 6 14.33 47
+Duration 66.3507169 14.0191881 0 64 64 64 255
+Rate 9064.05724 99,562.4906 0 2.09185589 15.7542308 117.384754 8,388,608
+Srate 9064.05724 99,562.4906 0 2.09185589 15.7542308 117.384754 8,388,608
+Drate 5.46 × 10−6 0.00725077 0 0 0 0 29.7152249
+ﬁn_ﬂag_number 0.08657207 0.28120696 0 0 0 0 1
+syn_ﬂag_number 0.20733528 0.40539779 0 0 0 0 1
+rst_ﬂag_number 0.09050473 0.28690351 0 0 0 0 1
+psh_ﬂag_number 0.08775006 0.28293106 0 0 0 0 1
+ack_ﬂag_number 0.12343168 0.32893207 0 0 0 0 1
+ece_ﬂag_number 1.48 × 10−6 0.00121571 0 0 0 0 1
+cwr_ﬂag_number 7.28 × 10−7 0.00085338 0 0 0 0 1
+ack_count 0.09054283 0.28643144 0 0 0 0 7.7
+syn_count 0.33035785 0.6635354 0 0 0 0.06 12.87
+ﬁn_count 0.09907672 0.32711642 0 0 0 0 248.32
+urg_count 6.23982356 71.8524536 0 0 0 0 4401.7
+rst_count 38.4681213 325.384658 0 0 0 0.01 9613
+HTTP 0.04823423 0.21426079 0 0 0 0 1
+HTTPS 0.05509922 0.22817383 0 0 0 0 1
+DNS 0.00013068 0.01143079 0 0 0 0 1
+Telnet 2.14 × 10−8 0.00014635 0 0 0 0 1
+SMTP 6.43 × 10−8 0.00025349 0 0 0 0 1
+SSH 4.09 × 10−5 0.00639772 0 0 0 0 1
+IRC 1.50 × 10−7 0.00038722 0 0 0 0 1
+TCP 0.57383427 0.49451846 0 0 1 1 1
+UDP 0.21191758 0.40866676 0 0 0 0 1
+DHCP 1.71 × 10−6 0.00130903 0 0 0 0 1
+ARP 6.62 × 10−5 0.00813521 0 0 0 0 1
+ICMP 0.16372157 0.37002273 0 0 0 0 1
+IPv 0.99988731 0.01061485 0 1 1 1 1
+LLC 0.99988731 0.01061485 0 1 1 1 1
+Tot sum 1308.32257 2613.30273 42 525 567 567.54 127,335.8
+Min 91.6073456 139.695326 42 50 54 54 13,583
+Max 181.963418 524.030902 42 50 54 55.26 49,014
+A VG 124.668815 240.991485 42 50 54 54.0497296 13,583
+Std 33.3248065 160.335722 0 0 0 0.37190955 12,385.2391
+Tot size 124.691567 241.549341 42 50 54 54.06 135,83
+IAT 83,182,525.9 17,047,351.7 0 83,071,566 83,124,522.4 83,343,908 167,639,436
+Number 9.49848933 0.81915318 1 9.5 9.5 9.5 15
+Magnitue 13.12182 8.62857895 9.16515139 10 10.3923048 10.3967148 164.821115
+Radius 47.0949848 226.769647 0 0 0 0.50592128 17,551.2708
+Covariance 30,724.3565 323,710.68 0 0 0 1.34421569 154,902,159
+Variance 0.0964376 0.233001 0 0 0 0.08 1
+Weight 141.51237 21.0683073 1 141.55 141.55 141.55 244.6
+5. Machine Learning (ML) Evaluation
+In order to demonstrate how the CICIoT2023 dataset can be used to train machine
+learning (ML)-based attack detection and classiﬁcation methods, Figure 9 illustrates the
+ML evaluation pipeline adopted in this research. Firstly, we combine all datasets produced
+following the procedure presented in Figure 8. In this sense, malicious and benign trafﬁcs
+Sensors 2023, 23, 5941 17 of 26
+are combined and shufﬂed into a single dataset (i.e., blended dataset) using PySpark [96].
+Once the data are integrated, we evaluate ML performance from three different perspec-
+tives: (i) multiclass classiﬁcation, focussing on classifying 33 individual attacks; (ii) grouped
+classiﬁcation, considering 7 attack groups (e.g., DDoS and DoS); and (iii) binary classiﬁca-
+tion (i.e., malicious and benign trafﬁc classiﬁcation). In each case, the dataset is divided
+into the train (80%) and test (20%) sets, which are normalized using the StandardScaler
+method [97] before the actual training process. Finally, the results obtained are summarized
+as integrated results.
+Figure 9. Machine learning (ML) evaluation pipeline adopted in this research.
+5.1. Metrics
+The evaluation of different ML models and conﬁgurations is conducted based on
+evaluation metrics. Given that TP represents the True Positives, TN the True Negatives, FP
+the False Positive, and FN the False Negatives, the metrics used in this research are [98]:
+• Accuracy: responsible for evaluating the classiﬁcation models by depicting the propor-
+tion of correct predictions in a given dataset and is based on the following expression:
+Acc = TP + TN
+TP + TN + FP + FN (1)
+• Recall: the ratio of correctly identiﬁed labels to the total number of occurrences of that
+particular label:
+Rec = TP
+TP + FN (2)
+• Precision: the ratio of correctly identiﬁed labels to the total number of positive classi-
+ﬁcations:
+Pre = TP
+TP + FP (3)
+• F1-Score: geometric average of precision and recall:
+F1 = 2 × Pre × Rec
+Pre + Rec (4)
+5.2. Evaluation
+In the evaluation process, we adopted ﬁve ML methods that have been successfully
+used in different applications, including cybersecurity: Logistic Regression [99], Percep-
+tron [100], Adaboost [ 101–103], Random Forest [ 104], and Deep Neural Network [ 105].
+Figure 10 illustrates the performance of all methods when framing the classiﬁcation prob-
+lem as binary (i.e., malicious and benign), multiclass with 8 classes (i.e., benign and attack
+Sensors 2023, 23, 5941 18 of 26
+categories), and multiclass with 34 classes (i.e., benign and all individual attacks). These
+results are also depicted in Table 6.
+Figure 10. Results obtained in the classiﬁcation process conducted using different machine learn-
+ing models.
+For the binary classiﬁcation, the results show that all methods present high perfor-
+mance, whereas accuracy is a metric that all methods reach over 98%, and the F1-score
+highlights the difference among these approaches. For example, Perceptron achieves 81%,
+showing that it suffers since the minority class (i.e., benign) is misclassiﬁed more often. In
+the classiﬁcation of attack groups (i.e., eight classes), the overall performance is degraded
+since the classiﬁcation task becomes more challenging. The Logistic Regression, Perceptron,
+and Adaboost methods show a signiﬁcant decrease in accuracy. This impact is even more
+Sensors 2023, 23, 5941 19 of 26
+perceptible for F1-score. However, both Random Forest and Deep Neural Network are
+able to maintain high accuracy and F-1 score. These methods also present a decrease in
+performance but are capable of achieving F1 scores of 70%.
+Table 6. Results obtained in the classiﬁcation process conducted using different machine learning
+models (illustrated in Figure 10).
+Metric Logistic
+Regression Perceptron Adaboost Random Forest
+(RF)
+Deep Neural
+Network (DNN)
+Accuracy 0.80231507 0.8195961 0.607888 0.99164365 0.986118011
+Recall 0.59520185 0.507506 0.607675 0.831586401 0.731868794
+Precision 0.486752461 0.454634 0.479621 0.704492066 0.66529512634 classes
+F1-score 0.49388408 0.4472933 0.473498 0.714021981 0.672346883
+Accuracy 0.831674188 0.8663152 0.351357 0.994368173 0.991147043
+Recall 0.696055597 0.6591315 0.487789 0.91001105 0.906642708
+Precision 0.512409686 0.5239188 0.464924 0.705407564 0.6794347468 classes
+F1-score 0.539424048 0.5551339 0.368663 0.71928904 0.69726491
+Accuracy 0.989023188 0.9817525 0.995899 0.99680798 0.994422814
+Recall 0.890400624 0.7970288 0.947303 0.965163906 0.933277496
+Precision 0.863157959 0.825432 0.965631 0.965395244 0.9475794862 classes
+F1-score 0.876258983 0.8105374 0.956273 0.965279544 0.940305998
+Finally, the most challenging classiﬁcation task is represented by a multiclass classiﬁ-
+cation of individual attacks (i.e., 34 classes). In this scenario, both Random Forest and Deep
+Neural Network could maintain high accuracy with very similar results. The same applies
+to F1-score since a slight reduction was perceived (around 1%) compared to the eight-class
+challenge. Furthermore, this case study shows that the Logistic Regression, Perceptron, and
+Adaboost methods are not able to categorize attacks as efﬁciently, given that the average
+accuracy is below 80% and F1-score is less than 50% in all cases.
+These results show how ML methods can be used to classify attacks against IoT opera-
+tions. In fact, this is a starting point that can be considered in any ML-based cybersecurity
+solutions for IoT operations. This effort not only highlights that the use of other ML
+methods is possible (e.g., optimized methods), but also enables the adoption of similar
+strategies to solve IoT-speciﬁc problems. Finally, although we are focussing on 33 different
+attacks, future directions could also be tailored to address issues related to individual
+attacks or categories.
+5.3. Discussion
+To illustrate how these models are performing for each class, Tables 7 and 8 show the
+confusion matrix for Random Forest and Deep Neural Networks in the case of multiclass
+classiﬁcation (eight classes).
+Table 7. Confusion matrix for Deep Neural Network in the case of multiclass classiﬁcation (8 classes).
+Benign Brute Force DDoS DoS Mirai Recon Spooﬁng Web
+Benign 230,229 1 7 2 0 9270 3812 1
+Brute Force 1054 438 3 0 0 1216 271 1
+DDoS 23 0 7,523,853 1012 545 653 65 0
+DoS 15 0 4933 1,787,065 60 61 33 0
+Mirai 10 0 258 41 583,283 64 21 0
+Recon 18,517 2 968 30 1 55,656 3455 1
+Spooﬁng 30,485 0 17 0 15 10,021 67,257 3
+Web 1976 0 1 0 0 2028 1221 207
+Sensors 2023, 23, 5941 20 of 26
+Table 8. Confusion matrix for Random Forest in the case of multiclass classiﬁcation (8 classes).
+Benign Brute Force DDoS DoS Mirai Recon Spooﬁng Web
+Benign 234,929 4 24 2 4 3192 5159 8
+.Brute Force 1342 169 1 0 0 844 626 1
+DDoS 15 0 7,525,049 557 18 339 173 0
+DoS 7 0 1088 1,790,979 34 12 47 0
+Mirai 5 0 603 18 582,921 100 30 0
+Recon 11,565 6 1418 11 16 60,006 5591 17
+Spooﬁng 14,618 1 18 6 11 4743 88,371 30
+Web 1140 1 3 1 1 1265 2792 230
+In both cases, it is possible to observe that some classes are very well classiﬁed, mainly
+those with a large number of occurrences in the dataset. For example, the misclassiﬁcation
+rates for DDoS, DoS, and Mirai are very small, followed by Recon and spooﬁng.
+However, these models face challenges in classifying other attacks. For example,
+web-based attacks are usually classiﬁed as benign, Recon, or spooﬁng. The same occurs in
+the brute force classiﬁcation. Although the similarities in the data patterns lead the models
+to make these mistakes, the classiﬁcation is successful in most cases, leading to the results
+depicted in Figure 10. In fact, the results show that the multiclass classiﬁcation performance
+degrades for three classes (Benign, Recon, and spooﬁng). The underlying trafﬁc for those
+scenarios can be similar, and we intend to explore this phenomenon in future works further.
+Finally, Tables 9 and 10 compare all datasets reviewed with the proposed CICIoT2023
+dataset. These tables focus on presenting an analysis of attacks executed in this research
+as well as its main contributions, i.e., these datasets may include attacks other than those
+shown in these tables.
+Sensors 2023, 23, 5941 21 of 26
+Table 9. Comparison CICIoT2023 with existing IoT security datasets.
+Attack IoTHIDS N-BaIoT Kitsune IoTNIDS IoT-SH BoT-IoT MedBIoT IoT-23 (2020) IoTIDS MQTT MQTT-IoT-IDS X-IIoTID WUSTL-IIoT Edge-IIoTSet CICIoT2023
+ACK
+Fragmentation - - - - - - - - - - - - - -
+UDP Flood - - - - - - - - - -
+SlowLoris - - - - - - - - - - - - - -
+ICMP Flood - - - - - - - - - - - - -
+RSTFIN Flood - - - - - - - - - - - - - -
+PSHACK Flood - - - - - - - - - - - - - -
+HTTP Flood - - - - - - - - - -
+UDP
+Fragmentation - - - - - - - - - - - - - -
+ICMP
+Fragmentation - - - - - - - - - - - - - -
+TCP Flood - - - - - - - - - - - -
+SYN Flood - - - - - - - - - - - -
+DDoS
+SynonymousIP
+Flood - - - - - - - - - - - - - -
+TCP Flood - - - - - - - - -
+HTTP Flood - - - - - - - - - - -
+SYN Flood - - - - - - - - - -DoS
+UDP Flood - - - - - - - - - -
+Ping Sweep - - - - - - - - - - - - - -
+OS Scan - - - - - -
+Vulnerability
+Scan - - - - - - - - - -
+Port Scan - - - - - -
+Recon
+Host Discovery - - - - - - - - - - - -
+Sql Injection - - - - - - - - - - - -
+Command Injection - - - - - - - - - - - - - -
+Backdoor Malware - - - - - - - - - - - -
+Uploading Attack - - - - - - - - - - - - -
+XSS - - - - - - - - - - - -
+Web-Based
+Browser
+Hijacking - - - - - - - - - - - - - -
+Brute
+Force
+Dictionary
+Brute
+Force
+- - - - - - - - -
+Arp Spooﬁng - - - -Spooﬁng DNS Spooﬁng - - - - - - - - - - - -
+GREIP Flood - - - - -
+Greeth Flood - - - - - - -Mirai
+UDPPlain - - - - - - -
+Sensors 2023, 23, 5941 22 of 26
+Table 10. Comparison CICIoT2023 contributions with existing IoT security datasets.
+Extensive
+Topology
+(>100 Devices)
+Execution of
+33 Attacks
+Divided into
+7 Classes
+Machine Learning
+and
+Deep Learning
+Evaluation
+IoTHIDS
+N-BaIoT
+Kitsune
+IoTNIDS
+IoT-SH
+BoT-IoT
+MedBIoT
+IoT-23 (2020)
+IoTIDS
+MQTT
+MQTT-IoT-IDS
+X-IIoTID
+WUSTL-IIoT
+Edge-IIoTSet
+CICIoT2023
+6. Conclusions
+Nowadays, IoT is becoming increasingly important for society. In this context, the
+development of security solutions is pivotal to enabling efﬁcient, secure, and dependable
+IoT operations. This research introduced a novel and extensive IoT attack dataset to
+foster the development of security analytics applications in real IoT operations. In this
+process, 33 attacks are executed in an IoT topology composed of 105 devices. These
+attacks are classiﬁed into seven categories (i.e., DDoS, DoS, Recon, Web-based, brute force,
+spooﬁng, and Mirai) and all attacks are executed by malicious IoT devices targeting other
+IoT devices. Furthermore, this dataset includes multiple attacks not available in other
+IoT datasets and enables IoT professionals to develop new security analytics solutions
+using data in different formats. The dataset is available through the CIC Dataset website
+(https://www.unb.ca/cic/datasets/index.html, accessed on 19 June 2023).
+Compared to the state-of-the-art publications, the CICIoT2023 dataset extends existing
+IoT security insights by using an extensive topology with a variety of IoT devices, executing
+several attacks never present in a single IoT security dataset, and analyzing how widely-
+used machine learning (ML) methods perform in different classiﬁcation scenarios.
+Finally, this work enables the development of several future works, e.g., the optimiza-
+tion of ML models, the analysis of features and how they inﬂuence different ML models, the
+interpretation of classiﬁcations, and the analysis of transferability based on the comparison
+to other datasets.
+Author Contributions: Conceptualization, E.C.P .N., S.D., R.F., A.Z., R.L. and A.A.G.; methodology,
+E.C.P .N., S.D., R.F., A.Z., R.L. and A.A.G.; software, E.C.P .N., S.D., R.F. and A.Z.; validation, E.C.P .N.,
+S.D., R.F., A.Z., R.L. and A.A.G.; formal analysis, E.C.P .N., S.D., R.F. and A.Z.; investigation, E.C.P .N.,
+S.D., R.F., A.Z., R.L. and A.A.G.; resources, E.C.P .N., S.D., R.F. and A.Z.; data curation, E.C.P .N., S.D.,
+R.F. and A.Z.; writing—original draft preparation, E.C.P .N., S.D., R.F. and A.Z.; writing—review
+and editing, E.C.P .N., S.D., R.F., A.Z., R.L. and A.A.G.; visualization, E.C.P .N., S.D., R.F. and A.Z.;
+supervision, R.L. and A.A.G.; project administration, S.D., R.L. and A.A.G.; funding acquisition, R.L.
+and A.A.G. All authors have read and agreed to the published version of the manuscript.
+Funding: This research received no external funding.
+Institutional Review Board Statement: Not applicable.
+Informed Consent Statement: Not applicable.
+Sensors 2023, 23, 5941 23 of 26
+Data Availability Statement: https://www.unb.ca/cic/datasets/iotdataset-2023.html, accessed on
+19 June 2023.
+Acknowledgments: The authors graciously acknowledge the support from the Canadian Institute
+for Cybersecurity (CIC), the funding support from the Canada Research Chair, and the Mastercard.
+Conﬂicts of Interest: The authors declare no conﬂict of interest.
+References
+1. Da Xu, L.; He, W.; Li, S. Internet of things in industries: A survey. IEEE Trans. Ind. Inform. 2014, 10, 2233–2243.
+2. Nauman, A.; Qadri, Y.A.; Amjad, M.; Zikria, Y.B.; Afzal, M.K.; Kim, S.W. Multimedia Internet of Things: A comprehensive survey.
+IEEE Access 2020, 8, 8202–8250. [CrossRef]
+3. Habibzadeh, H.; Dinesh, K.; Shishvan, O.R.; Boggio-Dandry, A.; Sharma, G.; Soyata, T. A survey of healthcare Internet of Things
+(HIoT): A clinical perspective. IEEE Internet Things J. 2019, 7, 53–71. [CrossRef]
+4. Lee, S.K.; Bae, M.; Kim, H. Future of IoT networks: A survey. Appl. Sci. 2017, 7, 1072. [CrossRef]
+5. Afrifa, S.; Varadarajan, V .; Appiahene, P .; Zhang, T.; Domfeh, E.A. Ensemble Machine Learning Techniques for Accurate and
+Efﬁcient Detection of Botnet Attacks in Connected Computers. Eng 2023, 4, 650–664. [CrossRef]
+6. Marjani, M.; Nasaruddin, F.; Gani, A.; Karim, A.; Hashem, I.A.T.; Siddiqa, A.; Yaqoob, I. Big IoT data analytics: Architecture,
+opportunities, and open research challenges. IEEE Access 2017, 5, 5247–5261.
+7. Hajjaji, Y.; Boulila, W.; Farah, I.R.; Romdhani, I.; Hussain, A. Big data and IoT-based applications in smart environments: A
+systematic review. Comput. Sci. Rev. 2021, 39, 100318. [CrossRef]
+8. Dadkhah, S.; Mahdikhani, H.; Danso, P .K.; Zohourian, A.; Truong, K.A.; Ghorbani, A.A. Towards the development of a realistic
+multidimensional IoT proﬁling dataset. In Proceedings of the 2022 19th Annual International Conference on Privacy, Security &
+Trust (PST), Fredericton, NB, Canada, 22–24 August 2022; pp. 1–11.
+9. Madakam, S.; Lake, V .; Lake, V .; Lake, V . Internet of Things (IoT): A literature review.J. Comput. Commun. 2015, 3, 164–173.
+[CrossRef]
+10. ˇColakovi´ c, A.; Hadžiali´ c, M. Internet of Things (IoT): A review of enabling technologies, challenges, and open research issues.
+Comput. Netw. 2018, 144, 17–39. [CrossRef]
+11. Saﬁ, M.; Kaur, B.; Dadkhah, S.; Shoeleh, F.; Lashkari, A.H.; Molyneaux, H.; Ghorbani, A.A. Behavioural Monitoring and Security
+Proﬁling in the Internet of Things (IoT). In Proceedings of the 2021 IEEE 23rd Int Conf on High Performance Computing &
+Communications; 7th Int Conf on Data Science & Systems; 19th Int Conf on Smart City; 7th Int Conf on Dependability in
+Sensor, Cloud & Big Data Systems & Application (HPCC/DSS/SmartCity/DependSys), Haikou, China, 20–22 December 2021;
+pp. 1203–1210.
+12. Selvaraj, S.; Sundaravaradhan, S. Challenges and opportunities in IoT healthcare systems: A systematic review. SN Appl. Sci.
+2020, 2, 139. [CrossRef]
+13. Akka¸ s, M.A.; Sokullu, R.; Cetin, H.E. Healthcare and patient monitoring using IoT. Internet Things 2020, 11, 100173. [CrossRef]
+14. Mohammed, J.; Lung, C.H.; Ocneanu, A.; Thakral, A.; Jones, C.; Adler, A. Internet of Things: Remote patient monitoring using
+web services and cloud computing. In Proceedings of the 2014 IEEEInternational Conference on Internet of Things (IThings), and
+IEEE Green Computing and Communications (GreenCom) and IEEE Cyber, Physical and Social Computing (CPSCom), Taipei,
+Taiwan, 1–3 September 2014; pp. 256–263.
+15. Zantalis, F.; Koulouras, G.; Karabetsos, S.; Kandris, D. A review of machine learning and IoT in smart transportation. Future
+Internet 2019, 11, 94. [CrossRef]
+16. Uma, S.; Eswari, R. Accident prevention and safety assistance using IOT and machine learning. J. Reliab. Intell. Environ. 2022,
+8, 79–103. [CrossRef]
+17. Celesti, A.; Galletta, A.; Carnevale, L.; Fazio, M.; ´Lay-Ekuakille, A.; Villari, M. An IoT cloud system for trafﬁc monitoring and
+vehicular accidents prevention based on mobile sensor data processing. IEEE Sens. J. 2017, 18, 4795–4802. [CrossRef]
+18. Cheng, J.; Chen, W.; Tao, F.; Lin, C.L. Industrial IoT in 5G environment towards smart manufacturing. J. Ind. Inf. Integr. 2018,
+10, 10–19. [CrossRef]
+19. Al-Emran, M.; Malik, S.I.; Al-Kabi, M.N. A survey of Internet of Things (IoT) in education: Opportunities and challenges. In
+Toward Social Internet of Things (SIoT): Enabling Technologies, Architectures and Applications; Springer: Berlin/Heidelberg, Germany,
+2020; pp. 197–209.
+20. Pate, J.; Adegbija, T. AMELIA: An application of the Internet of Things for aviation safety. In Proceedings of the 2018 15th IEEE
+Annual Consumer Communications & Networking Conference (CCNC), Las Vegas, NV , USA, 12–15 January 2018; pp. 1–6.
+21. Salam, A. Internet of things for sustainable forestry. In Internet of Things for Sustainable Community Development; Springer: Cham,
+Switzerland, 2020; pp. 147–181.
+22. Cisco Systems. Cisco Annual Internet Report (2018–2023) White Paper; Cisco: San Jose, CA, USA, 2020.
+23. Vermesan, O.; Friess, P .; Guillemin, P .; Giaffreda, R.; Grindvoll, H.; Eisenhauer, M.; Serrano, M.; Moessner, K.; Spirito, M.;
+Blystad, L.C.; et al. Internet of things beyond the hype: Research, innovation and deployment. In Building the Hyperconnected
+Society-Internet of Things Research and Innovation Value Chains, Ecosystems and Markets; River Publishers: Aalborg, Denmark, 2022;
+pp. 15–118.
+Sensors 2023, 23, 5941 24 of 26
+24. Shaﬁque, K.; Khawaja, B.A.; Sabir, F.; Qazi, S.; Mustaqim, M. Internet of things (IoT) for next-generation smart systems: A review
+of current challenges, future trends and prospects for emerging 5G-IoT scenarios. IEEE Access 2020, 8, 23022–23040. [CrossRef]
+25. Neto, E.C.P .; Dadkhah, S.; Ghorbani, A.A. Collaborative DDoS Detection in Distributed Multi-Tenant IoT using Federated
+Learning. In Proceedings of the 2022 19th Annual International Conference on Privacy, Security & Trust (PST), Fredericton, NB,
+Canada, 22–24 August 2022; pp. 1–10.
+26. Kaur, B.; Dadkhah, S.; Xiong, P .; Iqbal, S.; Ray, S.; Ghorbani, A.A. Veriﬁcation based scheme to restrict iot attacks. In Proceedings
+of the 2021 IEEE/ACM 8th International Conference on Big Data Computing, Applications and Technologies (BDCAT’21),
+Leicester, UK, 6–9 December 2021; pp. 63–68.
+27. Velarde-Alvarado, P .; Gonzalez, H.; Martínez-Peláez, R.; Mena, L.J.; Ochoa-Brust, A.; Moreno-García, E.; Félix, V .G.; Ostos, R.
+A novel framework for generating personalized network datasets for nids based on trafﬁc aggregation. Sensors 2022, 22, 1847.
+[CrossRef]
+28. Sharma, S.; Kaushik, B. A survey on internet of vehicles: Applications, security issues & solutions. Veh. Commun. 2019, 20, 100182.
+29. Guerra, J.L.; Catania, C.; Veas, E. Datasets are not enough: Challenges in labeling network trafﬁc. Comput. Secur. 2022, 120, 102810.
+[CrossRef]
+30. Saﬁ, M.; Dadkhah, S.; Shoeleh, F.; Mahdikhani, H.; Molyneaux, H.; Ghorbani, A.A. A Survey on IoT Proﬁling, Fingerprinting,
+and Identiﬁcation. ACM Trans. Internet Things 2022, 3, 1–39. [CrossRef]
+31. Elghalhoud, O.; Naik, K.; Zaman, M.; Goel, N. Data balancing and hyper-parameter optimization for machine learning algorithms
+for secure iot networks. In Proceedings of the 18th ACM International Symposium on QoS and Security for Wireless and Mobile
+Networks, Montreal, QC, Canada, 24–28 October 2022; pp. 71–78.
+32. Abrishami, M.; Dadkhah, S.; Neto, E.C.P .; Xiong, P .; Iqbal, S.; Ray, S.; Ghorbani, A.A. Label Noise Detection in IoT Security based
+on Decision Tree and Active Learning. In Proceedings of the 2022 IEEE 19th International Conference on Smart Communities:
+Improving Quality of Life Using ICT, IoT and AI (HONET), Marietta, GA, USA, 19–21 December 2022; pp. 46–53.
+33. Erfani, M.; Shoeleh, F.; Dadkhah, S.; Kaur, B.; Xiong, P .; Iqbal, S.; Ray, S.; Ghorbani, A.A. A feature exploration approach for IoT
+attack type classiﬁcation. In Proceedings of the 2021 IEEE Intl Conf on Dependable, Autonomic and Secure Computing, Intl
+Conf on Pervasive Intelligence and Computing, Intl Conf on Cloud and Big Data Computing, Intl Conf on Cyber Science and
+Technology Congress (DASC/PiCom/CBDCom/CyberSciTech), Calgary, AB, Canada, 25–28 October 2021; pp. 582–588.
+34. Meidan, Y.; Bohadana, M.; Mathov, Y.; Mirsky, Y.; Shabtai, A.; Breitenbacher, D.; Elovici, Y. N-baiot—Network-based detection of
+iot botnet attacks using deep autoencoders. IEEE Pervasive Comput. 2018, 17, 12–22. [CrossRef]
+35. Bezerra, V .H.; da Costa, V .G.T.; Martins, R.A.; Junior, S.B.; Miani, R.S.; Zarpelao, B.B. Providing IoT host-based datasets for
+intrusion detection research*. In Proceedings of the Anais do XVIII Simpósio Brasileiro em Segurança da Informação e de
+Sistemas Computacionais, Natal, Brazil, 22–25 October 2018; pp. 15–28.
+36. Anthi, E.; Williams, L.; Słowi ´ nska, M.; Theodorakopoulos, G.; Burnap, P . A supervised intrusion detection system for smart home
+IoT devices. IEEE Internet Things J. 2019, 6, 9042–9053. [CrossRef]
+37. Koroniotis, N.; Moustafa, N.; Sitnikova, E.; Turnbull, B. Towards the development of realistic botnet dataset in the internet of
+things for network forensic analytics: Bot-iot dataset. Future Gener. Comput. Syst. 2019, 100, 779–796. [CrossRef]
+38. Mirsky, Y.; Doitshman, T.; Elovici, Y.; Shabtai, A. Kitsune: An ensemble of autoencoders for online network intrusion detection.
+arXiv 2018, arXiv:1802.09089.
+39. Kang, H.; Ahn, D.H.; Lee, G.M.; Yoo, J.; Park, K.H.; Kim, H.K. IoT network intrusion dataset. IEEE Dataport 2019, 1, 1.
+40. Guerra-Manzanares, A.; Medina-Galindo, J.; Bahsi, H.; Nõmm, S. MedBIoT: Generation of an IoT Botnet Dataset in a Medium-
+sized IoT Network. In Proceedings of the ICISSP , Valletta, Malta, 25–27 February 2020; pp. 207–218.
+41. Parmisano, A.; Garcia, S.; Erquiaga, M. A Labeled Dataset with Malicious and Benign IoT Network Trafﬁc; Stratosphere Laboratory:
+Praha, Czech Republic, 2020.
+42. Ullah, I.; Mahmoud, Q.H. A Scheme for Generating a Dataset for Anomalous Activity Detection in IoT Networks. In Proceedings
+of the Canadian Conference on Artiﬁcial Intelligence, Ottawa, ON, Canada, 13–15 May 2020; pp. 508–520.
+43. Vaccari, I.; Chiola, G.; Aiello, M.; Mongelli, M.; Cambiaso, E. MQTTset, a New Dataset for Machine Learning Techniques on
+MQTT. Sensors 2020, 20, 6578. [CrossRef]
+44. Hindy, H.; Bayne, E.; Bures, M.; Atkinson, R.; Tachtatzis, C.; Bellekens, X. Machine Learning Based IoT Intrusion Detection
+System: An MQTT Case Study. arXiv 2020, arXiv:2006.15340.
+45. Alsaedi, A.; Moustafa, N.; Tari, Z.; Mahmood, A.; Anwar, A. TON_IoT telemetry dataset: A new generation dataset of IoT and
+IIoT for data-driven Intrusion Detection Systems. IEEE Access 2020, 8, 165130–165150. [CrossRef]
+46. Ferrag, M.A.; Friha, O.; Hamouda, D.; Maglaras, L.; Janicke, H. Edge-IIoTset: A new comprehensive realistic cyber security
+dataset of IoT and IIoT applications for centralized and federated learning. IEEE Access 2022, 10, 40281–40306. [CrossRef]
+47. Lamping, U.; Warnicke, E. Wireshark user’s guide. Interface 2004, 4, 1.
+48. Baxter, J.H. Wireshark Essentials; Packt Publishing Ltd.: Birmingham, UK, 2014.
+49. Tools, K. hping3 Package Description. 2019. Available online: https://www.kali.org/tools/hping3 (accessed on 19 June 2023)
+50. EPC-MSU. UDP Flood. 2023. Available online: https://github.com/EPC-MSU/udp-ﬂood (accessed on 19 June 2023).
+51. Yaltirakli, G. Slowloris. 2015. Available online: https://github.com/gkbrk/slowloris (accessed on 19 June 2023).
+52. Golang-HTTPFlood. 2020. Available online: https://github.com/Leeon123/golang-httpﬂood (accessed on 19 June 2023).
+53. Lyon, G. Nmap Security Scanner. 2014. Available online: http://nmap.org/ (accessed on 22 June 2023).
+Sensors 2023, 23, 5941 25 of 26
+54. Tools, K. Fping. 2023. Available online: https://fping.org/ (accessed on 19 June 2023)
+55. SCIP . Vulscan. 2023. Available online: https://github.com/scipag/vulscan (accessed on 19 June 2023).
+56. DVWA. Damn Vulnerable Web Application. 2017. Available online: https://github.com/digininja/DVWA (accessed on 19
+June 2023).
+57. KeepWannabe. Remot3d—An Easy Way To Exploiting. 2020. Available online: https://github.com/KeepWannabe/Remot3d
+(accessed on 19 June 2023).
+58. BEEF. The Browser Exploitation Framework. 2023. Available online: https://beefproject.com (accessed on 19 June 2023).
+59. Maciejak, D. Hydra. 2023. Available online: https://github.com/vanhauser-thc/thc-hydra (accessed on 19 June 2023).
+60. Ornaghi, A.; Valleri, M. Ettercap. 2005. Available online: https://www.ettercap-project.org/ (accessed on 19 June 2023)
+61. Gamblin, J. Mirai BotNet. 2017. Available online: https://github.com/jgamblin/Mirai-Source-Code (accessed on 19 June 2023).
+62. Kumari, P .; Jain, A.K. A Comprehensive Study of DDoS Attacks over IoT Network and Their Countermeasures.Comput. Secur.
+2023, 127, 103096. [CrossRef]
+63. Duravkin, I.; Loktionova, A.; Carlsson, A. Method of slow-attack detection. In Proceedings of the 2014 First International
+Scientiﬁc-Practical Conference Problems of Infocommunications Science and Technology, Kharkov, Ukraine, 14–17 October 2014;
+pp. 171–172.
+64. Harshita, H. Detection and prevention of ICMP ﬂood DDOS attack. Int. J. New Technol. Res. 2017, 3, 263333.
+65. Sreeram, I.; Vuppala, V .P .K. HTTP ﬂood attack detection in application layer using machine learning metrics and bio inspired bat
+algorithm. Appl. Comput. Inform. 2019, 15, 59–66. [CrossRef]
+66. Acharya, A.A.; Arpitha, K.; Kumar, B. An intrusion detection system against UDP ﬂood attack and ping of death attack (DDOS)
+in MANET. Int. J. Eng. Technol. (IJET) 2016, 8, 1112—1115.
+67. Cebeloglu, F.S.; Karakose, M. A cyber security analysis used for unmanned aerial vehicles in the smart city. In Proceedings of the
+2019 1st International Informatics and Software Engineering Conference (UBMYK), Ankara, Turkey, 6–7 November 2019; pp. 1–6.
+68. Chen, E.Y. Detecting TCP-based DDoS attacks by linear regression analysis. In Proceedings of the Fifth IEEE International
+Symposium on Signal Processing and Information Technology, Athens, Greece, 21 December 2005; pp. 381–386.
+69. Kaufman, C.; Perlman, R.; Sommerfeld, B. DoS protection for UDP-based protocols. In Proceedings of the 10th ACM Conference
+on Computer and Communications Security, Washington, DC, USA, 27–30 October 2003; pp. 2–7.
+70. Gilad, Y.; Herzberg, A. Fragmentation considered vulnerable. ACM Trans. Inf. Syst. Secur. (TISSEC) 2013, 15, 1–31. [CrossRef]
+71. Bogdanoski, M.; Suminoski, T.; Risteski, A. Analysis of the SYN ﬂood DoS attack. Int. J. Comput. Netw. Inf. Secur. (IJCNIS) 2013,
+5, 1–11. [CrossRef]
+72. Raptis, G.E.; Katsini, C.; Alexakos, C. Towards Automated Matching of Cyber Threat Intelligence Reports based on Cluster
+Analysis in an Internet-of-Vehicles Environment. In Proceedings of the 2021 IEEE International Conference on Cyber Security
+and Resilience (CSR), Rhodes, Greece, 26–28 July 2021; pp. 366–371.
+73. Al-Jarrah, O.; Arafat, A. Network intrusion detection system using neural network classiﬁcation of attack behavior. J. Adv. Inf.
+Technol. 2015, 6. [CrossRef]
+74. Orebaugh, A.; Pinkard, B. Nmap in the Enterprise: Your Guide to Network Scanning; Elsevier: Amsterdam, The Netherlands, 2011.
+75. deRito, C.; Bhatia, S. Comparative Analysis of Open-Source Vulnerability Scanners for IoT Devices. In Intelligent Data Communica-
+tion Technologies and Internet of Things; Springer: Singapore, 2022; pp. 785–800.
+76. Bhuyan, M.H.; Bhattacharyya, D.K.; Kalita, J.K. Surveying port scans and their detection methodologies. Comput. J. 2011,
+54, 1565–1581. [CrossRef]
+77. Wolfgang, M. Host Discovery with nmap. Explor. Nmap’s Default Behav.2002, 1, 16.
+78. Jensen, M.; Gruschka, N.; Herkenhöner, R. A survey of attacks on web services. Comput. Sci.-Res. Dev. 2009, 24, 185–197.
+[CrossRef]
+79. Halfond, W.G.; Viegas, J.; Orso, A. A classiﬁcation of SQL-injection attacks and countermeasures. In Proceedings of the IEEE
+International Symposium on Secure Software Engineering, Washington, DC, USA, 13–15 March 2006; Volume 1, pp. 13–15.
+80. Su, Z.; Wassermann, G. The essence of command injection attacks in web applications. Acm Sigplan Not. 2006, 41, 372–382.
+[CrossRef]
+81. Loi, H.; Olmsted, A. Low-cost detection of backdoor malware. In Proceedings of the 2017 12th International Conference for
+Internet Technology and Secured Transactions (ICITST), Cambridge, UK, 11–14 December 2017; pp. 197–198.
+82. Wassermann, G.; Su, Z. Static detection of cross-site scripting vulnerabilities. In Proceedings of the 2008 ACM/IEEE 30th
+International Conference on Software Engineering, Leipzig, Germany, 10–18 May 2008; pp. 171–180.
+83. Kumar, M.M.S.; Indrani, B. A Study on Web Hijacking Techniques and Browser Attacks.Int. J. Appl. Eng. Res. 2018, 13, 2614–2618.
+84. van der Merwe, J.R.; Zubizarreta, X.; Lukˇ cin, I.; Rügamer, A.; Felber, W. Classiﬁcation of spooﬁng attack types. In Proceedings of
+the 2018 European Navigation Conference (ENC), Gothenburg, Sweden, 14–17 May 2018; pp. 91–99.
+85. Whalen, S. An Introduction to Arp Spooﬁng. Node99 [Online Document]. 2001. Available online: https://www.scribd.com/
+document/59722965/Intro-to-Arp-Spooﬁng (accessed on 19 June 2023)
+86. Maksutov, A.A.; Cherepanov, I.A.; Alekseev, M.S. Detection and prevention of DNS spooﬁng attacks. In Proceedings of the 2017
+Siberian Symposium on Data Science and Engineering (SSDSE), Novosibirsk, Russia, 12–13 April 2017; pp. 84–87.
+87. Stiawan, D.; Idris, M.; Malik, R.F.; Nurmaini, S.; Alsharif, N.; Budiarto, R. Investigating brute force attack patterns in IoT network.
+J. Electr. Comput. Eng. 2019, 2019, 4568368. [CrossRef]
+Sensors 2023, 23, 5941 26 of 26
+88. Vykopal, J.; Plesnik, T.; Minarik, P . Network-based dictionary attack detection. In Proceedings of the 2009 International
+Conference on Future Networks, Bangkok, Thailand, 7–9 March 2009; pp. 23–27.
+89. Abbas, S.G.; Hashmat, F.; Shah, G.A.; Zafar, K. Generic signature development for IoT Botnet families. Forensic Sci. Int. Digit.
+Investig. 2021, 38, 301224. [CrossRef]
+90. TCPDUMP . Tcpdump(1) Man Page. 2022. Available online: https://www.tcpdump.org/manpages/tcpdump.1.html (accessed
+on 19 June 2023).
+91. DPKT. Dpkt Documentation. 2022. Available online: https://dpkt.readthedocs.io/en/latest/ (accessed on 19 June 2023).
+92. Lashkari, A.H.; Zang, Y.; Owhuo, G.; Mamun, M.; Gil, G. CICFlowMeter. GitHub.[vid. 2021-08-10]. Dostupné z. 2017. Available
+online: https://github.com/ahlashkari/CICFlowMeter/blob/master/ReadMe.txt (accessed on 19 June 2023).
+93. Aouini, Z.; Pekar, A. NFStream: A ﬂexible network data analysis framework. Comput. Netw. 2022, 204, 108719. [CrossRef]
+94. PANDAS. Pandas-dev/Pandas: Pandas. 2020. Available online: https://zenodo.org/record/7979740 (accessed on 19 June 2023).
+[CrossRef]
+95. Harris, C.R.; Millman, K.J.; van der Walt, S.J.; Gommers, R.; Virtanen, P .; Cournapeau, D.; Wieser, E.; Taylor, J.; Berg, S.; Smith,
+N.J.; et al. Array programming with NumPy. Nature 2020, 585, 357–362. [CrossRef]
+96. Drabas, T.; Lee, D. Learning PySpark; Packt Publishing Ltd.: Birmingham, UK, 2017.
+97. Scikit-learn. StandardScaler. 2023. Available online: https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.
+StandardScaler.html (accessed on 19 June 2023).
+98. Danso, P .K.; Neto, E.C.P .; Dadkhah, S.; Zohourian, A.; Molyneaux, H.; Ghorbani, A.A. Ensemble-based Intrusion Detection for
+Internet of Things Devices. In Proceedings of the 2022 IEEE 19th International Conference on Smart Communities: Improving
+Quality of Life Using ICT, IoT and AI (HONET), Marietta, GA, USA, 19–21 December 2022; pp. 34–39.
+99. Bapat, R.; Mandya, A.; Liu, X.; Abraham, B.; Brown, D.E.; Kang, H.; Veeraraghavan, M. Identifying malicious botnet trafﬁc using
+logistic regression. In Proceedings of the 2018 Systems and Information Engineering Design Symposium (SIEDS), Charlottesville,
+VA, USA, 27 April 2018; pp. 266–271.
+100. Shynk, J.J. Performance surfaces of a single-layer perceptron. IEEE Trans. Neural Netw. 1990, 1, 268–274. [CrossRef]
+101. AlShahrani, B.M.M. Classiﬁcation of cyber-attack using Adaboost regression classiﬁer and securing the network. Turk. J. Comput.
+Math. Educ. (TURCOMAT) 2021, 12, 1215–1223.
+102. Rehman Javed, A.; Jalil, Z.; Atif Moqurrab, S.; Abbas, S.; Liu, X. Ensemble adaboost classiﬁer for accurate and fast detection of
+botnet attacks in connected vehicles. Trans. Emerg. Telecommun. Technol. 2022, 33, e4088. [CrossRef]
+103. Khan, F.; Ahamed, J.; Kadry, S.; Ramasamy, L.K. Detecting malicious URLs using binary classiﬁcation through ada boost
+algorithm. Int. J. Electr. Comput. Eng. (2088-8708) 2020, 10, 997–1005.
+104. Choubisa, M.; Doshi, R.; Khatri, N.; Hiran, K.K. A simple and robust approach of random forest for intrusion detection system in
+cyber security. In Proceedings of the 2022 International Conference on IoT and Blockchain Technology (ICIBT), Ranchi, India, 6–8
+May 2022; pp. 1–5.
+105. Xin, Y.; Kong, L.; Liu, Z.; Chen, Y.; Li, Y.; Zhu, H.; Gao, M.; Hou, H.; Wang, C. Machine learning and deep learning methods for
+cybersecurity. IEEE Access 2018, 6, 35365–35381. [CrossRef]
+Disclaimer/Publisher’s Note: The statements, opinions and data contained in all publications are solely those of the individual
+author(s) and contributor(s) and not of MDPI and/or the editor(s). MDPI and/or the editor(s) disclaim responsibility for any injury to
+people or property resulting from any ideas, methods, instructions or products referred to in the content.

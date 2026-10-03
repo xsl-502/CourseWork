@@ -1,0 +1,88 @@
+\begin{thebibliography}{10}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{#1}
+\expandafter\ifx\csname urlstyle\endcsname\relax\else
+  \urlstyle{same}\fi
+\expandafter\ifx\csname href\endcsname\relax
+  \DeclareUrlCommand\doi{\urlstyle{rm}}\else
+  \providecommand\doi[1]{\href{https://doi.org/#1}{\nolinkurl{#1}}}\fi
+
+\bibitem[{National Institute of Standards and Technology}(2020)]{nist8259a}
+{National Institute of Standards and Technology}.
+\newblock Iot device cybersecurity capability core baseline: NISTIR
+  8259A\allowbreak[R/OL].
+\newblock NIST, 2020.
+\newblock DOI: \doi{10.6028/NIST.IR.8259A}.
+
+\bibitem[{European Telecommunications Standards Institute}(2020)]{etsi303645}
+{European Telecommunications Standards Institute}.
+\newblock Cyber security for consumer internet of things: Baseline
+  requirements: ETSI EN 303 645 V2.1.1\allowbreak[R].
+\newblock [S.l.]: ETSI, 2020.
+
+\bibitem[Meidan et~al.(2018)Meidan, Bohadana, Mathov, Mirsky, Shabtai,
+  Guarnizo, and Elovici]{meidan2018nbaiot}
+MEIDAN~Y, BOHADANA~M, MATHOV~Y, et~al.
+\newblock N-baiot: Network-based detection of iot botnet attacks using deep
+  autoencoders\allowbreak[J/OL].
+\newblock IEEE Pervasive Computing, 2018, 17\penalty0 (3):\penalty0 12-22.
+\newblock \url{https://arxiv.org/abs/1805.03409}.
+\newblock DOI: \doi{10.1109/MPRV.2018.03367731}.
+
+\bibitem[Mirsky et~al.(2018)Mirsky, Doitshman, Elovici, and
+  Shabtai]{mirsky2018kitsune}
+MIRSKY~Y, DOITSHMAN~T, ELOVICI~Y, et~al.
+\newblock Kitsune: An ensemble of autoencoders for online network intrusion
+  detection\allowbreak[C/OL]//\allowbreak
+Network and Distributed System Security Symposium.
+\newblock 2018.
+\newblock \url{https://arxiv.org/abs/1802.09089}.
+\newblock DOI: \doi{10.14722/ndss.2018.23204}.
+
+\bibitem[Neto et~al.(2023)]{ciciot2023}
+NETO~E, et~al.
+\newblock Ciciot2023: A real-time dataset and benchmark for large-scale iot
+  network intrusion detection\allowbreak[J/OL].
+\newblock Sensors, 2023, 23\penalty0 (13):\penalty0 5941.
+\newblock \url{https://www.unb.ca/cic/datasets/iotdataset-2023.html}.
+\newblock DOI: \doi{10.3390/s23135941}.
+
+\bibitem[Ferrag et~al.(2022)]{edgeiiotset}
+FERRAG~M~A, et~al.
+\newblock Edge-iiotset: A new comprehensive realistic cyber security dataset of
+  iot and iiot applications\allowbreak[J/OL].
+\newblock IEEE Access, 2022, 10:\penalty0 40281-40306.
+\newblock DOI: \doi{10.1109/ACCESS.2022.3165809}.
+
+\bibitem[Lewis et~al.(2020)]{lewis2020rag}
+LEWIS~P, et~al.
+\newblock Retrieval-augmented generation for knowledge-intensive nlp
+  tasks\allowbreak[C]//\allowbreak
+Advances in Neural Information Processing Systems: volume~33.
+\newblock [S.l.: s.n.], 2020: 9459-9474.
+
+\bibitem[Koroniotis et~al.(2019)Koroniotis, Moustafa, Sitnikova, and
+  Turnbull]{koroniotis2019botiot}
+KORONIOTIS~N, MOUSTAFA~N, SITNIKOVA~E, et~al.
+\newblock Towards the development of realistic botnet dataset in the internet
+  of things for network forensic analytics: Bot-iot dataset\allowbreak[J/OL].
+\newblock Future Generation Computer Systems, 2019, 100:\penalty0 779-796.
+\newblock \url{https://arxiv.org/abs/1811.00701}.
+\newblock DOI: \doi{10.1016/j.future.2019.05.041}.
+
+\bibitem[Soe et~al.(2020)Soe, Feng, Santosa, Hartanto, and
+  Sakurai]{soe2020sequential}
+SOE~Y~N, FENG~Y, SANTOSA~P~I, et~al.
+\newblock Machine learning-based iot-botnet attack detection with sequential
+  architecture\allowbreak[J/OL].
+\newblock Sensors, 2020, 20\penalty0 (16):\penalty0 4372.
+\newblock DOI: \doi{10.3390/s20164372}.
+
+\bibitem[{OWASP Foundation}(2023)]{owaspllm2023}
+{OWASP Foundation}.
+\newblock Owasp top 10 for large language model applications\allowbreak[EB/OL].
+\newblock 2023.
+\newblock
+  \url{https://owasp.org/www-project-top-10-for-large-language-model-applications/}.
+
+\end{thebibliography}
