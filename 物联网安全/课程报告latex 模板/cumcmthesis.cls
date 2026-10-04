@@ -44,7 +44,7 @@ Just choose `xelatex', no `pdflatex' or `latex' and so on.}
 \setCJKmainfont{STSong}
 \setCJKsansfont{STSong}
 \setCJKfamilyfont{song}[AutoFakeBold]{STSong}
-\setCJKfamilyfont{hei}[AutoFakeBold]{STSong}
+\setCJKfamilyfont{hei}[AutoFakeBold]{STHeiti}
 \setCJKfamilyfont{kai}[AutoFakeBold]{STKaiti}
 \providecommand*{\songti}{\CJKfamily{song}}
 \providecommand*{\heiti}{\CJKfamily{hei}}

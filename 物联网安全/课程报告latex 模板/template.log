@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.1)  3 OCT 2026 15:39
+This is XeTeX, Version 3.141592653-2.6-0.999998 (TeX Live 2026) (preloaded format=xelatex 2026.3.1)  4 OCT 2026 20:07
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1244,151 +1244,99 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
  [2]
 
 LaTeX Font Warning: Font shape `TU/STSong(0)/b/n' undefined
-(Font)              using `TU/STSong(0)/m/n' instead on input line 130.
+(Font)              using `TU/STSong(0)/m/n' instead on input line 136.
 
-[1]
+[1
 
-Package natbib Warning: Citation `nist8259a' on page 2 undefined on input line 143.
-
-
-Package natbib Warning: Citation `etsi303645' on page 2 undefined on input line 143.
-
-[2]
+] [2]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [3]
-Underfull \hbox (badness 10000) in paragraph at lines 210--210
+Underfull \hbox (badness 10000) in paragraph at lines 216--216
 []|\TU/TimesNewRoman(0)/m/n/12.045 1D-CNN\TU/STSong(1)/m/n/12.045 、| \TU/TimesNewRoman(0)/m/n/12.045 LSTM\TU/STSong(1)/m/n/12.045 、|
  []
 
 [4]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [5] [6]
-
-Package natbib Warning: Citation `meidan2018nbaiot' on page 7 undefined on input line 239.
-
-
-Package natbib Warning: Citation `mirsky2018kitsune' on page 7 undefined on input line 239.
-
-
-Package natbib Warning: Citation `ciciot2023' on page 7 undefined on input line 239.
-
-
-Package natbib Warning: Citation `edgeiiotset' on page 7 undefined on input line 239.
-
-
-Package natbib Warning: Citation `meidan2018nbaiot' on page 7 undefined on input line 241.
-
-
-Package natbib Warning: Citation `lewis2020rag' on page 7 undefined on input line 243.
-
-
-Package natbib Warning: Citation `mirsky2018kitsune' on page 7 undefined on input line 245.
-
-[7]
-
-Package natbib Warning: Citation `koroniotis2019botiot' on page 8 undefined on input line 248.
-
-
-Package natbib Warning: Citation `soe2020sequential' on page 8 undefined on input line 250.
-
-[8]
-
-Package natbib Warning: Citation `owaspllm2023' on page 9 undefined on input line 258.
-
-[9]
-Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 294.
- [10] [11]
-Underfull \hbox (badness 10000) in paragraph at lines 360--360
+ [5] [6] [7] [8] [9]
+Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on input line 308.
+ [10] [11] [12]
+Underfull \hbox (badness 10000) in paragraph at lines 387--387
 []|\TU/TimesNewRoman(0)/m/n/7.52812 9 \TU/STSong(0)/m/n/7.52812 台 商 用 \TU/TimesNewRoman(0)/m/n/7.52812 IoT \TU/STSong(0)/m/n/7.52812 设 备；| \TU/TimesNewRoman(0)/m/n/7.52812 Mi-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 360--360
+Underfull \hbox (badness 10000) in paragraph at lines 387--387
 \TU/TimesNewRoman(0)/m/n/7.52812 rai/BASHLITE\TU/STSong(0)/m/n/7.52812 ；| \TU/TimesNewRoman(0)/m/n/7.52812 115 \TU/STSong(0)/m/n/7.52812 个 流 量 特
  []
 
 
-Underfull \hbox (badness 1014) in paragraph at lines 360--360
+Underfull \hbox (badness 1014) in paragraph at lines 387--387
 []|\TU/TimesNewRoman(0)/m/n/7.52812 TPR=100%\TU/STSong(0)/m/n/7.52812 ；|  平 均 \TU/TimesNewRoman(0)/m/n/7.52812 FPR=$\OT1/cmr/m/n/7.52812 0\OML/cmm/m/it/7.52812 :\OT1/cmr/m/n/7.52812 007 \OMS/cmsy/m/n/7.52812 ^^F
  []
 
-
-Package natbib Warning: Citation `ciciot2023' on page 12 undefined on input line 363.
-
-[12] [13]
-
-Package natbib Warning: Citation `soe2020sequential' on page 14 undefined on input line 409.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 431--431
+[13] [14]
+Underfull \hbox (badness 10000) in paragraph at lines 459--459
 []|\TU/TimesNewRoman(0)/m/n/7.52812 TPR=100%\TU/STSong(0)/m/n/7.52812 ；|
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 431--431
+Underfull \hbox (badness 10000) in paragraph at lines 459--459
 \TU/TimesNewRoman(0)/m/n/7.52812 FPR=$\OT1/cmr/m/n/7.52812 0\OML/cmm/m/it/7.52812 :\OT1/cmr/m/n/7.52812 007 \OMS/cmsy/m/n/7.52812 ^^F \OT1/cmr/m/n/7.52812 0\OML/cmm/m/it/7.52812 :\OT1/cmr/m/n/7.52812 01$\TU/STSong(0)/m/n/7.52812 ；|
  []
 
 
-Underfull \hbox (badness 2818) in paragraph at lines 432--432
+Underfull \hbox (badness 2818) in paragraph at lines 460--460
 []|\TU/STSong(0)/m/n/7.52812 在 线 集 成 模 型 适 合 低 资 源 边
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 433--433
+Underfull \hbox (badness 10000) in paragraph at lines 461--461
 []|\TU/TimesNewRoman(0)/m/n/7.52812 SVM/RNN/LSTM Ac-
  []
 
 
-Underfull \hbox (badness 1348) in paragraph at lines 433--433
+Underfull \hbox (badness 1348) in paragraph at lines 461--461
 \TU/TimesNewRoman(0)/m/n/7.52812 curacy\TU/STSong(0)/m/n/7.52812 、| \TU/TimesNewRoman(0)/m/n/7.52812 Recall \TU/STSong(0)/m/n/7.52812 高，|  但
  []
 
 
-Underfull \hbox (badness 2818) in paragraph at lines 433--433
+Underfull \hbox (badness 2818) in paragraph at lines 461--461
 []|\TU/STSong(0)/m/n/7.52812 大 规 模 数 据 和 特 征 选 择 会 改
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 434--434
+Underfull \hbox (badness 10000) in paragraph at lines 462--462
 []|\TU/TimesNewRoman(0)/m/n/7.52812 N-BaIoT 849234
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 434--434
+Underfull \hbox (badness 10000) in paragraph at lines 462--462
 \TU/STSong(0)/m/n/7.52812 样 本；| \TU/TimesNewRoman(0)/m/n/7.52812 66%/34%
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 435--435
+Underfull \hbox (badness 10000) in paragraph at lines 463--463
 []|\TU/TimesNewRoman(0)/m/n/7.52812 105 \TU/STSong(0)/m/n/7.52812 台 设 备；| \TU/TimesNewRoman(0)/m/n/7.52812 33
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 435--435
+Underfull \hbox (badness 10000) in paragraph at lines 463--463
 \TU/STSong(0)/m/n/7.52812 种 攻 击；|  随 机
  []
 
-[14]
-Underfull \hbox (badness 10000) in paragraph at lines 452--452
+
+Underfull \hbox (badness 10000) in paragraph at lines 480--480
 []|\TU/TimesNewRoman(0)/m/n/12.045 RF/XGBoost/1D-CNN
  []
 
-[15] [16] [17] (./template.bbl
-
-Package natbib Warning: Empty `thebibliography' environment on input line 10.
-
-)
+[15] [16] [17] [18] [19] [20] (./template.bbl)
 
 Package caption Warning: Unused \captionsetup[sub] on input line 12.
 See the caption package documentation for explanation.
 
-
-Package natbib Warning: There were undefined citations.
-
-[18
+[21
 
 ] (./template.aux)
  ***********
@@ -1403,12 +1351,12 @@ Package rerunfilecheck Info: File `template.out' has not changed.
 (rerunfilecheck)             Checksum: E1A7497B4C12780FB1D97D83603707B6;4821.
  ) 
 Here is how much of TeX's memory you used:
- 34589 strings out of 469709
- 735763 string characters out of 5466024
- 1413142 words of memory out of 5000000
- 62594 multiletter control sequences out of 15000+600000
- 644244 words of font info for 156 fonts, out of 8000000 for 9000
+ 34644 strings out of 469709
+ 736162 string characters out of 5466024
+ 1462144 words of memory out of 5000000
+ 62639 multiletter control sequences out of 15000+600000
+ 648327 words of font info for 177 fonts, out of 8000000 for 9000
  319 hyphenation exceptions out of 8191
- 108i,12n,116p,650b,2005s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 108i,12n,116p,650b,1993s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on template.pdf (20 pages).
+Output written on template.pdf (23 pages).

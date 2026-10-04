@@ -16,19 +16,19 @@
 \contentsline {subsection}{\numberline {4.5}安全智能体与自动化响应}{9}{subsection.4.5}%
 \contentsline {subsection}{\numberline {4.6}小结：现有工作的共性问题}{9}{subsection.4.6}%
 \contentsline {section}{\numberline {五、}实验评估}{9}{section.5}%
-\contentsline {subsection}{\numberline {5.1}数据集与实验设置}{9}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.1}数据集与实验设置}{10}{subsection.5.1}%
 \contentsline {subsection}{\numberline {5.2}对比方法}{11}{subsection.5.2}%
-\contentsline {subsection}{\numberline {5.3}结果与分析}{11}{subsection.5.3}%
-\contentsline {subsection}{\numberline {5.4}公开论文结果对照}{12}{subsection.5.4}%
-\contentsline {subsection}{\numberline {5.5}Bot-IoT 与顺序检测的详细结果}{13}{subsection.5.5}%
-\contentsline {subsection}{\numberline {5.6}跨论文结果的统一解释}{14}{subsection.5.6}%
+\contentsline {subsection}{\numberline {5.3}结果与分析}{12}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}公开论文结果对照}{13}{subsection.5.4}%
+\contentsline {subsection}{\numberline {5.5}Bot-IoT 与顺序检测的详细结果}{14}{subsection.5.5}%
+\contentsline {subsection}{\numberline {5.6}跨论文结果的统一解释}{15}{subsection.5.6}%
 \contentsline {section}{\numberline {六、}综合讨论与工程建议}{15}{section.6}%
 \contentsline {subsection}{\numberline {6.1}从离线指标到线上服务等级}{15}{subsection.6.1}%
 \contentsline {subsection}{\numberline {6.2}模型选择的决策矩阵}{16}{subsection.6.2}%
-\contentsline {subsection}{\numberline {6.3}如何把大模型纳入可验证闭环}{16}{subsection.6.3}%
-\contentsline {subsection}{\numberline {6.4}复现与论文写作清单}{16}{subsection.6.4}%
-\contentsline {section}{\numberline {七、}挑战与展望}{16}{section.7}%
-\contentsline {section}{\numberline {八、}结论}{16}{section.8}%
-\contentsline {section}{\numberline {A}复现实验记录模板}{17}{appendix.A}%
-\contentsline {section}{参考文献}{18}{section*.11}%
+\contentsline {subsection}{\numberline {6.3}如何把大模型纳入可验证闭环}{17}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}复现与论文写作清单}{17}{subsection.6.4}%
+\contentsline {section}{\numberline {七、}挑战与展望}{17}{section.7}%
+\contentsline {section}{\numberline {八、}结论}{18}{section.8}%
+\contentsline {section}{\numberline {A}复现实验记录模板}{19}{appendix.A}%
+\contentsline {section}{参考文献}{21}{section*.11}%
 \contentsfinish 
