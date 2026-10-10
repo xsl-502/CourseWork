@@ -1,0 +1,148 @@
+%! Mode:: "TeX:UTF-8"
+%! TEX program = xelatex
+\PassOptionsToPackage{quiet}{xeCJK}
+\documentclass[twoside,withoutpreface,bwprint]{cumcmthesis}
+\usepackage{etoolbox}
+\usepackage[framemethod=TikZ]{mdframed}  % 框架宏包
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+\newcolumntype{R}{>{\raggedleft\arraybackslash}X}
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 报告信息（修改此处即可，页眉与标题会同步更新）
+\newcommand{\reporttitle}{基于机器学习的台风分类与路径预测研究}
+\newcommand{\coursename}{机器学习}
+\newcommand{\teammates}{徐诗霖\quad 蔡奕锴\quad 李炜焜}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 排版格式
+\makeatletter
+% 正文：宋体小四（12bp），1.5 倍行距（与 Word 的 1.5 倍行距一致）
+\renewcommand\normalsize{%
+    \@setfontsize\normalsize{12bp}{15.6bp}%
+    \abovedisplayskip 12\p@ \@plus3\p@ \@minus7\p@
+    \abovedisplayshortskip \z@ \@plus3\p@
+    \belowdisplayshortskip 6.5\p@ \@plus3.5\p@ \@minus3\p@}
+\normalsize
+\linespread{1.5}
+\setlength{\parindent}{2em}  % 首行缩进 2 字符
+
+% 一级标题：黑体四号；二级标题：黑体小四（收紧段前段后间距）
+\renewcommand\section{\@startsection{section}{1}{\z@}%
+    {-1.2ex \@plus -0.4ex \@minus -.2ex}%
+    {1.0ex \@plus.2ex}%
+    {\centering\normalfont\heiti\zihao{4}}}
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+    {-0.8ex\@plus -0.4ex \@minus -.2ex}%
+    {0.6ex \@plus .2ex}%
+    {\normalfont\heiti\zihao{-4}}}
+
+% 标题区：标题黑体三号居中，课程名称与组员宋体小四居中（紧凑排版）
+\renewcommand{\maketitle}{%
+    \setcounter{page}{1}%
+    {\centering
+        {\heiti\zihao{3}\reporttitle\par}
+        \vspace{0.5em}
+        {\songti\zihao{-4}课程名称：\coursename\qquad 组员：\teammates\par}\par}
+    \vspace{0.3em}}
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 页眉设置
+\pagestyle{fancy}
+\setlength{\headheight}{19pt} % 消除 fancyhdr 的 headheight 过小警告
+\fancyhf{} % 清除默认页眉页脚
+
+% 单页（奇数页）页眉
+\fancyhead[RO]{\thepage} % 页码右对齐
+\fancyhead[CO]{\coursename 开题报告} % 中间为标题
+\fancyhead[LO]{2026.10} % 日期左对齐
+
+% 双页（偶数页）页眉
+\fancyhead[LE]{\thepage} % 页码左对齐
+\fancyhead[CE]{课程名称：机器学习 \hspace{1cm} 组员：\teammates} % 中间为专业与组员
+\fancyhead[RE]{2026.10} % 日期右对齐
+
+% 页脚留空
+\fancyfoot{}
+
+% 自定义页眉下划线样式为两条加粗平行线
+\renewcommand{\headrule}{%
+    \hrule height 1.0pt % 第一条线
+    \vspace{1pt}        % 线间距
+    \hrule height 0.5pt % 第二条线
+    \vspace{2pt}        % 线与正文之间的距离
+}
+
+\renewcommand{\headrulewidth}{0pt} % 禁用默认的线条
+\renewcommand{\footrulewidth}{0pt} % 禁用页脚线条
+
+\begin{document}
+
+\maketitle
+
+\section{研究背景与意义}
+
+台风是影响我国沿海地区最严重的自然灾害之一，其伴随的狂风、暴雨与风暴潮每年造成巨大的经济损失和人员伤亡，因此台风路径与强度的准确预测是气象预报和防灾减灾工作的核心内容。台风路径预测本质上是一个复杂的时空序列预测问题：既需要刻画台风自身历史运动状态的时间依赖关系，又需要融合气压、风场、海温等多源环境信息，是机器学习方法的理想应用场景。提升预测精度能够延长预警提前量、指导防风加固与人员疏散，兼具重要的理论意义与现实价值。
+
+\section{研究问题}
+
+本研究以中国近海台风为对象，围绕“台风的分类与预测”这一核心，利用机器学习方法解决三个相互关联的子问题：
+
+\textbf{（1）台风特征参数的数学描述与分类。} 对强度、等级、最大风速等特征参数进行数学化描述，结合气温、气压、季风等环境因素构建分类模型，区分台风强度等级，并分类 2024 年 7 月与 9 月发生在我国的台风，分析夏季台风与秋季台风在生成机制、强度与影响范围上的差异。
+
+\textbf{（2）多因素台风路径预测。} 融合台风自身历史运动状态（经纬度、移动速度与方向）与相关环境因素，预测未来 6、12、24 小时台风中心位置，并以台风“贝碧嘉”9 月 13—17 日的行进路线为例验证预测精度。
+
+\textbf{（3）台风登陆后风速与降水衰减建模。} 定量描述台风登陆后风速与降水量随距台风中心距离的衰减规律，以台风“贝碧嘉”9 月 16—18 日的登陆过程为例，预测其途经区域的风力与降水量，为受灾地区风险预警提供依据。
+
+\section{前人工作及其存在的问题}
+
+在机器学习台风预测方面已有较多研究：Gao 等（2018）用 LSTM 开展 6—24 小时路径预报，说明历史序列的时间依赖具有预测价值；Giffard-Roisin 等（2020）将历史位移与以台风中心对齐的风场、位势高度场融合，直接预测 24 小时位移；Liu 等（2022）提出 CNN-LSTM 双分支时空融合网络 DBF-Net，实现 6—24 小时多时效路径预测；Chen 等（2019）用 CNN-LSTM 进行台风生成与强度预测；He 等（2023）提出双注意力 ConvLSTM 用于短时风速预测；Ueno（2007）指出环境风切变影响台风内核降水的空间不对称性。
+
+综合来看，前人工作仍存在以下不足：\textbf{（1）}时序变化与环境因素的联合刻画不足，模型在台风转向、快速变速时存在偏差与滞后；\textbf{（2）}部分方法以移动速度而非未来位移为输出，预测目标与路径预测任务的衔接不够清晰；\textbf{（3）}数据划分与评价指标不够严格，同一台风的相邻样本跨集合会造成信息泄漏，指标单位与预测时效也不够明确；\textbf{（4）}登陆后降水模型多基于合成数据，缺乏真实观测依据，难以反映降水的空间不对称性。
+
+\section{解决方案的关键思路}
+
+本研究采用“\textbf{历史序列建模、环境特征融合、直接预测位移、独立事件验证}”的技术路线，具体如下。
+
+\textbf{（1）数据预处理与特征工程。} 对 1945—2023 年历史路径数据清洗缺失与异常值，用拉格朗日插值法填补，经 K-S 检验、皮尔逊相关分析、PCA 降维后标准化，标准化参数仅由训练集估计以避免信息泄漏。
+
+\textbf{（2）台风分类模型。} 先以 K-Means 聚类（肘部法则确定类数）观察特征分布结构，再用决策树、SVM 与 LSTM 构建分类模型并比较精度，分析夏秋台风的差异。
+
+\textbf{（3）台风路径预测模型。} 按“由简到繁”构建递进基线：保持当前速度与方向的外推模型 → 直接输出二维位移的 SVR → 以过去 24 小时状态序列为输入的 LSTM → CNN-LSTM 时空融合模型（CNN 提取环境场空间特征、LSTM 提取时序特征）→ 引入通道注意力机制。模型直接输出各预测时效的二维位移并还原为经纬度，注意力机制与各模块的贡献通过消融实验检验。
+
+\textbf{（4）登陆后风速与降水建模。} 用幂律、指数、高斯与多项式模型刻画风速—降水关系及降水随距离的衰减，并引入距中心距离、方位角、湿度、风切变、地形等变量，比较简单衰减模型与随机森林、高斯过程回归等多变量模型，通过残差分析检验拟合效果。
+
+\textbf{（5）验证与消融实验。} 按年份与完整台风事件划分训练、验证与测试集，保证同一台风不跨集合，单独分析转向、登陆及快速移动等困难样本，判断方案是否优于基线。
+
+\section{数据集与评价标准}
+
+\textbf{数据集：}（1）1945—2023 年中国近海台风最佳路径观测数据，包含经纬度、风速、气压、强度等级、移动速度与方向等字段，用于模型训练与验证；（2）2024 年 7 月、9 月台风观测数据，用于分类任务；（3）台风“贝碧嘉”9 月 13—17 日路径与 9 月 16—18 日登陆数据，用于案例验证；（4）ERA5 再分析风场、位势高度场（计划补充），用于环境融合实验。
+
+\textbf{评价标准：}分类任务采用准确率与混淆矩阵；路径预测以各预测时效下预测中心与真实中心的大圆距离误差为主要指标，辅以均方根误差（RMSE）与动态时间规整（DTW）距离评价轨迹形状相似性；降水风速建模采用均方误差（MSE）、RMSE、决定系数 \(R^2\) 与残差分析；模型选择采用交叉验证，测试集仅用于最终评估。
+
+\section{组员名单与分工}
+
+本课题由组内三位同学共同完成：
+
+\begin{center}
+\renewcommand{\arraystretch}{1.6}
+\begin{tabular}{lcl}
+\toprule
+序号 & 姓名 & 主要分工 \\
+\midrule
+1 & 徐诗霖 & 数据预处理与台风分类模型 \\
+2 & 蔡奕锴 & 台风路径预测模型 \\
+3 & 李炜焜 & 登陆后风速与降水建模 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\end{document}

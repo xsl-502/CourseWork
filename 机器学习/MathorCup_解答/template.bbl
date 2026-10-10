@@ -1,0 +1,83 @@
+\begin{thebibliography}{12}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{#1}
+\expandafter\ifx\csname urlstyle\endcsname\relax\else
+  \urlstyle{same}\fi
+\expandafter\ifx\csname href\endcsname\relax
+  \DeclareUrlCommand\doi{\urlstyle{rm}}\else
+  \providecommand\doi[1]{\href{https://doi.org/#1}{\nolinkurl{#1}}}\fi
+
+\bibitem[陈睿(2018)]{陈睿2018基于深度学习的台风预测关键技术研究}
+陈睿.
+\newblock 基于深度学习的台风预测关键技术研究\allowbreak[D].
+\newblock [出版地不详]: 国防科技大学, 2018.
+
+\bibitem[Abdi et~al.(2010)Abdi and Williams]{abdi2010principal}
+ABDI~H, WILLIAMS~L~J.
+\newblock Principal component analysis\allowbreak[J].
+\newblock Wiley interdisciplinary reviews: computational statistics, 2010,
+  2\penalty0 (4):\penalty0 433-459.
+
+\bibitem[Wie et~al.(2012)Wie, Jang, and Moon]{wie2012development}
+WIE~J, JANG~S, MOON~B.
+\newblock Development of an experimental method for understanding the effects
+  of the coriolis force on the typhoon genesis and its movement\allowbreak[J].
+\newblock Journal of the korean earth science society, 2012, 33\penalty0
+  (6):\penalty0 544-553.
+
+\bibitem[Dhiman et~al.(2019)Dhiman, Deb, and Guerrero]{dhiman2019hybrid}
+DHIMAN~H~S, DEB~D, GUERRERO~J~M.
+\newblock Hybrid machine intelligent svr variants for wind forecasting and ramp
+  events\allowbreak[J].
+\newblock Renewable and Sustainable Energy Reviews, 2019, 108:\penalty0
+  369-379.
+
+\bibitem[Willmott et~al.(2005)Willmott and Matsuura]{willmott2005advantages}
+WILLMOTT~C~J, MATSUURA~K.
+\newblock Advantages of the mean absolute error (mae) over the root mean square
+  error (rmse) in assessing average model performance\allowbreak[J].
+\newblock Climate research, 2005, 30\penalty0 (1):\penalty0 79-82.
+
+\bibitem[M{\"u}ller(2007)]{muller2007dynamic}
+M{\"U}LLER~M.
+\newblock Dynamic time warping\allowbreak[J].
+\newblock Information retrieval for music and motion, 2007:\penalty0 69-84.
+
+\bibitem[Chen et~al.(2019)Chen, Wang, Zhang, Zhu, Li, and Yang]{chen2019hybrid}
+CHEN~R, WANG~X, ZHANG~W, et~al.
+\newblock A hybrid cnn-lstm model for typhoon formation
+  forecasting\allowbreak[J].
+\newblock GeoInformatica, 2019, 23:\penalty0 375-396.
+
+\bibitem[He et~al.(2022)He, Yang, Zhou, Chen, and Chen]{he2022dual}
+HE~J, YANG~H, ZHOU~S, et~al.
+\newblock A dual-attention-mechanism multi-channel convolutional lstm for
+  short-term wind speed prediction\allowbreak[J].
+\newblock Atmosphere, 2022, 14\penalty0 (1):\penalty0 71.
+
+\bibitem[Motulsky et~al.(2004)Motulsky and Christopoulos]{motulsky2004fitting}
+MOTULSKY~H, CHRISTOPOULOS~A.
+\newblock Fitting models to biological data using linear and nonlinear
+  regression: a practical guide to curve fitting\allowbreak[M].
+\newblock [S.l.]: Oxford University Press, 2004.
+
+\bibitem[Freund et~al.(1997)Freund and Schapire]{freund1997decision}
+FREUND~Y, SCHAPIRE~R~E.
+\newblock A decision-theoretic generalization of on-line learning and an
+  application to boosting\allowbreak[J].
+\newblock Journal of computer and system sciences, 1997, 55\penalty0
+  (1):\penalty0 119-139.
+
+\bibitem[Williams et~al.(2006)Williams and Rasmussen]{williams2006gaussian}
+WILLIAMS~C~K, RASMUSSEN~C~E.
+\newblock Gaussian processes for machine learning: volume~2\allowbreak[M].
+\newblock [S.l.]: MIT press Cambridge, MA, 2006.
+
+\bibitem[Schulz et~al.(2018)Schulz, Speekenbrink, and
+  Krause]{schulz2018tutorial}
+SCHULZ~E, SPEEKENBRINK~M, KRAUSE~A.
+\newblock A tutorial on gaussian process regression: Modelling, exploring, and
+  exploiting functions\allowbreak[J].
+\newblock Journal of mathematical psychology, 2018, 85:\penalty0 1-16.
+
+\end{thebibliography}

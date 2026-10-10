@@ -1,0 +1,49 @@
+\begin{thebibliography}{6}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{#1}
+\expandafter\ifx\csname urlstyle\endcsname\relax\else
+  \urlstyle{same}\fi
+\expandafter\ifx\csname href\endcsname\relax
+  \DeclareUrlCommand\doi{\urlstyle{rm}}\else
+  \providecommand\doi[1]{\href{https://doi.org/#1}{\nolinkurl{#1}}}\fi
+
+\bibitem[Gao et~al.(2018)Gao, Zhao, Pan, Li, Zhou, and Xu]{gao2018nowcasting}
+GAO~S, ZHAO~P, PAN~B, et~al.
+\newblock A nowcasting model for the prediction of typhoon tracks based on a
+  long short term memory neural network\allowbreak[J].
+\newblock Acta Oceanologica Sinica, 2018, 37:\penalty0 8-12.
+
+\bibitem[Giffard-Roisin et~al.(2020)Giffard-Roisin, Yang, Charpiat,
+  Kumler~Bonfanti, K{\'e}gl, and Monteleoni]{giffard2020fused}
+GIFFARD-ROISIN~S, YANG~M, CHARPIAT~G, et~al.
+\newblock Tropical cyclone track forecasting using fused deep learning from
+  aligned reanalysis data\allowbreak[J].
+\newblock Frontiers in Big Data, 2020, 3:\penalty0 1.
+
+\bibitem[Liu et~al.(2022)Liu, Hao, Geng, and Shi]{liu2022dual}
+LIU~Z, HAO~K, GENG~X, et~al.
+\newblock Dual-branched spatio-temporal fusion network for multi-horizon
+  tropical cyclone track forecast\allowbreak[J].
+\newblock arXiv preprint arXiv:2202.13336, 2022.
+
+\bibitem[Chen et~al.(2019)Chen, Wang, Zhang, Zhu, Li, and Yang]{chen2019hybrid}
+CHEN~R, WANG~X, ZHANG~W, et~al.
+\newblock A hybrid cnn-lstm model for typhoon formation
+  forecasting\allowbreak[J].
+\newblock GeoInformatica, 2019, 23:\penalty0 375-396.
+
+\bibitem[He et~al.(2023)He, Yang, Zhou, Chen, and Chen]{he2023dual}
+HE~J, YANG~H, ZHOU~S, et~al.
+\newblock A dual-attention-mechanism multi-channel convolutional lstm for
+  short-term wind speed prediction\allowbreak[J].
+\newblock Atmosphere, 2023, 14\penalty0 (1):\penalty0 71.
+
+\bibitem[Ueno(2007)]{ueno2007observational}
+UENO~M.
+\newblock Observational analysis and numerical evaluation of the effects of
+  vertical wind shear on the rainfall asymmetry in the typhoon inner-core
+  region\allowbreak[J].
+\newblock Journal of the Meteorological Society of Japan, 2007, 85\penalty0
+  (2):\penalty0 115-136.
+
+\end{thebibliography}
