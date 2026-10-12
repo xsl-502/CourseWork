@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xelatex -interaction=nonstopmode -halt-on-error \"学期报告-分布式零知识证明DIZK.tex\")",
+      "Bash(python3 -c ' *)"
+    ]
+  }
+}
