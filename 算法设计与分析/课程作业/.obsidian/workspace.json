@@ -11,10 +11,14 @@
             "id": "291d05d7b9876840",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "作业2_中文翻译与详细解答.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "新标签页"
+              "title": "作业2_中文翻译与详细解答"
             }
           }
         ]
