@@ -1,0 +1,199 @@
+\begin{thebibliography}{30}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{#1}
+\expandafter\ifx\csname urlstyle\endcsname\relax\else
+  \urlstyle{same}\fi
+\expandafter\ifx\csname href\endcsname\relax
+  \DeclareUrlCommand\doi{\urlstyle{rm}}
+  \def\eprint#1#2{#2}
+\else
+  \def\doi#1{\href{https://doi.org/#1}{\nolinkurl{#1}}}
+  \let\eprint\href
+\fi
+
+\bibitem[Wie et~al.(2012)Wie, Jang, and Moon]{wie2012development}
+WIE J, JANG S, MOON B.
+\newblock Development of an experimental method for understanding the effects
+  of the coriolis force on the typhoon genesis and its movement\allowbreak[J].
+\newblock Journal of the korean earth science society, 2012, 33\allowbreak (6):
+  544-553.
+
+\bibitem[Vapnik(1998)]{vapnik1998statistical}
+VAPNIK V~N.
+\newblock Statistical learning theory\allowbreak[M].
+\newblock Wiley, 1998.
+
+\bibitem[Goodfellow et~al.(2016)Goodfellow, Bengio, and
+  Courville]{goodfellow2016deep}
+GOODFELLOW I, BENGIO Y, COURVILLE A.
+\newblock Deep learning\allowbreak[M].
+\newblock MIT press, 2016.
+
+\bibitem[陈睿(2018)]{陈睿2018基于深度学习的台风预测关键技术研究}
+陈睿.
+\newblock 基于深度学习的台风预测关键技术研究\allowbreak[D].
+\newblock 国防科技大学, 2018.
+
+\bibitem[Chen et~al.(2019)Chen, Wang, Zhang, Zhu, Li, and Yang]{chen2019hybrid}
+CHEN R, WANG X, ZHANG W, et~al.
+\newblock A hybrid cnn-lstm model for typhoon formation
+  forecasting\allowbreak[J].
+\newblock GeoInformatica, 2019, 23: 375-396.
+
+\bibitem[M{\"u}ller(2007)]{muller2007dynamic}
+M{\"U}LLER M.
+\newblock Dynamic time warping\allowbreak[J].
+\newblock Information retrieval for music and motion, 2007: 69-84.
+
+\bibitem[Giffard-Roisin et~al.(2020)Giffard-Roisin, Yang, Charpiat,
+  Kumler~Bonfanti, K{\'e}gl, and Monteleoni]{giffardroisin2020tropical}
+GIFFARD-ROISIN S, YANG M, CHARPIAT G, et~al.
+\newblock Tropical cyclone track forecasting using fused deep learning from
+  aligned reanalysis data\allowbreak[J].
+\newblock Frontiers in Big Data, 2020, 3: 1.
+
+\bibitem[R{\"u}ttgers et~al.(2019)R{\"u}ttgers, Lee, Jeon, and
+  You]{ruttgers2019prediction}
+R{\"U}TTGERS M, LEE S, JEON S, et~al.
+\newblock Prediction of a typhoon track using a generative adversarial network
+  and satellite images\allowbreak[J].
+\newblock Scientific reports, 2019, 9\allowbreak (1): 6057.
+
+\bibitem[He et~al.(2022)He, Yang, Zhou, Chen, and Chen]{he2022dual}
+HE J, YANG H, ZHOU S, et~al.
+\newblock A dual-attention-mechanism multi-channel convolutional lstm for
+  short-term wind speed prediction\allowbreak[J].
+\newblock Atmosphere, 2022, 14\allowbreak (1): 71.
+
+\bibitem[Ueno(2007)]{ueno2007observational}
+UENO M.
+\newblock Observational analysis and numerical evaluation of the effects of
+  vertical wind shear on the rainfall asymmetry in the typhoon inner-core
+  region\allowbreak[J].
+\newblock Journal of the Meteorological Society of Japan, 2007, 85\allowbreak
+  (2): 115-136.
+
+\bibitem[Knapp et~al.(2010)Knapp, Kruk, Levinson, Diamond, and
+  Neumann]{knapp2010ibtracs}
+KNAPP K~R, KRUK M~C, LEVINSON D~H, et~al.
+\newblock The international best track archive for climate stewardship
+  (ibtracs): unifying tropical cyclone data\allowbreak[J].
+\newblock Bulletin of the American Meteorological Society, 2010, 91\allowbreak
+  (3): 363-376.
+
+\bibitem[Abdi et~al.(2010)Abdi and Williams]{abdi2010principal}
+ABDI H, WILLIAMS L~J.
+\newblock Principal component analysis\allowbreak[J].
+\newblock Wiley interdisciplinary reviews: computational statistics, 2010,
+  2\allowbreak (4): 433-459.
+
+\bibitem[Jolliffe(2002)]{jolliffe2002principal}
+JOLLIFFE I~T.
+\newblock Principal component analysis\allowbreak[M].
+\newblock 2nd ed.
+\newblock Springer, 2002.
+
+\bibitem[MacQueen(1967)]{macqueen1967some}
+MACQUEEN J.
+\newblock Some methods for classification and analysis of multivariate
+  observations\allowbreak[C]//\allowbreak
+Proceedings of the fifth Berkeley symposium on mathematical statistics and
+  probability: Vol.~1.
+\newblock 1967: 281-297.
+
+\bibitem[Rousseeuw(1987)]{rousseeuw1987silhouettes}
+ROUSSEEUW P~J.
+\newblock Silhouettes: a graphical aid to the interpretation and validation of
+  cluster analysis\allowbreak[J].
+\newblock Journal of computational and applied mathematics, 1987, 20: 53-65.
+
+\bibitem[Cortes et~al.(1995)Cortes and Vapnik]{cortes1995support}
+CORTES C, VAPNIK V.
+\newblock Support-vector networks\allowbreak[J].
+\newblock Machine learning, 1995, 20\allowbreak (3): 273-297.
+
+\bibitem[Drucker et~al.(1997)Drucker, Burges, Kaufman, Smola, and
+  Vapnik]{drucker1997support}
+DRUCKER H, BURGES C~J, KAUFMAN L, et~al.
+\newblock Support vector regression machines\allowbreak[C]//\allowbreak
+Advances in neural information processing systems: Vol.~9.
+\newblock 1997: 155-161.
+
+\bibitem[Dhiman et~al.(2019)Dhiman, Deb, and Guerrero]{dhiman2019hybrid}
+DHIMAN H~S, DEB D, GUERRERO J~M.
+\newblock Hybrid machine intelligent svr variants for wind forecasting and ramp
+  events\allowbreak[J].
+\newblock Renewable and Sustainable Energy Reviews, 2019, 108: 369-379.
+
+\bibitem[Hochreiter et~al.(1997)Hochreiter and Schmidhuber]{hochreiter1997long}
+HOCHREITER S, SCHMIDHUBER J.
+\newblock Long short-term memory\allowbreak[J].
+\newblock Neural computation, 1997, 9\allowbreak (8): 1735-1780.
+
+\bibitem[LeCun et~al.(2015)LeCun, Bengio, and Hinton]{lecun2015deep}
+LECUN Y, BENGIO Y, HINTON G.
+\newblock Deep learning\allowbreak[J].
+\newblock Nature, 2015, 521\allowbreak (7553): 436-444.
+
+\bibitem[Kingma et~al.(2014)Kingma and Ba]{kingma2014adam}
+KINGMA D~P, BA J.
+\newblock Adam: A method for stochastic optimization\allowbreak[A].
+\newblock 2014.
+
+\bibitem[Sakoe et~al.(1978)Sakoe and Chiba]{sakoe1978dynamic}
+SAKOE H, CHIBA S.
+\newblock Dynamic programming algorithm optimization for spoken word
+  recognition\allowbreak[J].
+\newblock IEEE transactions on acoustics, speech, and signal processing, 1978,
+  26\allowbreak (1): 43-49.
+
+\bibitem[Willmott et~al.(2005)Willmott and Matsuura]{willmott2005advantages}
+WILLMOTT C~J, MATSUURA K.
+\newblock Advantages of the mean absolute error (mae) over the root mean square
+  error (rmse) in assessing average model performance\allowbreak[J].
+\newblock Climate research, 2005, 30\allowbreak (1): 79-82.
+
+\bibitem[Kaplan et~al.(1995)Kaplan and DeMaria]{kaplan1995simple}
+KAPLAN J, DEMARIA M.
+\newblock A simple empirical model for predicting the decay of tropical cyclone
+  winds after landfall\allowbreak[J].
+\newblock Journal of Applied Meteorology and Climatology, 1995, 34\allowbreak
+  (11): 2499-2512.
+
+\bibitem[Breiman(2001)]{breiman2001random}
+BREIMAN L.
+\newblock Random forests\allowbreak[J].
+\newblock Machine learning, 2001, 45\allowbreak (1): 5-32.
+
+\bibitem[Freund et~al.(1997)Freund and Schapire]{freund1997decision}
+FREUND Y, SCHAPIRE R~E.
+\newblock A decision-theoretic generalization of on-line learning and an
+  application to boosting\allowbreak[J].
+\newblock Journal of computer and system sciences, 1997, 55\allowbreak (1):
+  119-139.
+
+\bibitem[Friedman(2001)]{friedman2001greedy}
+FRIEDMAN J~H.
+\newblock Greedy function approximation: a gradient boosting
+  machine\allowbreak[J].
+\newblock Annals of statistics, 2001: 1189-1232.
+
+\bibitem[Williams et~al.(2006)Williams and Rasmussen]{williams2006gaussian}
+WILLIAMS C~K, RASMUSSEN C~E.
+\newblock Gaussian processes for machine learning: Vol.~2\allowbreak[M].
+\newblock MIT press Cambridge, MA, 2006.
+
+\bibitem[Schulz et~al.(2018)Schulz, Speekenbrink, and
+  Krause]{schulz2018tutorial}
+SCHULZ E, SPEEKENBRINK M, KRAUSE A.
+\newblock A tutorial on gaussian process regression: Modelling, exploring, and
+  exploiting functions\allowbreak[J].
+\newblock Journal of mathematical psychology, 2018, 85: 1-16.
+
+\bibitem[Motulsky et~al.(2004)Motulsky and Christopoulos]{motulsky2004fitting}
+MOTULSKY H, CHRISTOPOULOS A.
+\newblock Fitting models to biological data using linear and nonlinear
+  regression: a practical guide to curve fitting\allowbreak[M].
+\newblock Oxford University Press, 2004.
+
+\end{thebibliography}

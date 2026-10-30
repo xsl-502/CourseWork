@@ -1,0 +1,25 @@
+\frametitle{问题二：关键设计与实验规范\speaker {蔡奕锴}}
+\begin{columns}
+        \begin{column}{0.54\textwidth}
+\begin{lstlisting}
+# 目标重参数化：预测位移而非速度
+delta = pos[t + h] - pos[t]   # h = 6/12/24 h
+X = feats[t-24:t]             # 过去 24 h 状态序列
+y_hat = CNN_LSTM_SE(X)        # 时空 + 通道注意力
+loss = mse_loss(y_hat, delta)
+
+# 防信息泄漏：按完整台风事件划分
+train, test = split_by_storm_id(...)
+\end{lstlisting}
+        \end{column}
+        \begin{column}{0.42\textwidth}
+            \begin{itemize}\small
+                \item \textbf{防信息泄漏}：标准化参数仅由训练集估计；同一台风的相邻样本不跨集合
+                \item \textbf{消融实验}：逐一移除 CNN 分支 / 注意力模块，量化各模块贡献
+                \item \textbf{困难样本}：单独分析转向、登陆、快速移动样本
+            \end{itemize}
+        \end{column}
+    \end{columns}
+    \begin{block}{为什么直接预测未来位移？}\footnotesize
+        以“移动速度”为输出时，位置需经积分还原，误差随步长累积且起点不定；位移目标与“预测未来位置”任务\textbf{直接对齐}，逐段累加即可还原完整路径。
+    \end{block}
